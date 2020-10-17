@@ -1,3 +1,3 @@
-Bonjour c'est ici qu'on se reunit pour pleurer
+<b>Bonjour</b>, c'est ici qu'on se reunit pour pleurer
 
-AB
+``AB``
