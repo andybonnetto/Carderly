@@ -1,3 +1,11 @@
+## Connecting to raspberry pi on windows
+* Connect the raspi by changing the *wpa_supplicant.conf* wifi parameters in boot of the sd card
+* Install putty and advanced IP scanner on your computer
+* Once sd card plugged and raspi power supplied, search for IP adress using IP scanner (you should be connected to the same wifi)
+* Put the IP adress on putty should open a terminal in the card
+* If you want a nice display you can use windows remote desktop and put the same IP adress
+It can work by ethernet but I never tried
+
 ## Magic Command for the raspberry pi
 ```
 $ sudo raspi-config
