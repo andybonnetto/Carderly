@@ -1,3 +1,12 @@
+## Card recognition python programm
+In Windows, you will need to connect via ssh using Xming also (see X11 in puTTy) or launch the following command from a gitbash in order to open the camera stream window (quite slow)
+```
+ssh -X pi@<ip_address>
+```
+The basic Card recognition adapted for USB camera can be launch by launching the code below when the usb camera has been plugged
+```
+python Opencv-Playing-Card-Detector/CardDetector.py
+```
 ## Magic Commands for the Cameras
 ```
 fswebcam <image_name.jpg>
@@ -17,3 +26,4 @@ Modify the configurations of motion
 workon cv3
 ```
 A virtual environment has been created for the python packaging related to opencv, *workon* connects to the environnement (*deactivate* to quit any environnement)
+
