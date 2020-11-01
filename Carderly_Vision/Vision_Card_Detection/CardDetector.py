@@ -21,7 +21,7 @@ import VideoStream
 ## Camera settings
 IM_WIDTH = 1280
 IM_HEIGHT = 720 
-FRAME_RATE = 20
+FRAME_RATE = 25
 
 ## Initialize calculated frame rate because it's calculated AFTER the first time it's displayed
 frame_rate_calc = 1
@@ -96,9 +96,13 @@ while cam_quit == 0:
         if (len(cards) != 0):
             temp_cnts = []
             for i in range(len(cards)):
-                f = open("CardValues.txt", "w")
-                f.write("{} {}".format(cards[i].best_rank_match,cards[i].best_suit_match))
-                f.close()
+
+                #Open File and write card value in it
+                if(cards[i].best_rank_match != "Uknown" and cards[i].best_suit_match != "Uknown"):
+                    f = open("CardValues.txt", "w")
+                    f.write("{} {}".format(cards[i].best_rank_match,cards[i].best_suit_match))
+                    f.close()
+
                 temp_cnts.append(cards[i].contour)
             cv2.drawContours(image,temp_cnts, -1, (255,0,0), 2)
         
