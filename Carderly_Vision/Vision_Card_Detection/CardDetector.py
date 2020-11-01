@@ -96,7 +96,7 @@ while cam_quit == 0:
         if (len(cards) != 0):
             temp_cnts = []
             for i in range(len(cards)):
-                print(cards[i])
+                print(cards[i].best_rank_match, cards[i].best_suit_match)
                 temp_cnts.append(cards[i].contour)
             cv2.drawContours(image,temp_cnts, -1, (255,0,0), 2)
         
