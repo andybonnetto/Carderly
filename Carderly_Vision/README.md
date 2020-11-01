@@ -1,10 +1,11 @@
 ## Card recognition python programm
-In Windows, you will need to connect via ssh using Xming also (see X11 in puTTy) or launch the following command from a gitbash in order to open the camera stream window (quite slow)
+In Windows, you will need to connect via ssh using Xming also (see X11 in puTTy) or launch the following command from a gitbash in order to open the camera stream window (doesn't really work sometimes, putty is better)
 ```
 ssh -X pi@<ip_address>
 ```
 The basic Card recognition adapted for USB camera can be launch by launching the code below when the usb camera has been plugged
 ```
+export DISPLAY=":0"
 python Opencv-Playing-Card-Detector/CardDetector.py
 ```
 ## Magic Commands for the Cameras
