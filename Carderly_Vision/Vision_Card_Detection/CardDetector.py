@@ -98,7 +98,7 @@ while cam_quit == 0:
             for i in range(len(cards)):
 
                 #Open File and write card value in it
-                if(cards[i].best_rank_match != "Uknown" and cards[i].best_suit_match != "Uknown"):
+                if(cards[i].best_rank_match != "Unknown" and cards[i].best_suit_match != "Unknown"):
                     f = open("CardValues.txt", "w")
                     f.write("{} {}".format(cards[i].best_rank_match,cards[i].best_suit_match))
                     f.close()
