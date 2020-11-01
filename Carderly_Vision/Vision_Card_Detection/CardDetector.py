@@ -96,7 +96,9 @@ while cam_quit == 0:
         if (len(cards) != 0):
             temp_cnts = []
             for i in range(len(cards)):
-                print(cards[i].best_rank_match, cards[i].best_suit_match)
+                f = open("CardValues.txt", "w")
+                f.write("{} {}".format(cards[i].best_rank_match,cards[i].best_suit_match))
+                f.close()
                 temp_cnts.append(cards[i].contour)
             cv2.drawContours(image,temp_cnts, -1, (255,0,0), 2)
         
@@ -104,7 +106,6 @@ while cam_quit == 0:
     # Draw framerate in the corner of the image. Framerate is calculated at the end of the main loop,
     # so the first time this runs, framerate will be shown as 0.
     cv2.putText(image,"FPS: "+str(int(frame_rate_calc)),(10,26),font,0.7,(255,0,255),2,cv2.LINE_AA)
-
     # Finally, display the image with the identified cards!
     cv2.imshow("Card Detector",image)
 
