@@ -2,4 +2,6 @@
     <string name="app_name">CardDisplayTest</string>
     <string name="game_start">Start</string>
     <string name="game_restart">Restart</string>
+    <string name="username">Username</string>
+    <string name="password">password</string>
 </resources>
