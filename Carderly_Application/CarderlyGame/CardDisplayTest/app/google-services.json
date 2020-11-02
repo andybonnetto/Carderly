@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "803798162793",
+    "firebase_url": "https://carderly-4ff6d.firebaseio.com",
+    "project_id": "carderly-4ff6d",
+    "storage_bucket": "carderly-4ff6d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803798162793:android:c6915205a3159679dd71f8",
+        "android_client_info": {
+          "package_name": "com.example.carddisplaytest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803798162793-dsl3in1kjrchn8v12knmqov9sto6jug8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCF5nN-H_J06WgVyN1XGL5QGTd1TZfZOt0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803798162793-dsl3in1kjrchn8v12knmqov9sto6jug8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
