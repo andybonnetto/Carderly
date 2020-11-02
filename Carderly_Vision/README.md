@@ -9,7 +9,7 @@ export DISPLAY=":0"
 python Opencv-Playing-Card-Detector/CardDetector.py
 ```
 ## Snapshot test program
-In /Vision_Card_Detector, you can launch *Snapshots.py* to take 10 pictures separated by 10 seconds. They will be saved in the /Snapshots directory, you can visualize them with Xming by typing in the terminal:
+In */Vision_Card_Detector*, you can launch *Snapshot.py* to take 10 pictures separated by 10 seconds. They will be saved in the */Snapshots* directory, you can visualize them with Xming by typing in the terminal:
 ```
 xpeg-open snapshot<whateverthenumber>.png
 ```
