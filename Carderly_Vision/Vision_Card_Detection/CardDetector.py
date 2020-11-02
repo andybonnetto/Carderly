@@ -95,15 +95,13 @@ while cam_quit == 0:
         # they do not show up properly for some reason)
         if (len(cards) != 0):
             temp_cnts = []
+            # Open File and write card value in it
+            f = open("CardValues.txt", "w")
             for i in range(len(cards)):
-
-                #Open File and write card value in it
                 if(cards[i].best_rank_match != "Unknown" and cards[i].best_suit_match != "Unknown"):
-                    f = open("CardValues.txt", "w")
                     f.write("{} {}".format(cards[i].best_rank_match,cards[i].best_suit_match))
-                    f.close()
-
                 temp_cnts.append(cards[i].contour)
+            f.close()
             cv2.drawContours(image,temp_cnts, -1, (255,0,0), 2)
         
         
