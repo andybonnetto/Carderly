@@ -33,13 +33,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private File imageFile;
     private Profile userProfile;
 
-
-    private static final FirebaseDatabase database = FirebaseDatabase
-            .getInstance();
-    private static final DatabaseReference profileGetRef = database
-            .getReference("profiles");
-    private static DatabaseReference profileRef = profileGetRef.push();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,17 +50,10 @@ public class EditProfileActivity extends AppCompatActivity {
         } else {
             userProfile.photoPath = imageFile.getPath();
         }
-
-        addProfileToFirebaseDB();
-
         Intent intent = new Intent(EditProfileActivity.this, LoginActivity.class);
         intent.putExtra("userProfile", userProfile);
         setResult(AppCompatActivity.RESULT_OK, intent);
         finish();
-    }
-
-    private void addProfileToFirebaseDB() {
-        profileRef.runTransaction(new ProfileUploadHandler());
     }
 
     public void chooseImage(View view) {
@@ -118,23 +104,6 @@ public class EditProfileActivity extends AppCompatActivity {
         } finally {
             in.close();
             out.close();
-        }
-    }
-
-    private class ProfileUploadHandler implements Transaction.Handler {
-        @NonNull
-        @Override
-        public Transaction.Result doTransaction(@NonNull MutableData
-                                                        mutableData) {
-            mutableData.child("username").setValue(userProfile.username);
-            mutableData.child("password").setValue(userProfile.password);
-            return Transaction.success(mutableData);
-        }
-
-        @Override
-        public void onComplete(@Nullable DatabaseError databaseError,
-                               boolean b, @Nullable DataSnapshot
-                                       dataSnapshot) {
         }
     }
 }
