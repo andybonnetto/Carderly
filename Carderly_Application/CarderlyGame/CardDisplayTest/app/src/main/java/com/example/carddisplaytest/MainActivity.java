@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.database.DataSnapshot;
@@ -20,10 +21,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView card1, card2, card3, card4, card5, card6, card7, card8, opponent_left, opponent_right, ally, player_card_player1;
+    ImageView card1, card2, card3, card4, card5, card6, card7, card8, opponent_left, opponent_right, ally, played_card, opponent_left_played_card, opponent_right_played_card, ally_played_card;
+    TextView name_player, name_opponent_left, name_opponent_right, name_ally;
     Button game_button;
     ArrayList<Integer> cards;
-    int[] player1_cards_id = {0,0,0,0,0,0,0,0}; // ID of the cards in hand of the player 1
+    ArrayList<String> strings_DB;
+    int player_id; // ID of the player
+    int[] player_cards_id = {0,0,0,0,0,0,0,0}; // ID of the cards in hand of the player 1
+    int[] other_players_card_played_id = {0,0,0}; // ID of the cards played by the other players : 1st the opponent left, 2nd the ally and 3rd the right opponent
     private final String TAG = this.getClass().getName();
 
     @Override
@@ -31,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Link the variables modified in the java file to the ImageViews in the UI
+        // Link the variables modified in the java file to the Views in the UI
         game_button = (Button) findViewById(R.id.game_button);
         card1 = (ImageView) findViewById(R.id.card1);
         card2 = (ImageView) findViewById(R.id.card2);
@@ -42,14 +47,106 @@ public class MainActivity extends AppCompatActivity {
         card7 = (ImageView) findViewById(R.id.card7);
         card8 = (ImageView) findViewById(R.id.card8);
         opponent_left = (ImageView) findViewById(R.id.opponent_left);
+        opponent_left_played_card = (ImageView) findViewById(R.id.opponent_left_played_card);
         opponent_right = (ImageView) findViewById(R.id.opponent_right);
+        opponent_right_played_card = (ImageView) findViewById(R.id.opponent_right_played_card);
         ally = (ImageView) findViewById(R.id.ally);
-        player_card_player1 = (ImageView) findViewById(R.id.played_card_player1);
+        ally_played_card = (ImageView) findViewById(R.id.ally_played_card);
+        played_card = (ImageView) findViewById(R.id.played_card);
+        name_player = (TextView) findViewById(R.id.name_player);
+        name_opponent_left = (TextView) findViewById(R.id.name_opponent_left);
+        name_opponent_right = (TextView) findViewById(R.id.name_opponent_right);
+        name_ally = (TextView) findViewById(R.id.name_ally);
+
+        // Get through the intent that started the activity the ID of the player
+        //Intent intent = getIntent();
+        //String player_ID = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        player_id = 3;
+        strings_DB = new ArrayList<>();
+        switch(player_id) { // Locations where the values will be stored in the database
+            case 1:
+                strings_DB.add("Player 1/Card 1");
+                strings_DB.add("Player 1/Card 2");
+                strings_DB.add("Player 1/Card 3");
+                strings_DB.add("Player 1/Card 4");
+                strings_DB.add("Player 1/Card 5");
+                strings_DB.add("Player 1/Card 6");
+                strings_DB.add("Player 1/Card 7");
+                strings_DB.add("Player 1/Card 8");
+                strings_DB.add("Player 1/Card played");
+                strings_DB.add("Player 3/Card played");
+                strings_DB.add("Player 2/Card played");
+                strings_DB.add("Player 4/Card played");
+                name_player.setText("Player 1");
+                name_opponent_left.setText("Player 3");
+                name_ally.setText("Player 2");
+                name_opponent_right.setText("Player 4");
+                break;
+            case 2:
+                strings_DB.add("Player 2/Card 1");
+                strings_DB.add("Player 2/Card 2");
+                strings_DB.add("Player 2/Card 3");
+                strings_DB.add("Player 2/Card 4");
+                strings_DB.add("Player 2/Card 5");
+                strings_DB.add("Player 2/Card 6");
+                strings_DB.add("Player 2/Card 7");
+                strings_DB.add("Player 2/Card 8");
+                strings_DB.add("Player 2/Card played");
+                strings_DB.add("Player 4/Card played");
+                strings_DB.add("Player 1/Card played");
+                strings_DB.add("Player 3/Card played");
+                name_player.setText("Player 2");
+                name_opponent_left.setText("Player 4");
+                name_ally.setText("Player 1");
+                name_opponent_right.setText("Player 3");
+                break;
+            case 3:
+                strings_DB.add("Player 3/Card 1");
+                strings_DB.add("Player 3/Card 2");
+                strings_DB.add("Player 3/Card 3");
+                strings_DB.add("Player 3/Card 4");
+                strings_DB.add("Player 3/Card 5");
+                strings_DB.add("Player 3/Card 6");
+                strings_DB.add("Player 3/Card 7");
+                strings_DB.add("Player 3/Card 8");
+                strings_DB.add("Player 3/Card played");
+                strings_DB.add("Player 2/Card played");
+                strings_DB.add("Player 4/Card played");
+                strings_DB.add("Player 1/Card played");
+                name_player.setText("Player 3");
+                name_opponent_left.setText("Player 2");
+                name_ally.setText("Player 4");
+                name_opponent_right.setText("Player 1");
+                break;
+            case 4:
+                strings_DB.add("Player 4/Card 1");
+                strings_DB.add("Player 4/Card 2");
+                strings_DB.add("Player 4/Card 3");
+                strings_DB.add("Player 4/Card 4");
+                strings_DB.add("Player 4/Card 5");
+                strings_DB.add("Player 4/Card 6");
+                strings_DB.add("Player 4/Card 7");
+                strings_DB.add("Player 4/Card 8");
+                strings_DB.add("Player 4/Card played");
+                strings_DB.add("Player 1/Card played");
+                strings_DB.add("Player 3/Card played");
+                strings_DB.add("Player 2/Card played");
+                name_player.setText("Player 4");
+                name_opponent_left.setText("Player 1");
+                name_ally.setText("Player 3");
+                name_opponent_right.setText("Player 2");
+                break;
+        }
 
         // Callback called when the game button is clicked on : a hand of 8 random cards is dealt
         game_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Make the names visible
+                name_player.setVisibility(View.VISIBLE);
+                name_opponent_left.setVisibility(View.VISIBLE);
+                name_opponent_right.setVisibility(View.VISIBLE);
+                name_ally.setVisibility(View.VISIBLE);
                 // All cards are stored in an array, and each card has an ID number of 3 digits:
                 // 1st one for the colour, and the 2 others for the value
                 // When a card is distributed, its value in the array is set to 0
@@ -87,6 +184,9 @@ public class MainActivity extends AppCompatActivity {
                 cards.add(413); // king of hearts
                 cards.add(414); // ace of hearts
 
+                // Delete the card played in the DB as there is none when the cards are distributed
+                deleteDB(strings_DB.get(8));
+
                 // Make the cards clickable again in case the game has been restarted by clicking the game button
                 card1.setClickable(true);
                 card2.setClickable(true);
@@ -103,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                 while(i < random_id.length) {
                     random_id[i] = (int) (Math.random() * cards.size());
                     if(cards.get(random_id[i]) != 0) { // If the card is already distributed, then another loop turn is done
-                        player1_cards_id[i] = cards.get(random_id[i]); // Store the card ID before setting to 0 to use it in assignCard function
+                        player_cards_id[i] = cards.get(random_id[i]); // Store the card ID before setting to 0 to use it in assignCard function
                         cards.set(random_id[i],0); // Set to 0 in the card array the corresponding card distributed
                         i++;
                     }
@@ -118,30 +218,31 @@ public class MainActivity extends AppCompatActivity {
                 //System.out.println("random_id 7: " + random_id[7]);
 
                 // Make the cards of the principal player appear and send them to the database
-                assignCard(player1_cards_id[0],card1);
-                writeDB(player1_cards_id[0],"Player 1/Card 1");
-                assignCard(player1_cards_id[1],card2);
-                writeDB(player1_cards_id[1],"Player 1/Card 2");
-                assignCard(player1_cards_id[2],card3);
-                writeDB(player1_cards_id[2],"Player 1/Card 3");
-                assignCard(player1_cards_id[3],card4);
-                writeDB(player1_cards_id[3],"Player 1/Card 4");
-                assignCard(player1_cards_id[4],card5);
-                writeDB(player1_cards_id[4],"Player 1/Card 5");
-                assignCard(player1_cards_id[5],card6);
-                writeDB(player1_cards_id[5],"Player 1/Card 6");
-                assignCard(player1_cards_id[6],card7);
-                writeDB(player1_cards_id[6],"Player 1/Card 7");
-                assignCard(player1_cards_id[7],card8);
-                writeDB(player1_cards_id[7],"Player 1/Card 8");
+                assignCard(player_cards_id[0],card1);
+                writeDB(player_cards_id[0],strings_DB.get(0));
+                assignCard(player_cards_id[1],card2);
+                writeDB(player_cards_id[1],strings_DB.get(1));
+                assignCard(player_cards_id[2],card3);
+                writeDB(player_cards_id[2],strings_DB.get(2));
+                assignCard(player_cards_id[3],card4);
+                writeDB(player_cards_id[3],strings_DB.get(3));
+                assignCard(player_cards_id[4],card5);
+                writeDB(player_cards_id[4],strings_DB.get(4));
+                assignCard(player_cards_id[5],card6);
+                writeDB(player_cards_id[5],strings_DB.get(5));
+                assignCard(player_cards_id[6],card7);
+                writeDB(player_cards_id[6],strings_DB.get(6));
+                assignCard(player_cards_id[7],card8);
+                writeDB(player_cards_id[7],strings_DB.get(7));
 
                 // Make cards of the 3 other players appear
                 opponent_left.setImageResource(R.drawable.back_cards);
                 opponent_right.setImageResource(R.drawable.back_cards);
                 ally.setImageResource(R.drawable.back_cards);
 
-                // Make the played cards disappear
-                player_card_player1.setImageResource(0);
+                // Make the played cards and the button disappear
+                played_card.setImageResource(0);
+                game_button.setVisibility(View.GONE);
             }
         });
 
@@ -150,9 +251,59 @@ public class MainActivity extends AppCompatActivity {
         card1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assignCard(player1_cards_id[0],player_card_player1);
-                writeDB(player1_cards_id[0],"Player 1/Card played");
-                writeDB(0,"Player 1/Card 1");
+                //assignCard(player_cards_id[0],opponent_left_played_card);
+                //assignCard(player_cards_id[0],opponent_right_played_card);
+                //assignCard(player_cards_id[0],ally_played_card);
+                FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference mDbRef_opp_left = mDatabase.getReference(strings_DB.get(9));
+                DatabaseReference mDbRef_ally = mDatabase.getReference(strings_DB.get(10));
+                DatabaseReference mDbRef_opp_right = mDatabase.getReference(strings_DB.get(11));
+                mDbRef_opp_left.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated
+                        int value = dataSnapshot.getValue(int.class);
+                        assignCard(value,opponent_left_played_card);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        Log.w(TAG, "Failed to read value.", error.toException());
+                    }
+                });
+                mDbRef_ally.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated
+                        int value = dataSnapshot.getValue(int.class);
+                        assignCard(value,ally_played_card);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        Log.w(TAG, "Failed to read value.", error.toException());
+                    }
+                });
+                mDbRef_opp_right.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated
+                        int value = dataSnapshot.getValue(int.class);
+                        assignCard(value,opponent_right_played_card);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        Log.w(TAG, "Failed to read value.", error.toException());
+                    }
+                });
+
+                assignCard(player_cards_id[0],played_card);
+                writeDB(player_cards_id[0],strings_DB.get(8));
+                writeDB(0,strings_DB.get(0));
                 card1.setImageResource(0);
                 card1.setClickable(false); // Once the card is dealt, it is no more clickable
             }
@@ -160,9 +311,9 @@ public class MainActivity extends AppCompatActivity {
         card2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assignCard(player1_cards_id[1],player_card_player1);
-                writeDB(player1_cards_id[1],"Player 1/Card played");
-                writeDB(0,"Player 1/Card 2");
+                assignCard(player_cards_id[1],played_card);
+                writeDB(player_cards_id[1],strings_DB.get(8));
+                writeDB(0,strings_DB.get(1));
                 card2.setImageResource(0);
                 card2.setClickable(false);
             }
@@ -170,9 +321,9 @@ public class MainActivity extends AppCompatActivity {
         card3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assignCard(player1_cards_id[2],player_card_player1);
-                writeDB(player1_cards_id[2],"Player 1/Card played");
-                writeDB(0,"Player 1/Card 3");
+                assignCard(player_cards_id[2],played_card);
+                writeDB(player_cards_id[2],strings_DB.get(8));
+                writeDB(0,strings_DB.get(2));
                 card3.setImageResource(0);
                 card3.setClickable(false);
             }
@@ -180,9 +331,9 @@ public class MainActivity extends AppCompatActivity {
         card4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assignCard(player1_cards_id[3],player_card_player1);
-                writeDB(player1_cards_id[3],"Player 1/Card played");
-                writeDB(0,"Player 1/Card 4");
+                assignCard(player_cards_id[3],played_card);
+                writeDB(player_cards_id[3],strings_DB.get(8));
+                writeDB(0,strings_DB.get(3));
                 card4.setImageResource(0);
                 card4.setClickable(false);
             }
@@ -190,9 +341,9 @@ public class MainActivity extends AppCompatActivity {
         card5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assignCard(player1_cards_id[4],player_card_player1);
-                writeDB(player1_cards_id[4],"Player 1/Card played");
-                writeDB(0,"Player 1/Card 5");
+                assignCard(player_cards_id[4],played_card);
+                writeDB(player_cards_id[4],strings_DB.get(8));
+                writeDB(0,strings_DB.get(4));
                 card5.setImageResource(0);
                 card5.setClickable(false);
             }
@@ -200,9 +351,9 @@ public class MainActivity extends AppCompatActivity {
         card6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assignCard(player1_cards_id[5],player_card_player1);
-                writeDB(player1_cards_id[5],"Player 1/Card played");
-                writeDB(0,"Player 1/Card 6");
+                assignCard(player_cards_id[5],played_card);
+                writeDB(player_cards_id[5],strings_DB.get(8));
+                writeDB(0,strings_DB.get(5));
                 card6.setImageResource(0);
                 card6.setClickable(false);
             }
@@ -210,9 +361,9 @@ public class MainActivity extends AppCompatActivity {
         card7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assignCard(player1_cards_id[6],player_card_player1);
-                writeDB(player1_cards_id[6],"Player 1/Card played");
-                writeDB(0,"Player 1/Card 7");
+                assignCard(player_cards_id[6],played_card);
+                writeDB(player_cards_id[6],strings_DB.get(8));
+                writeDB(0,strings_DB.get(6));
                 card7.setImageResource(0);
                 card7.setClickable(false);
             }
@@ -220,9 +371,9 @@ public class MainActivity extends AppCompatActivity {
         card8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assignCard(player1_cards_id[7],player_card_player1);
-                writeDB(player1_cards_id[7],"Player 1/Card played");
-                writeDB(0,"Player 1/Card 8");
+                assignCard(player_cards_id[7],played_card);
+                writeDB(player_cards_id[7],strings_DB.get(8));
+                writeDB(0,strings_DB.get(7));
                 card8.setImageResource(0);
                 card8.setClickable(false);
             }
