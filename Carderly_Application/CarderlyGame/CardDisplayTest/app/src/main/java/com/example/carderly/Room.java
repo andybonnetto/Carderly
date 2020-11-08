@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -36,8 +37,6 @@ public class Room extends AppCompatActivity {
     DatabaseReference roomRef;
     DatabaseReference roomsRef;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +45,10 @@ public class Room extends AppCompatActivity {
         database=FirebaseDatabase.getInstance();
 
         //get the player name and assign his room name to the player name
-        SharedPreferences preferences = getSharedPreferences("PREFS",0);
-        playerName = preferences.getString("playerName","");
+        Bundle bundle = getIntent().getExtras();
+        playerName = bundle.getString("username");
+        //SharedPreferences preferences = getSharedPreferences("PREFS",0);
+        //playerName = preferences.getString("playerName","");
         roomName = playerName;
 
         listView=findViewById(R.id.listView);

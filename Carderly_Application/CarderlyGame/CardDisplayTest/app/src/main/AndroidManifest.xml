@@ -9,6 +9,7 @@ package="com.example.carderly">
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.CardDisplayTest">
+    <activity android:name=".EditProfileActivity"></activity>
     <activity android:name="com.example.carderly.MainActivity"></activity>
     <activity android:name="com.example.carderly.Room" />
     <activity android:name="com.example.carderly.Login">
