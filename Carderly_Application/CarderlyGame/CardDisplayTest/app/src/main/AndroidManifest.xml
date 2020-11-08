@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-package="com.example.carddisplaytest">
+package="com.example.carderly">
 
 <application
     android:allowBackup="true"
@@ -9,9 +9,9 @@ package="com.example.carddisplaytest">
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.CardDisplayTest">
-    <activity android:name=".MainActivity"></activity>
-    <activity android:name=".Room" />
-    <activity android:name=".Login">
+    <activity android:name="com.example.carderly.MainActivity"></activity>
+    <activity android:name="com.example.carderly.Room" />
+    <activity android:name="com.example.carderly.Login">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 

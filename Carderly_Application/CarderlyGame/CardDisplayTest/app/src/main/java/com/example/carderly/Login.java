@@ -1,4 +1,4 @@
-package com.example.carddisplaytest;
+package com.example.carderly;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
