@@ -27,12 +27,12 @@ public class Login extends AppCompatActivity {
     private final String TAG = this.getClass().getName();
     private Profile userProfile = null;
     private static final int REGISTER_PROFILE = 1;
+    private String userID;
     EditText editText;
     Button logButton;
 
     //DATABASE INITIALIZATION
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    final DatabaseReference profileRef = database.getReference("profiles");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,9 @@ public class Login extends AppCompatActivity {
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference profileRef = database.getReference("profiles");
 
                 final TextView mTextView = findViewById(R.id.LoginMessage);
                 final String usernameInput = ((EditText) findViewById(R.id.username)).getText().toString();
@@ -102,26 +105,8 @@ public class Login extends AppCompatActivity {
                 username.setText(userProfile.username);
                 TextView password = findViewById(R.id.password);
                 password.setText(userProfile.password);
-                addProfileToFirebaseDB();
             }
         }
     }
-    //Write in the Database
-    private void addProfileToFirebaseDB() {
-        profileRef.runTransaction(new Transaction.Handler() {
-            @NonNull
-            @Override
-            public Transaction.Result doTransaction(@NonNull MutableData
-                                                            mutableData) {
-                mutableData.child("username").setValue(userProfile.username);
-                mutableData.child("password").setValue(userProfile.password);
-                return Transaction.success(mutableData);
-            }
-            @Override
-            public void onComplete(@Nullable DatabaseError databaseError,
-                                   boolean b, @Nullable DataSnapshot
-                                           dataSnapshot) {
-            }
-        });
-    }
+
 }

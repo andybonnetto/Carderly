@@ -1,5 +1,6 @@
 package com.example.carderly;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +13,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -20,6 +28,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class EditProfileActivity extends AppCompatActivity {
+
+    private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private static final DatabaseReference profileGetRef = database.getReference("profiles");
+    private static DatabaseReference profileRef = profileGetRef.push();
 
     private static final int PICK_IMAGE = 1;
     private File imageFile;
@@ -44,8 +56,29 @@ public class EditProfileActivity extends AppCompatActivity {
         }
         Intent intent = new Intent(EditProfileActivity.this, Login.class);
         intent.putExtra("userProfile", userProfile);
+        addProfileToFirebaseDB();
         setResult(AppCompatActivity.RESULT_OK, intent);
+
         finish();
+    }
+
+    //Write in the Database
+    private void addProfileToFirebaseDB() {
+        profileRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData
+                                                            mutableData) {
+                mutableData.child("username").setValue(userProfile.username);
+                mutableData.child("password").setValue(userProfile.password);
+                return Transaction.success(mutableData);
+            }
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError,
+                                   boolean b, @Nullable DataSnapshot
+                                           dataSnapshot) {
+            }
+        });
     }
 
     public void chooseImage(View view) {
