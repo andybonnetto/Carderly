@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "803798162793",
-    "firebase_url": "https://carderly-4ff6d.firebaseio.com",
-    "project_id": "carderly-4ff6d",
-    "storage_bucket": "carderly-4ff6d.appspot.com"
+    "project_number": "130439389035",
+    "firebase_url": "https://carderlydatabase.firebaseio.com",
+    "project_id": "carderlydatabase",
+    "storage_bucket": "carderlydatabase.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:803798162793:android:c6915205a3159679dd71f8",
+        "mobilesdk_app_id": "1:130439389035:android:7985432adebf98ed82762e",
         "android_client_info": {
-          "package_name": "com.example.carddisplaytest"
+          "package_name": "com.example.carderly"
         }
       },
       "oauth_client": [
         {
-          "client_id": "803798162793-dsl3in1kjrchn8v12knmqov9sto6jug8.apps.googleusercontent.com",
+          "client_id": "130439389035-njlme1kqsh6itvm1vjoa3v08f6r8o2tb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCF5nN-H_J06WgVyN1XGL5QGTd1TZfZOt0"
+          "current_key": "AIzaSyA8UHNPJU1ytPmUqp3vu8KjQzpGwUG5uss"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "803798162793-dsl3in1kjrchn8v12knmqov9sto6jug8.apps.googleusercontent.com",
+              "client_id": "130439389035-njlme1kqsh6itvm1vjoa3v08f6r8o2tb.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -19,6 +19,12 @@ Shows IP adresses and connectivity
 $ sudo apt-get <module name>
 ```
 Install some module in general but always look at the documentation first
+```
+du -h
+df -h
+free -h
+```
+Three different commands to check used memory, free memory and RAM (-h means human readible format of numbers)
 ### Linux commands
 ```
 $ mkdir      create directory

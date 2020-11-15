@@ -1,4 +1,4 @@
-package com.example.carddisplaytest;
+package com.example.carderly;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,16 +29,13 @@ import java.io.OutputStream;
 
 public class EditProfileActivity extends AppCompatActivity {
 
+    private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private static final DatabaseReference profileGetRef = database.getReference("profiles");
+    private static DatabaseReference profileRef = profileGetRef.push();
+
     private static final int PICK_IMAGE = 1;
     private File imageFile;
     private Profile userProfile;
-
-
-    private static final FirebaseDatabase database = FirebaseDatabase
-            .getInstance();
-    private static final DatabaseReference profileGetRef = database
-            .getReference("profiles");
-    private static DatabaseReference profileRef = profileGetRef.push();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +54,31 @@ public class EditProfileActivity extends AppCompatActivity {
         } else {
             userProfile.photoPath = imageFile.getPath();
         }
-
-        addProfileToFirebaseDB();
-
-        Intent intent = new Intent(EditProfileActivity.this, LoginActivity.class);
+        Intent intent = new Intent(EditProfileActivity.this, Login.class);
         intent.putExtra("userProfile", userProfile);
+        addProfileToFirebaseDB();
         setResult(AppCompatActivity.RESULT_OK, intent);
+
         finish();
     }
 
+    //Write in the Database
     private void addProfileToFirebaseDB() {
-        profileRef.runTransaction(new ProfileUploadHandler());
+        profileRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData
+                                                            mutableData) {
+                mutableData.child("username").setValue(userProfile.username);
+                mutableData.child("password").setValue(userProfile.password);
+                return Transaction.success(mutableData);
+            }
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError,
+                                   boolean b, @Nullable DataSnapshot
+                                           dataSnapshot) {
+            }
+        });
     }
 
     public void chooseImage(View view) {
@@ -118,23 +129,6 @@ public class EditProfileActivity extends AppCompatActivity {
         } finally {
             in.close();
             out.close();
-        }
-    }
-
-    private class ProfileUploadHandler implements Transaction.Handler {
-        @NonNull
-        @Override
-        public Transaction.Result doTransaction(@NonNull MutableData
-                                                        mutableData) {
-            mutableData.child("username").setValue(userProfile.username);
-            mutableData.child("password").setValue(userProfile.password);
-            return Transaction.success(mutableData);
-        }
-
-        @Override
-        public void onComplete(@Nullable DatabaseError databaseError,
-                               boolean b, @Nullable DataSnapshot
-                                       dataSnapshot) {
         }
     }
 }
