@@ -6,7 +6,15 @@ from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from database import Database
 from kivy.clock import Clock
+import pyrebase
 
+config = {
+    "apiKey": "",
+    "authDomain": "carderlydatabase.firebaseapp.com",
+    "databaseURL": "https://carderlydatabase.firebaseio.com/",
+    "storageBucket": "carderlydatabase.appspot.com"
+}
+firebase = pyrebase.initialize_app(config)
 
 class MainWindow(Screen):
     def shift_to_waiting(self):
@@ -85,11 +93,13 @@ for screen in screens:
 
 sm.current = "main_win"
 
-
-
 class MyMainApp(App):
     def build(self):
         return sm
 
 if __name__ == "__main__":
+    database = firebase.database()
+    player = database.child("Player 1")
+    card = player.child("Card 1").get().val()
+    print(card)
     MyMainApp().run()
