@@ -1,0 +1,189 @@
+<MainWindow>
+    name : "main_win"
+
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "Display background.png"
+    FloatLayout:
+
+        Button:
+            pos_hint:{"x":0.35,"y":0.15}
+            size_hint: 0.3, 0.1
+            font_size: (root.width**2 + root.height**2) / 12**4
+
+            text: "Connexion"
+            on_release:
+                root.manager.transition.direction = "left"
+                root.shift_to_waiting()
+
+        Button:
+            pos_hint:{"x":0.05,"y":0.15}
+            size_hint: 0.25, 0.1
+            font_size: (root.width**2 + root.height**2) / 12**4
+
+            text: "Contacts"
+            on_release:
+                root.manager.transition.direction = "right"
+                root.shift_to_contact()
+
+        Button:
+            pos_hint:{"x":0.7,"y":0.15}
+            size_hint: 0.25, 0.1
+            font_size: (root.width**2 + root.height**2) / 12**4
+
+            text: "Settings"
+            on_release:
+                root.manager.transition.direction = "up"
+                root.shift_to_settings()
+
+
+<WaitingRoom>
+    name : "waiting"
+
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "background.png"
+
+    FloatLayout:
+        Label:
+            id: "title_waiting"
+            tpos_hint:{"x": 0.9, "y":0.9}
+            size_hint:1, 1.7
+            font_size: (root.width + root.height) / 20
+            text: "Waiting Room"
+        Button:
+            background_color: 0,0,1,0.8
+            pos_hint:{"x":0.65,"y":0.1}
+            size_hint: 0.3, 0.1
+            font_size: (root.width**2 + root.height**2) / 12**4
+            text: "Next"
+            on_release:
+                root.manager.transition.direction = "left"
+                root.shift_to_game()
+        Button:
+            background_color: 1,0,0,0.8
+            pos_hint:{"x":0.05,"y":0.1}
+            size_hint: 0.3, 0.1
+            font_size: (root.width**2 + root.height**2) / 12**4
+            text: "Return"
+            on_release:
+                root.manager.transition.direction = "right"
+                root.shift_to_main()
+
+
+<GameWindow>
+    name : "game"
+
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "background.png"
+
+    FloatLayout:
+        Label:
+            id: "title_game"
+            tpos_hint:{"x": 0.9, "y":0.9}
+            size_hint:1, 1.7
+            font_size: (root.width + root.height) / 25
+            text: "Game"
+
+        Button:
+            background_color: 1,0,0,0.81
+            pos_hint:{"x":0.05,"y":0.1}
+            size_hint: 0.3, 0.1
+            font_size: (root.width**2 + root.height**2) / 12**4
+            text: "Return"
+            on_release:
+                root.manager.transition.direction = "right"
+                root.shift_to_waiting()
+<Settings>
+    name : "settings"
+
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "background.png"
+
+    FloatLayout:
+        Label:
+            id: "title_settings"
+            tpos_hint:{"x": 0.9, "y":0.9}
+            size_hint:1, 1.7
+            font_size: (root.width + root.height) / 25
+            text: "Settings"
+
+        Label:
+            id: "account"
+            pos_hint:{"x": 0.1, "top":0.7}
+            size_hint:0.8, 0.2
+            font_size: (root.width + root.height) / 30
+            text: "Account Name: "
+
+        Label:
+            id: "email"
+            pos_hint:{"x": 0.1, "top":0.5}
+            font_size: (root.width + root.height) / 30
+            size_hint:0.8, 0.2
+            text: "Email: "
+
+
+        Button:
+            background_color: 1,0,0,0.81
+            pos_hint:{"x":0.05,"y":0.1}
+            size_hint: 0.3, 0.1
+            font_size: (root.width**2 + root.height**2) / 12**4
+            text: "Return"
+            on_release:
+                root.manager.transition.direction = "down"
+                root.shift_to_main()
+        Button:
+            background_color: 1,1,0,0.81
+            pos_hint:{"x":0.55,"y":0.1}
+            size_hint: 0.5, 0.1
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Change account"
+            on_release:
+                root.manager.transition.direction = "down"
+                root.change_account()
+
+
+<ContactWindow>
+
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "background.png"
+
+    FloatLayout:
+        Label:
+            id: "title_game"
+            tpos_hint:{"x": 0.9, "y":0.9}
+            size_hint:1, 1.7
+            font_size: (root.width + root.height) / 25
+            text: "Contacts"
+
+        Button:
+            background_color: 1,0,0,0.81
+            pos_hint:{"x":0.05,"y":0.1}
+            size_hint: 0.3, 0.1
+            font_size: (root.width**2 + root.height**2) / 12**4
+            text: "Return"
+            on_release:
+                root.manager.transition.direction = "left"
+                root.shift_to_main()
+
+        Button:
+            background_color: 0,1,0,0.81
+            pos_hint:{"x":0.65,"y":0.1}
+            size_hint: 0.3, 0.1
+            font_size: (root.width**2 + root.height**2) / 12**4
+            text: "PRESS"
+            on_release:
+                root.read_contacts()
