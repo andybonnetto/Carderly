@@ -6,6 +6,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from database import Database
 from kivy.clock import Clock
+from kivy.graphics import *
 import pyrebase
 
 config = {
@@ -15,6 +16,7 @@ config = {
     "storageBucket": "carderlydatabase.appspot.com"
 }
 firebase = pyrebase.initialize_app(config)
+database = firebase.database()
 
 class MainWindow(Screen):
     def shift_to_waiting(self):
@@ -54,6 +56,32 @@ class WaitingRoom(Screen):
 class GameWindow(Screen):
     def shift_to_waiting(self):
         sm.current = "waiting"
+    def highlight_turn(self,token):
+        player_turn = database.child('Current to play').get().val()
+        self.yourturn.text= ""
+        self.canvas.add(Color(0,1,0,0.5, mode='rgba'))
+        try:
+            self.canvas.remove(self.rect)
+        except:
+            pass
+
+        if player_turn ==1:
+            self.rect = Rectangle(pos=(320,300),size=(200,100))
+            self.canvas.add(self.rect)
+        elif player_turn==2:
+            self.rect = Rectangle(pos=(170,150),size=(200,100))
+            self.canvas.add(self.rect)
+        elif player_turn==3:
+            self.rect = Rectangle(pos=(500,150),size=(200,100))
+            self.canvas.add (self.rect)
+        elif player_turn==4:
+            self.yourturn.text="Your turn"
+    def __init__(self,**kwargs):
+        super(GameWindow, self).__init__(**kwargs)
+        self.yourturn = Label(text="", pos=(self.height / 2, self.width / 2), font_size=50)
+        self.add_widget(self.yourturn)
+        Clock.schedule_interval(self.highlight_turn, 0.5)
+
 
 class Settings(Screen):
     def shift_to_main(self):
@@ -98,8 +126,8 @@ class MyMainApp(App):
         return sm
 
 if __name__ == "__main__":
-    database = firebase.database()
-    player = database.child("Player 1")
-    card = player.child("Card 1").get().val()
-    print(card)
+    # database = firebase.database()
+    # player = database.child("Player 1")
+    # card = player.child("Card 1").get().val()
+    # print(card)
     MyMainApp().run()
