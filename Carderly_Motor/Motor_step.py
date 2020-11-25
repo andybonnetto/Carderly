@@ -39,6 +39,12 @@ class StepMotor:
             self.Seq[6] = [0, 0, 0, 1]
             self.Seq[7] = [1, 0, 0, 1]
             return self.Seq
+        elif sequence == "arm":
+            self.StepCount = 2
+            self.Seq = range(0,self.StepCount)
+            self.Seq[0] = [1, 0, 0, 0]
+            self.Seq[1] = [0, 0, 1, 0]
+            return self.Seq
         else:
             print("sequence undefined")
             return False
