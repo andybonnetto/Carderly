@@ -18,6 +18,7 @@ class ServoMotor:
         self.pwm.ChangeDutyCycle(start_duty_cycle)
         time.sleep(WAITING_TIME)
 
+
     def cleanup(self):
         self.pwm.stop()
         GPIO.cleanup()
