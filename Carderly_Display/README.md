@@ -11,11 +11,10 @@ KIVY_BCM_DISPMANX_ID=1 python main.py
 ```
 ## For now
 Basic functional layout displays, <br/>
-Can pop up windows <br/>
-Buttons to change screens <br/>
-Small txt files to test reading and writing <br/>
+Can pop up windows, <br/>
+Buttons to change screens, <br/>
+Reading from firebase database contact name for waiting room and game, <br/>
+Turn selecition using firebase database next turn variable
 
 ## Next step
-Use JSN files to read/save contacts <br/>
-Choose game screen <br/>
 Configure settings <br/>
