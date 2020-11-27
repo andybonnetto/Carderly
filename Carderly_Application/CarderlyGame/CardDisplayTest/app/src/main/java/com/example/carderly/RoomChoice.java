@@ -6,14 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,40 +26,50 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Room extends AppCompatActivity {
+public class RoomChoice extends AppCompatActivity {
 
     ListView listView;
     Button button;
+    ArrayList<String> arrayList;
+    ArrayAdapter<String> adapter;
+    public static String usernameInput="";
+    private final String TAG = this.getClass().getName();
 
     List<String> roomsList;
-
     String playerName = "";
-    String roomName ="";
+    String roomName = "";
 
     FirebaseDatabase database;
     DatabaseReference roomRef;
     DatabaseReference roomsRef;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_room);
+        setContentView(R.layout.activity_room_choice);
 
-        database=FirebaseDatabase.getInstance();
 
-        //get the player name and assign his room name to the player name
-        Bundle bundle = getIntent().getExtras();
-        playerName = bundle.getString("username");
-        //SharedPreferences preferences = getSharedPreferences("PREFS",0);
-        //playerName = preferences.getString("playerName","");
+        listView = findViewById(R.id.ListRoom);
+        button = (Button) findViewById(R.id.button_createRoom);
+        arrayList = new ArrayList<String>();
+        adapter = new ArrayAdapter<String>(RoomChoice.this, android.R.layout.simple_list_item_1, arrayList);
+        listView.setAdapter(adapter);
+
+        database = FirebaseDatabase.getInstance();
+
+        Intent intent = getIntent();
+        usernameInput = (String) intent.getSerializableExtra("username");
+
+
+        playerName = usernameInput;
         roomName = playerName;
 
-        listView=findViewById(R.id.listView);
-        button=findViewById(R.id.button);
+        listView = findViewById(R.id.ListRoom);
+        button = findViewById(R.id.button_createRoom);
 
         // all existing available rooms
-        roomsList=new ArrayList<>();
-
+        roomsList = new ArrayList<>();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,14 +82,15 @@ public class Room extends AppCompatActivity {
                 roomRef.setValue(playerName);
 
             }
+
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //join existing room and add yourself as player 2
+                //join existing room and add yourself
                 roomName = roomsList.get(position);
-                roomRef = database.getReference("rooms/" + roomName + "/player2");
+                roomRef = database.getReference("rooms/" + roomName);
                 addRoomEventListener();
                 roomRef.setValue(playerName);
             }
@@ -86,6 +100,7 @@ public class Room extends AppCompatActivity {
 
     }
 
+
     private void addRoomEventListener() {
         roomsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -93,7 +108,20 @@ public class Room extends AppCompatActivity {
                 //join the room
                 button.setText("CREATE ROOM");
                 button.setEnabled(true);
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                long count = snapshot.child(roomName).getChildrenCount();
+                if(count ==1){
+                    roomRef = database.getReference("rooms/" + roomName + "/player2");
+                    roomRef.setValue(playerName);
+                }else if (count ==2){
+                    roomRef = database.getReference("rooms/" + roomName + "/player3");
+                    roomRef.setValue(playerName);
+                }else if (count ==3){
+                    roomRef = database.getReference("rooms/" + roomName + "/player4");
+                    roomRef.setValue(playerName);
+                }else if (count > 3){
+                    Message.message(getApplicationContext(), "Player 1 doesn't want to play with you");
+                }
+                Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
                 intent.putExtra("roomName", roomName);
                 startActivity(intent);
 
@@ -104,7 +132,7 @@ public class Room extends AppCompatActivity {
                 //error
                 button.setText("CREATE ROOM");
                 button.setEnabled(true);
-                Toast.makeText(Room.this, "Error!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RoomChoice.this, "Error!", Toast.LENGTH_SHORT).show();
 
 
             }
@@ -114,15 +142,16 @@ public class Room extends AppCompatActivity {
     private void addRoomsEventListener() {
         roomsRef = database.getReference("rooms");
         roomsRef.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //show list of rooms
                 roomsList.clear();
-                Iterable<DataSnapshot>  rooms = dataSnapshot.getChildren();
+                Iterable<DataSnapshot> rooms = dataSnapshot.getChildren();
                 for (DataSnapshot snapshot : rooms) {
                     roomsList.add(snapshot.getKey());
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(Room.this,
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(RoomChoice.this,
                             android.R.layout.simple_list_item_1, roomsList);
                     listView.setAdapter(adapter);
                 }
@@ -134,4 +163,13 @@ public class Room extends AppCompatActivity {
             }
         });
     }
+
+
+
 }
+
+
+
+
+
+

@@ -5,20 +5,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
@@ -49,8 +45,11 @@ public class Login extends AppCompatActivity {
             }
         });
 
+
+
         //LOGIN CALLBACK (To RoomActivity)
         editText = findViewById(R.id.username);
+
         logButton = findViewById(R.id.LoginButton);
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,9 +80,11 @@ public class Login extends AppCompatActivity {
                         if (notMember) {
                             mTextView.setText("You are not registered yet!");
                         } else {
-                            Intent intent = new Intent(Login.this, Room.class);
-                            intent.putExtra("Username", usernameInput);
+                            Intent intent = new Intent(Login.this, RoomChoice.class);
+                            intent.putExtra("username", usernameInput);
                             startActivity(intent);
+
+
                         }
                     }
                     @Override

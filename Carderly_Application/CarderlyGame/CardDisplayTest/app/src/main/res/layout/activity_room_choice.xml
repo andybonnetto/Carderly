@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RoomChoice">
+
+    <Button
+        android:id="@+id/button_createRoom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:text="@string/create_room" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="629dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Choose your waiting room or create one"
+        android:textAlignment="center"
+        android:textColor="@color/purple_700" />
+
+    <ListView
+        android:id="@+id/ListRoom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/editTextTextPersonName"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="-600dp"
+        android:layout_marginBottom="150dp" />
+
+</RelativeLayout>
+
