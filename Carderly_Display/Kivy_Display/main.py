@@ -28,15 +28,14 @@ class MainWindow(Screen):
 
 class WaitingRoom(Screen):
     def shift_to_game(self):
-        if self.full:
-            sm.current = "game"
-        else:
-            sm.current = "waiting"
+        # if self.full:
+        #     sm.current = "game"
+        # else:
+        #     sm.current = "waiting"
+        sm.current = "game"
     def shift_to_main(self):
         sm.current = "main_win"
-    def read_waiting_file(self):
-        wf = Database("waiting.txt")
-        return wf
+
     def __init__(self,**kwargs):
         self.full = False
         super(WaitingRoom,self).__init__(**kwargs)
@@ -45,41 +44,56 @@ class WaitingRoom(Screen):
         Clock.schedule_interval(self.name_display, 3)
 
     def name_display(self,token):
-        wf = self.read_waiting_file()
+        contacts = database.child('rooms').child('Andy').get()                 #TODO Enter the final name of the room
         space = 0
-        for contact in wf.contact:
-            self.add_widget(Label(text=contact, font_size=30, pos=(-150 + space*120, 130 - space*120)))
+        for contact in contacts.each():
+            if space != 0:
+                self.add_widget(Label(text=contact.val(), font_size=50, pos=(-500 + space * 230, 0)))
             space += 1
-        if space >=3:
+        if space >= 3:
             self.full = True
 
 class GameWindow(Screen):
     def shift_to_waiting(self):
         sm.current = "waiting"
     def highlight_turn(self,token):
+    #Draw green rectangle during player's turn or show "Your turn"
         player_turn = database.child('Current to play').get().val()
         self.yourturn.text= ""
         self.canvas.add(Color(0,1,0,0.5, mode='rgba'))
         try:
             self.canvas.remove(self.rect)
         except:
-            pass
+            print("your turn")
 
-        if player_turn ==1:
-            self.rect = Rectangle(pos=(320,300),size=(200,100))
+        if player_turn == 2:
+            self.rect = Rectangle(pos=(80,250),size=(200,100))
             self.canvas.add(self.rect)
-        elif player_turn==2:
-            self.rect = Rectangle(pos=(170,150),size=(200,100))
+        elif player_turn == 3:
+            self.rect = Rectangle(pos=(320,350),size=(200,100))
             self.canvas.add(self.rect)
-        elif player_turn==3:
-            self.rect = Rectangle(pos=(500,150),size=(200,100))
+        elif player_turn == 4:
+            self.rect = Rectangle(pos=(520,250),size=(200,100))
             self.canvas.add (self.rect)
-        elif player_turn==4:
-            self.yourturn.text="Your turn"
+        elif player_turn == 1:
+            self.canvas.add(Color(1, 1, 1, 0.2, mode='rgba'))
+            self.rect = Rectangle(pos=(265,150),size=(250,100))
+            self.canvas.add(self.rect)
+            self.yourturn.text="[color=111111]Your turn[/color]"
+    def name_display_game(self):
+        contacts = database.child('rooms').child('Andy').get()                 #TODO Enter the final name of the room
+        space = 0
+        for contact in contacts.each():
+            if space != 0:
+                self.add_widget(Label(text=contact.val(), font_size=50, pos=(-450 + space * 220, -(space%2)*100+100)))
+            space += 1
+        if space >= 4:
+            self.full = True
     def __init__(self,**kwargs):
         super(GameWindow, self).__init__(**kwargs)
-        self.yourturn = Label(text="", pos=(self.height / 2, self.width / 2), font_size=50)
+        self.yourturn = Label(text="", pos=(-10,-80), font_size=50,markup=True)
         self.add_widget(self.yourturn)
+        self.name_display_game()
         Clock.schedule_interval(self.highlight_turn, 0.5)
 
 
