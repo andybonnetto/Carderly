@@ -21,6 +21,7 @@ config = {
 }
 firebase = pyrebase.initialize_app(config)
 database = firebase.database()
+ROOM_NAME = 'Faf'
 
 class MainWindow(Screen):
     def __init__(self,**kwargs):
@@ -52,7 +53,7 @@ class WaitingRoom(Screen):
         Clock.schedule_interval(self.name_display, 3)
 
     def name_display(self,token):
-        contacts = database.child('rooms').child('Andy').get()                 #TODO Enter the final name of the room
+        contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
         space = 0
         for contact in contacts.each():
             if space != 0:
@@ -89,7 +90,7 @@ class GameWindow(Screen):
             self.canvas.add(self.rect)
             self.yourturn.text="[color=111111]Your turn[/color]"
     def name_display_game(self):
-        contacts = database.child('rooms').child('Andy').get()                 #TODO Enter the final name of the room
+        contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
         space = 0
         for contact in contacts.each():
             if space != 0:
