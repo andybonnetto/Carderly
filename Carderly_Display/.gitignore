@@ -1,0 +1,6 @@
+*.pyc 
+*.save 
+__pycache__
+Kivy-GUI-Example/__pycache__/database.cpython-37.pyc
+Kivy_Display/__pycache__/database.cpython-37.pyc
+
