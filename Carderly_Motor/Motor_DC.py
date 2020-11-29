@@ -3,7 +3,7 @@ import Math
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 FREQ = 100
-FULL_SPEED =  #RANDOM VALUE
+FULL_SPEED = 17*Math.pi/16 #rot/s
 
 class DCMotor:
 
@@ -48,9 +48,9 @@ class DCMotor:
         mov_step = self.find_dir(pos)
         period = self.step_to_period(mov_step)
         if mov_step > 0:
-            self.clockwise(period=period)  #TODO define speed
+            self.clockwise(period=period)  #TODO define speed (testing)
         elif mov_step < 0:
-            self.counter_clockwise(period=period)  #TODO define speed
+            self.counter_clockwise(period=period)  #TODO define speed (testing)
         self.current_pos = (self.current_pos + mov_step)%32
 
     def find_dir(self,pos):
@@ -60,8 +60,8 @@ class DCMotor:
         else:
             return(-mov_step)
     def step_to_period(self,mov_step):
-        half_turn_time = 2 # for pi/2 per second speed #TODO find period for half turn using full speed
-        period = math.abs(mov_step)*half_turn_time/16
+        step_turn_time = Math.pi/FULL_SPEED # for 17/16pi per second speed
+        period = Math.abs(mov_step)*step_turn_time
         return period
 
 
