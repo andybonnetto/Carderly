@@ -4,13 +4,14 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+from kivy.uix.button import Button
 from database import Database
 from kivy.clock import Clock
 from kivy.graphics import *
-import RPi.GPIO as GPIO
-buttonPIN = 40
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(buttonPIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+# import RPi.GPIO as GPIO
+# buttonPIN = 40
+# GPIO.setmode(GPIO.BOARD)
+# GPIO.setup(buttonPIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 import pyrebase
 
 config = {
@@ -24,10 +25,10 @@ database = firebase.database()
 ROOM_NAME = 'Faf'
 
 class MainWindow(Screen):
-    def __init__(self,**kwargs):
-        super(MainWindow,self).__init__(**kwargs)
-        if GPIO.input(buttonPIN) == GPIO.HIGH:
-            self.shift_to_waiting()
+    # def __init__(self,**kwargs):
+    #     super(MainWindow,self).__init__(**kwargs)
+    #     if GPIO.input(buttonPIN) == GPIO.HIGH:
+    #         self.shift_to_waiting()
     def shift_to_waiting(self):
         sm.current = "waiting"
     def shift_to_settings(self):
@@ -103,7 +104,45 @@ class GameWindow(Screen):
         self.yourturn = Label(text="", pos=(-10,-80), font_size=50,markup=True)
         self.add_widget(self.yourturn)
         self.name_display_game()
+        self.choose_atout()
         Clock.schedule_interval(self.highlight_turn, 0.5)
+    def choose_atout(self):
+        def choose_spade(instance):
+            print("you choose {}".format(instance.text))
+            self.atout = "spade"
+            self.remove_buttons()
+        def choose_heart(instance):
+            print("you choose {}".format(instance.text))
+            self.atout = "heart"
+            self.remove_buttons()
+        def choose_diamond(instance):
+            print("you choose {}".format(instance.text))
+            self.atout = "diamond"
+            self.remove_buttons()
+        def choose_clubs(instance):
+            print("you choose {}".format(instance.text))
+            self.atout = "clubs"
+            self.remove_buttons()
+
+        self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(300,200))
+        self.Spade.bind(on_press=choose_spade)
+        self.Heart = Button(text="heart", size_hint=(0.3,0.1), pos=(100,300))
+        self.Heart.bind(on_press=choose_heart)
+        self.Diamond = Button(text="diamond", size_hint=(0.3,0.1), pos=(300,400))
+        self.Diamond.bind(on_press=choose_diamond)
+        self.Clubs = Button(text="clubs", size_hint=(0.3,0.1), pos=(500,300))
+        self.Clubs.bind(on_press=choose_clubs)
+        self.add_widget(self.Spade)
+        self.add_widget(self.Heart)
+        self.add_widget(self.Diamond)
+        self.add_widget(self.Clubs)
+    def remove_buttons(self):
+        self.remove_widget(self.Spade)
+        self.remove_widget(self.Heart)
+        self.remove_widget(self.Diamond)
+        self.remove_widget(self.Clubs)
+
+
 
 
 class Settings(Screen):
