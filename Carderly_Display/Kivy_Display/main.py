@@ -8,9 +8,9 @@ from database import Database
 from kivy.clock import Clock
 from kivy.graphics import *
 import RPi.GPIO as GPIO
-servoPIN = 40
+buttonPIN = 40
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(servoPIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(buttonPIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 import pyrebase
 
 config = {
@@ -25,7 +25,7 @@ database = firebase.database()
 class MainWindow(Screen):
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
-        if GPIO.input(10) == GPIO.HIGH:
+        if GPIO.input(buttonPIN) == GPIO.HIGH:
             self.shift_to_waiting()
     def shift_to_waiting(self):
         sm.current = "waiting"
