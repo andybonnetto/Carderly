@@ -38,5 +38,5 @@ def discard(pos):
 def clean_up_DC():
     DC_motor.cleanup()
 
-if __name__ = "__main__":
+if __name__ == "__main__":
     call_stepper()
