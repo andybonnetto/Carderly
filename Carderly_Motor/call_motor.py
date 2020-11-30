@@ -35,11 +35,11 @@ def discard(pos):
     #call the DC motor to go to card in the database position (np.where in saved list)
     DC_motor.go_to_pos(pos)
 
-def clean_up_DC():
+def clean_up_DC(DC_motor):
     DC_motor.cleanup()
 
 if __name__ == "__main__":
     DC_motor = DCMotor(13, 19, 26)
     call_stepper()
     shuffle(DC_motor)
-    clean_up_DC()
+    clean_up_DC(DC_motor)
