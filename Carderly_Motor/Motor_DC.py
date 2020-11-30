@@ -1,10 +1,10 @@
 import RPi.GPIO as GPIO
-import Math
+import math
 from time import sleep
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 FREQ = 100
-FULL_SPEED = 17*Math.pi/16 #rot/s
+FULL_SPEED = 17*math.pi/16 #rot/s
 
 class DCMotor:
 
@@ -57,13 +57,13 @@ class DCMotor:
 
     def find_dir(self,pos):
         mov_step = self.current_pos - pos
-        if Math.abs(mov_step) < 16:
+        if abs(mov_step) < 16:
             return mov_step
         else:
             return -mov_step
     def step_to_period(self,mov_step):
-        step_turn_time = Math.pi/FULL_SPEED # for 17/16pi per second speed
-        period = Math.abs(mov_step)*step_turn_time
+        step_turn_time = math.pi/FULL_SPEED # for 17/16pi per second speed
+        period = abs(mov_step)*step_turn_time
         return period
 
 
