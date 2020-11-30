@@ -58,21 +58,15 @@ class DCMotor:
 
     def find_dir(self,pos):
         mov_step = self.current_pos - pos
-<<<<<<< HEAD
-        if math.abs(mov_step) < 16:
-=======
         if abs(mov_step) < 16:
->>>>>>> d2c0ff1bc43842de4c5c152a391dd8f903403c30
+
             return mov_step
         else:
             return -mov_step
     def step_to_period(self,mov_step):
         step_turn_time = math.pi/FULL_SPEED # for 17/16pi per second speed
-<<<<<<< HEAD
-        period = math.abs(mov_step)*step_turn_time
-=======
         period = abs(mov_step)*step_turn_time
->>>>>>> d2c0ff1bc43842de4c5c152a391dd8f903403c30
+
         return period
 
 
