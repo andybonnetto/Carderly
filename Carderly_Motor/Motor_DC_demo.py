@@ -13,7 +13,7 @@ EN2.start(0)
 
 
 print("FORWARD MOTION")
-EN2.ChangeDutyCycle(100
+EN2.ChangeDutyCycle(100)
 
 GPIO.output(Motor2['input1'], GPIO.HIGH)
 GPIO.output(Motor2['input2'], GPIO.LOW)
