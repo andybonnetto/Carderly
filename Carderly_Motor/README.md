@@ -5,16 +5,26 @@ All motors can be launch by using the functions python file "call_motor.py" (wor
 At the end of every motor call, a *cleanup* function set in every class is necessary to disconnect motor from pins in order to let the energy for other motors. PINS refer to GPIO pins shown on scheme ([pin/GPIO relation](https://github.com/andybonnetto/Carderly/blob/main/Carderly_Motor/pins.PNG))
 In the launch file : you can use
 ```
-call_motor.call_servo_angle()
-call_motor.call_stepper()
-call_motor.call_servo_360(period) #enter period during which the motor turns
+from call_motor import *
+
+call_servo_angle()
+call_stepper()
+call_servo_360(status) #status is either 'input' or 'output'
 ```
 The DC motor will be called in the *shuffle.py* and *discard.py* that you can call this way
 ```
+from call motor import *
+
 shuffle()
-discard()
+discard(pos) #pos of the card to discard (quick np.where in the card saved list)
 ```
-after importing the Carderly_Motor directory
+And don't forget to cleanup the port for the DC motor which needs to keep on the whole process
+```
+from call motor import *
+
+clean_up_DC()
+```
+
 ### Servo motor -angle
 Angle servo motors work from 0° to 180° and uses only 1 command and 2 power supply cables with a PWM input. Demo file found in [Raspberry Pi tutorials](https://tutorials-raspberrypi.com/raspberry-pi-servo-motor-control/)
 and final class namely *Motor_servo_angle* should work for the flipping system by adjusting the flipping time in between 2 flips. Speed used seems to be the maximum speed.
