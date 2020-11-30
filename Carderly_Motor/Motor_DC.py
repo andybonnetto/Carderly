@@ -49,6 +49,7 @@ class DCMotor:
     def go_to_position(self,pos):
         mov_step = self.find_dir(pos)
         period = self.step_to_period(mov_step)
+        print(period)
         if mov_step > 0:
             self.clockwise(period=period)  #TODO define speed (testing)
         elif mov_step < 0:
