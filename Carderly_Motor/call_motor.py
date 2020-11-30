@@ -29,7 +29,7 @@ def shuffle():
     #call the DC motor to go to next step separated by an interval of ? sec
     for current_pos in range(1,32,1):
         DC_motor.go_to_position(current_pos+1)
-        time.sleep(1) #sleeps one second between each steps
+        time.sleep(0.5) #sleeps one second between each steps
 
 def discard(pos):
     #call the DC motor to go to card in the database position (np.where in saved list)
