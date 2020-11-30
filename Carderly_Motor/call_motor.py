@@ -41,3 +41,4 @@ def clean_up_DC():
 if __name__ == "__main__":
     call_stepper()
     shuffle()
+    clean_up_DC()
