@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
-WAIT_TIME = 0.005
+WAIT_TIME = 0.002
 
 class StepMotor:
 
@@ -39,18 +39,12 @@ class StepMotor:
             self.Seq[6] = [0, 0, 0, 1]
             self.Seq[7] = [1, 0, 0, 1]
             return self.Seq
-        elif sequence == "arm":
-            self.StepCount = 2
-            self.Seq = range(0,self.StepCount)
-            self.Seq[0] = [1, 0, 0, 0]
-            self.Seq[1] = [0, 0, 1, 0]
-            return self.Seq
         else:
             print("sequence undefined")
             return False
 
     def steps(self,nb,seq = self.Seq): #nb = nbtour/revolution, depends on motor datasheet, can be negative
-        StepCounter = 0
+        stepcounter = 0
         if nb < 0:
             sign = -1
         else:
@@ -60,16 +54,28 @@ class StepMotor:
         for i in range(nb):
             for pin in range(len(self.StepPins)):
                 xpin = self.StepPins[pin]
-                if seq[StepCounter][pin] != 0:
+                if seq[stepcounter][pin] != 0:
                     GPIO.output(xpin, True)
                 else:
                     GPIO.output(xpin, False)
-            StepCounter += sign
+            stepcounter += sign
             # If we reach the end of the sequence
             # start again
-            if StepCounter == self.StepCount:
-                StepCounter = 0
-            if StepCounter < 0:
-                StepCounter = self.StepCount - 1
+            if stepcounter == self.StepCount:
+                stepcounter = 0
+            if stepcounter < 0:
+                stepcounter = self.StepCount - 1
                 # Wait before moving on
             time.sleep(WAIT_TIME)
+
+    def run_arm(self,nb):
+        hasRun = False
+        while not hasRun:
+            self.steps(nb)  # parcourt un tour dans le sens horaire
+            time.sleep(0.1)
+            self.steps(-nb)  # parcourt un tour dans le sens anti-horaire
+            time.sleep(1)
+            hasRun = True
+            print("Stop motor")
+            for pin in self.StepPins:
+                GPIO.output(pin, False)

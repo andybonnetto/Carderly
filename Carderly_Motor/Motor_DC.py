@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import Math
+from time import sleep
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 FREQ = 100
@@ -14,14 +15,14 @@ class DCMotor:
         self.current_pos = 1
 
     def clockwise(self,duty_cycle=40,period=0.1):
-        for a in range(40, 100):
-            print("clockwise motion")
-            self.EN1.ChangeDutyCycle(duty_cycle)
 
-            GPIO.output(self.PIN['input1'], GPIO.HIGH)
-            GPIO.output(self.PIN['input2'], GPIO.LOW)
+        print("clockwise motion")
+        self.EN1.ChangeDutyCycle(duty_cycle)
 
-            sleep(period)
+        GPIO.output(self.PIN['input1'], GPIO.HIGH)
+        GPIO.output(self.PIN['input2'], GPIO.LOW)
+
+        sleep(period)
 
         print("STOP")
         self.EN1.ChangeDutyCycle(0)
@@ -30,14 +31,13 @@ class DCMotor:
 
     def counter_clockwise(self,duty_cycle=40,period=0.1):
 
-        for a in range(40, 100):
-            print("counter clockwise motion")
-            self.EN1.ChangeDutyCycle(duty_cycle)
+        print("counter clockwise motion")
+        self.EN1.ChangeDutyCycle(duty_cycle)
 
-            GPIO.output(self.PIN['input1'], GPIO.LOW)
-            GPIO.output(self.PIN['input2'], GPIO.HIGH)
+        GPIO.output(self.PIN['input1'], GPIO.LOW)
+        GPIO.output(self.PIN['input2'], GPIO.HIGH)
 
-            sleep(period)
+        sleep(period)
 
         print("STOP")
         self.EN1.ChangeDutyCycle(0)
@@ -56,9 +56,9 @@ class DCMotor:
     def find_dir(self,pos):
         mov_step = self.current_pos - pos
         if Math.abs(mov_step) < 16:
-            return(mov_step)
+            return mov_step
         else:
-            return(-mov_step)
+            return -mov_step
     def step_to_period(self,mov_step):
         step_turn_time = Math.pi/FULL_SPEED # for 17/16pi per second speed
         period = Math.abs(mov_step)*step_turn_time
