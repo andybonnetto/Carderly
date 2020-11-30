@@ -1,15 +1,14 @@
 import RPi.GPIO as GPIO
 import math
 from time import sleep
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
 FREQ = 100
 FULL_SPEED = 17*math.pi/16 #rot/s
 
 class DCMotor:
 
     def __init__(self, EN, input1, input2):
-
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
         self.PIN  = {'EN': EN, 'input1': input1 , 'input2': input2}
         for x in self.PIN:
             GPIO.setup(self.PIN[x], GPIO.OUT)
@@ -48,14 +47,12 @@ class DCMotor:
 
     def go_to_position(self,pos):
         mov_step = self.find_dir(pos)
-        period = self.step_to_period(mov_step)*2
-        print(period)
+        period = self.step_to_period(mov_step)
         if mov_step > 0:
             self.clockwise(period=period)  #TODO define speed (testing)
         elif mov_step < 0:
             self.counter_clockwise(period=period)  #TODO define speed (testing)
         self.current_pos = (self.current_pos - mov_step)%32
-        print(self.current_pos)
 
     def find_dir(self,pos):
         mov_step = self.current_pos - pos

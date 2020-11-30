@@ -75,7 +75,7 @@ if __name__ == '__main__' :
         steps(nbStepsPerRev)# parcourt un tour dans le sens horaire
         time.sleep(0.1)
         steps(-nbStepsPerRev)# parcourt un tour dans le sens anti-horaire
-        time.sleep(1
+        time.sleep(1)
         hasRun=True
     print("Stop motor")
     for pin in StepPins:
