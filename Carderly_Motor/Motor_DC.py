@@ -37,7 +37,7 @@ class DCMotor:
 
         GPIO.output(self.PIN['input1'], GPIO.LOW)
         GPIO.output(self.PIN['input2'], GPIO.HIGH)
-
+        print(period)
         sleep(period)
 
         print("STOP")
