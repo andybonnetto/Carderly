@@ -54,6 +54,7 @@ class DCMotor:
         elif mov_step < 0:
             self.counter_clockwise(period=period)  #TODO define speed (testing)
         self.current_pos = (self.current_pos + mov_step)%32
+        print(self.current_pos)
 
     def find_dir(self,pos):
         mov_step = self.current_pos - pos
