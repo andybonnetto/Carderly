@@ -15,9 +15,9 @@ def call_servo_angle():
 def call_stepper():
     StepPins = [17, 4, 23, 24]
     step_motor = StepMotor(StepPins)
-    # nbStepsPerRev = 30
-    # step_motor.define_sequence('half')
-    # step_motor.run_arm(nbStepsPerRev)
+    nbStepsPerRev = 30
+    step_motor.define_sequence('half')
+    step_motor.run_arm(nbStepsPerRev)
     pass
 def call_servo_360(status = 'input'):
     if status == 'input':
