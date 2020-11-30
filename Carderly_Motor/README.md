@@ -6,7 +6,7 @@ At the end of every motor call, a *cleanup* function set in every class is neces
 In the launch file : you can use
 ```
 call_motor.call_servo_angle()
-call_motor.call_Stepper()
+call_motor.call_stepper()
 call_motor.call_servo_360(period) #enter period during which the motor turns
 ```
 The DC motor will be called in the *shuffle.py* and *discard.py* that you can call this way
