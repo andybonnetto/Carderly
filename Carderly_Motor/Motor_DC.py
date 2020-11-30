@@ -16,7 +16,7 @@ class DCMotor:
         self.EN1 = GPIO.PWM(self.PIN['EN'], FREQ) #GPIO EN for PWM with FREQ Hz
         self.current_pos = 1
 
-    def clockwise(self,duty_cycle=40,period=0.1):
+    def clockwise(self,duty_cycle=100,period=0.1):
 
         print("clockwise motion")
         self.EN1.ChangeDutyCycle(duty_cycle)
@@ -31,7 +31,7 @@ class DCMotor:
 
         sleep(0.05)
 
-    def counter_clockwise(self,duty_cycle=40,period=0.1):
+    def counter_clockwise(self,duty_cycle=100,period=0.1):
 
         print("counter clockwise motion")
         self.EN1.ChangeDutyCycle(duty_cycle)
