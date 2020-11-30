@@ -28,7 +28,7 @@ def call_servo_360(status = 'input'):
 def shuffle():
     #call the DC motor to go to next step separated by an interval of ? sec
     for current_pos in range(1,32,1):
-        DC_motor.go_to_pos(current_pos+1)
+        DC_motor.go_to_position(current_pos+1)
         time.sleep(1) #sleeps one second between each steps
 
 def discard(pos):
