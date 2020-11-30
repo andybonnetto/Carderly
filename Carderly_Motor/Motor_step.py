@@ -20,7 +20,7 @@ class StepMotor:
         if sequence == "full":
             # Define simple sequence
             self.StepCount = 4
-            self.Seq = range(0, self.StepCount)
+            self.Seq = list(range(0, self.StepCount))
             self.Seq[0] = [1, 0, 0, 0]
             self.Seq[1] = [0, 1, 0, 0]
             self.Seq[2] = [0, 0, 1, 0]
@@ -29,7 +29,7 @@ class StepMotor:
         elif sequence == "half":
             # Define advanced half-step sequence
             self.StepCount = 8
-            self.Seq = range(0, self.StepCount)
+            self.Seq = list(range(0, self.StepCount))
             self.Seq[0] = [1, 0, 0, 0]
             self.Seq[1] = [1, 1, 0, 0]
             self.Seq[2] = [0, 1, 0, 0]
