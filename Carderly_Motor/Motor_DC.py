@@ -71,4 +71,4 @@ class DCMotor:
 
 
     def cleanup(self):
-        GPIO.cleaup()
+        GPIO.cleanup()
