@@ -9,7 +9,7 @@ class DCMotor:
     def __init__(self, EN, input1, input2):
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
-        self.PIN  = {'EN': EN, 'input1': input1 , 'input2': input2}
+        self.PIN = {'EN': EN, 'input1': input1 , 'input2': input2}
         for x in self.PIN:
             GPIO.setup(self.PIN[x], GPIO.OUT)
         self.EN1 = GPIO.PWM(self.PIN['EN'], FREQ) #GPIO EN for PWM with FREQ Hz
@@ -22,7 +22,7 @@ class DCMotor:
 
         GPIO.output(self.PIN['input1'], GPIO.HIGH)
         GPIO.output(self.PIN['input2'], GPIO.LOW)
-
+        print(period)
         sleep(period)
 
         print("STOP")
