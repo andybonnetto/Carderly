@@ -5,7 +5,7 @@ from Motor_step import StepMotor
 from Motor_DC import DCMotor
 
 #Define motor Classes with PINS
-DC_motor = DCMotor(13,19,26)
+
 
 def call_servo_angle():
     servo_motor = ServoMotor(5,2.5)
@@ -39,6 +39,7 @@ def clean_up_DC():
     DC_motor.cleanup()
 
 if __name__ == "__main__":
+    DC_motor = DCMotor(13, 19, 26)
     call_stepper()
     shuffle()
     clean_up_DC()
