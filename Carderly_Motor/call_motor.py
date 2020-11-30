@@ -25,7 +25,7 @@ def call_servo_360(status = 'input'):
     elif status== 'output':
         pass
 
-def shuffle():
+def shuffle(DC_motor):
     #call the DC motor to go to next step separated by an interval of ? sec
     for current_pos in range(1,32,1):
         DC_motor.go_to_position(current_pos+1)
@@ -41,5 +41,5 @@ def clean_up_DC():
 if __name__ == "__main__":
     DC_motor = DCMotor(13, 19, 26)
     call_stepper()
-    shuffle()
+    shuffle(DC_motor)
     clean_up_DC()
