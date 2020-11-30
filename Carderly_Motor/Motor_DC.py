@@ -11,6 +11,8 @@ class DCMotor:
     def __init__(self, EN, input1, input2):
 
         self.PIN  = {'EN': EN, 'input1': input1 , 'input2': input2}
+        for x in self.PIN:
+            GPIO.setup(self.PIN[x], GPIO.OUT)
         self.EN1 = GPIO.PWM(self.PIN['EN'], FREQ) #GPIO EN for PWM with FREQ Hz
         self.current_pos = 1
 
