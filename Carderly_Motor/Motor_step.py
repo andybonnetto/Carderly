@@ -43,7 +43,7 @@ class StepMotor:
             print("sequence undefined")
             return False
 
-    def steps(self,nb,seq = self.Seq): #nb = nbtour/revolution, depends on motor datasheet, can be negative
+    def steps(self,nb,seq): #nb = nbtour/revolution, depends on motor datasheet, can be negative
         stepcounter = 0
         if nb < 0:
             sign = -1
