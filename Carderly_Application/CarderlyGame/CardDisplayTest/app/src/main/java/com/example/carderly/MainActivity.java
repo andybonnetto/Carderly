@@ -1,15 +1,20 @@
 package com.example.carderly;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,19 +33,24 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView card1, card2, card3, card4, card5, card6, card7, card8, opponent_left, opponent_right, ally, played_card, opponent_left_played_card, opponent_right_played_card, ally_played_card;
+    ImageView card1, card2, card3, card4, card5, card6, card7, card8, opponent_left, opponent_right, ally, played_card, opponent_left_played_card, opponent_right_played_card, ally_played_card, trump_view;
     TextView name_player, name_opponent_left, name_opponent_right, name_ally;
     Button game_button;
     ArrayList<Integer> cards;
     ArrayList<String> strings_DB;
     int player_id = 1;
     int end_turn = 0; // Incremented each time a card is played
-    int trump = 1;
-    int suit = 4;
+    int trump = 0;
+    int suit = 0;
     int[] first_digit = {0,0,0,0};
     int[] last_two_digits = {0,0,0,0};
     int[] player_cards_id = {0,0,0,0,0,0,0,0}; // ID of the cards in hand of the player 1
     private final String TAG = this.getClass().getName();
+
+    // Variables related to the popup window for the trump selection
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    ImageButton clubs, spades, diamonds, hearts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +74,16 @@ public class MainActivity extends AppCompatActivity {
         ally = (ImageView) findViewById(R.id.ally);
         ally_played_card = (ImageView) findViewById(R.id.ally_played_card);
         played_card = (ImageView) findViewById(R.id.played_card);
+        trump_view = (ImageView) findViewById(R.id.trump_view);
         name_player = (TextView) findViewById(R.id.name_player);
         name_opponent_left = (TextView) findViewById(R.id.name_opponent_left);
         name_opponent_right = (TextView) findViewById(R.id.name_opponent_right);
         name_ally = (TextView) findViewById(R.id.name_ally);
         Random rand = new Random();
-        int first_player = rand.nextInt(4) + 1;
-        writeIntDB(first_player,"First turn");
+        //int first_player = rand.nextInt(4) + 1;
+        //writeIntDB(first_player,"First turn");
+        writeIntDB(1,"First turn");
+        writeIntDB(1,"Current to play");
 
         // Get through the intent that started the activity the ID of the player
         //Intent intent = getIntent();
@@ -155,6 +168,21 @@ public class MainActivity extends AppCompatActivity {
         game_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Popup window to select the trump
+                getCardValueDB(new CardValueCallback() {
+                    @Override
+                    public void onCallback(int first_turn) {
+                        boolean game_start = true;
+                        for (int i = 0; i < player_cards_id.length; i++) {
+                            if(player_cards_id[i] == 0){ // If any card has been played then the game has already started => No need to choose the trump again
+                                game_start = false;
+                                break;
+                            }
+                        }
+                        if((player_id == first_turn) && (game_start == true)) // Only select trump for the first player and at the start of the game
+                            trumpSelectionDialog();
+                    }
+                },"First turn");
                 // Make the names visible
                 name_player.setVisibility(View.VISIBLE);
                 name_opponent_left.setVisibility(View.VISIBLE);
@@ -267,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
                 ally.setImageResource(R.drawable.back_cards);
 
                 // Make the played cards and the button disappear
-                played_card.setImageResource(0);
+                //played_card.setImageResource(0);
                 game_button.setVisibility(View.GONE);
 
                 // Display cards played when they are updated in the database
@@ -275,14 +303,19 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCallback(int card_value) {
                         assignCard(card_value,played_card);
-                        if(player_id == 1){
-                            getDigits(card_value,1);
-                        }
-                        if(card_value != 0) {
+                        if(card_value != 0) { // card_value = 0 means the played card has been taken off the board, so no particular action to do in that case
+                            if (player_id == 1) {
+                                getDigits(card_value, 1);
+                                writeIntDB(3, "Current to play");
+                            }
                             end_turn++;
-                        }
-                        if(end_turn == 4){
-                            endTurn();
+                            if (end_turn == 1) { // 1st player of the turn defines the suit
+                                String number = String.valueOf(card_value);
+                                suit = Character.digit(number.charAt(0), 10); // 1st digit of card value
+                            }
+                            if (end_turn == 4) {
+                                endTurn();
+                            }
                         }
                     }
                 },strings_DB.get(8));
@@ -290,14 +323,19 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCallback(int card_value) {
                         assignCard(card_value,opponent_left_played_card);
-                        if(player_id == 1){
-                            getDigits(card_value,3);
-                        }
-                        if(card_value != 0) {
+                        if(card_value != 0) { // card_value = 0 means the played card has been taken off the board, so no particular action to do in that case
+                            if (player_id == 1) {
+                                getDigits(card_value, 3);
+                                writeIntDB(2, "Current to play");
+                            }
                             end_turn++;
-                        }
-                        if(end_turn == 4){
-                            endTurn();
+                            if (end_turn == 1) { // 1st player of the turn defines the suit
+                                String number = String.valueOf(card_value);
+                                suit = Character.digit(number.charAt(0), 10); // 1st digit of card value
+                            }
+                            if (end_turn == 4) {
+                                endTurn();
+                            }
                         }
                     }
                 },strings_DB.get(9));
@@ -305,14 +343,19 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCallback(int card_value) {
                         assignCard(card_value,ally_played_card);
-                        if(player_id == 1){
-                            getDigits(card_value,2);
-                        }
-                        if(card_value != 0) {
+                        if(card_value != 0) { // card_value = 0 means the played card has been taken off the board, so no particular action to do in that case
+                            if (player_id == 1) {
+                                getDigits(card_value, 2);
+                                writeIntDB(4, "Current to play");
+                            }
                             end_turn++;
-                        }
-                        if(end_turn == 4){
-                            endTurn();
+                            if (end_turn == 1) { // 1st player of the turn defines the suit
+                                String number = String.valueOf(card_value);
+                                suit = Character.digit(number.charAt(0), 10); // 1st digit of card value
+                            }
+                            if (end_turn == 4) {
+                                endTurn();
+                            }
                         }
                     }
                 },strings_DB.get(10));
@@ -320,14 +363,19 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCallback(int card_value) {
                         assignCard(card_value,opponent_right_played_card);
-                        if(player_id == 1){
-                            getDigits(card_value,4);
-                        }
-                        if(card_value != 0) {
+                        if(card_value != 0) { // card_value = 0 means the played card has been taken off the board, so no particular action to do in that case
+                            if (player_id == 1) {
+                                getDigits(card_value, 4);
+                                writeIntDB(1, "Current to play");
+                            }
                             end_turn++;
-                        }
-                        if(end_turn == 4){
-                            endTurn();
+                            if (end_turn == 1) { // 1st player of the turn defines the suit
+                                String number = String.valueOf(card_value);
+                                suit = Character.digit(number.charAt(0), 10); // 1st digit of card value
+                            }
+                            if (end_turn == 4) {
+                                endTurn();
+                            }
                         }
                     }
                 },strings_DB.get(11));
@@ -346,6 +394,7 @@ public class MainActivity extends AppCompatActivity {
                             writeIntDB(player_cards_id[0],strings_DB.get(8));
                             writeIntDB(0,strings_DB.get(0));
                             card1.setImageResource(0);
+                            player_cards_id[0] = 0;
                             card1.setClickable(false); // Once the card is dealt, it is no more clickable
                         }
                     }
@@ -362,6 +411,7 @@ public class MainActivity extends AppCompatActivity {
                             writeIntDB(player_cards_id[1],strings_DB.get(8));
                             writeIntDB(0,strings_DB.get(1));
                             card2.setImageResource(0);
+                            player_cards_id[1] = 0;
                             card2.setClickable(false);
                         }
                     }
@@ -376,8 +426,10 @@ public class MainActivity extends AppCompatActivity {
                     public void onCallback(int first_turn) {
                         if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
                             writeIntDB(player_cards_id[2],strings_DB.get(8));
+                            //System.out.println("Card3 Click callback");
                             writeIntDB(0,strings_DB.get(2));
                             card3.setImageResource(0);
+                            player_cards_id[2] = 0;
                             card3.setClickable(false);
                         }
                     }
@@ -394,6 +446,7 @@ public class MainActivity extends AppCompatActivity {
                             writeIntDB(player_cards_id[3],strings_DB.get(8));
                             writeIntDB(0,strings_DB.get(3));
                             card4.setImageResource(0);
+                            player_cards_id[3] = 0;
                             card4.setClickable(false);
                         }
                     }
@@ -410,6 +463,7 @@ public class MainActivity extends AppCompatActivity {
                             writeIntDB(player_cards_id[4],strings_DB.get(8));
                             writeIntDB(0,strings_DB.get(4));
                             card5.setImageResource(0);
+                            player_cards_id[4] = 0;
                             card5.setClickable(false);
                         }
                     }
@@ -426,6 +480,7 @@ public class MainActivity extends AppCompatActivity {
                             writeIntDB(player_cards_id[5],strings_DB.get(8));
                             writeIntDB(0,strings_DB.get(5));
                             card6.setImageResource(0);
+                            player_cards_id[5] = 0;
                             card6.setClickable(false);
                         }
                     }
@@ -442,6 +497,7 @@ public class MainActivity extends AppCompatActivity {
                             writeIntDB(player_cards_id[6],strings_DB.get(8));
                             writeIntDB(0,strings_DB.get(6));
                             card7.setImageResource(0);
+                            player_cards_id[6] = 0;
                             card7.setClickable(false);
                         }
                     }
@@ -458,6 +514,7 @@ public class MainActivity extends AppCompatActivity {
                             writeIntDB(player_cards_id[7],strings_DB.get(8));
                             writeIntDB(0,strings_DB.get(7));
                             card8.setImageResource(0);
+                            player_cards_id[7] = 0;
                             card8.setClickable(false);
                         }
                     }
@@ -548,6 +605,58 @@ public class MainActivity extends AppCompatActivity {
         mDbRef.removeValue();
     }
 
+    // Create the popup to choose the trump at the beginning of the game
+    public void trumpSelectionDialog(){
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View trumpPopupView = getLayoutInflater().inflate(R.layout.trump_selection,null);
+
+        clubs = (ImageButton) trumpPopupView.findViewById(R.id.clubs);
+        spades = (ImageButton) trumpPopupView.findViewById(R.id.spades);
+        diamonds = (ImageButton) trumpPopupView.findViewById(R.id.diamonds);
+        hearts = (ImageButton) trumpPopupView.findViewById(R.id.hearts);
+
+        dialogBuilder.setView(trumpPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        clubs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                trump = 1;
+                trump_view.setImageResource(R.drawable.clubs); // Display the trump on the top right corner of the screen
+                trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                dialog.dismiss();
+            }
+        });
+        spades.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                trump = 2;
+                trump_view.setImageResource(R.drawable.spades);
+                trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                dialog.dismiss();
+            }
+        });
+        diamonds.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                trump = 3;
+                trump_view.setImageResource(R.drawable.diamonds);
+                trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                dialog.dismiss();
+            }
+        });
+        hearts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                trump = 4;
+                trump_view.setImageResource(R.drawable.hearts);
+                trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                dialog.dismiss();
+            }
+        });
+    }
+
     // Get in arrays the digits of the card played to analyse them in endTurn (only the player 1 calls this method)
     public void getDigits(int num,int player_id) {
         String number = String.valueOf(num);
@@ -616,7 +725,7 @@ public class MainActivity extends AppCompatActivity {
         boolean best_card_is_trump = false;
         for(int i = 0; i < first_digit.length; i++){
             if(first_digit[i] == trump){
-                if(last_two_digits[i] == 11) { // Stronger card of the game => Automatic win of the turn
+                if(last_two_digits[i] == 11) { // Strongest card of the game => Automatic win of the turn
                     round_winner = i+1;
                     writeIntDB(round_winner, "First turn");
                     break;
@@ -641,10 +750,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        /*System.out.println("Round winner: " + round_winner);
-        System.out.println("First digit: " + Arrays.toString(first_digit));
+        System.out.println("Trump: " + trump);
+        System.out.println("Suit: " + suit);
+        System.out.println("Player cards ID: " + Arrays.toString(player_cards_id));
+        System.out.println("Round winner: " + round_winner);
+        /*System.out.println("First digit: " + Arrays.toString(first_digit));
         System.out.println("Last two digits: " + Arrays.toString(last_two_digits));*/
-        writeIntDB(round_winner,"First turn");
         setColorWinningCard(round_winner,Color.argb(100, 0, 200, 0));
 
         // Click anywhere on the screen to finish the turn and begin the next one
@@ -661,12 +772,30 @@ public class MainActivity extends AppCompatActivity {
                 card6.setClickable(true);
                 card7.setClickable(true);
                 card8.setClickable(true);
-                played_card.setImageResource(0);
+                /*played_card.setImageResource(0);
                 opponent_left_played_card.setImageResource(0);
                 opponent_right_played_card.setImageResource(0);
-                ally_played_card.setImageResource(0);
+                ally_played_card.setImageResource(0);*/
+                writeIntDB(0,strings_DB.get(8));
+                writeIntDB(0,strings_DB.get(9));
+                writeIntDB(0,strings_DB.get(10));
+                writeIntDB(0,strings_DB.get(11));
                 setColorWinningCard(finalRound_winner,0);
+                writeIntDB(finalRound_winner,"First turn");
+                writeIntDB(finalRound_winner,"Current to play");
                 end_turn = 0;
+                suit = 0;
+                // Check if the game is finished
+                boolean game_end = true;
+                for (int i = 0; i < player_cards_id.length; i++) {
+                    if(player_cards_id[i] != 0){ // If all cards have been played => End of the game
+                        game_end = false;
+                        break;
+                    }
+                }
+                if(game_end == true) {
+                    game_button.performClick();
+                }
             }
         });
     }

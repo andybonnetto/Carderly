@@ -50,7 +50,7 @@ public class RoomChoice extends AppCompatActivity {
         setContentView(R.layout.activity_room_choice);
 
 
-        listView = findViewById(R.id.ListRoom);
+        listView = (ListView) findViewById(R.id.ListRoom);
         button = (Button) findViewById(R.id.button_createRoom);
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(RoomChoice.this, android.R.layout.simple_list_item_1, arrayList);
@@ -63,10 +63,9 @@ public class RoomChoice extends AppCompatActivity {
 
 
         playerName = usernameInput;
+        // boolean used to avoid a player joining an existing room to be inside the room multiple times
+        final boolean[] player_joined = {false};
         roomName = playerName;
-
-        listView = findViewById(R.id.ListRoom);
-        button = findViewById(R.id.button_createRoom);
 
         // all existing available rooms
         roomsList = new ArrayList<>();
@@ -76,10 +75,14 @@ public class RoomChoice extends AppCompatActivity {
                 //create room and add yourself as player1
                 button.setText("CREATING ROOM");
                 button.setEnabled(false);
-                roomName = playerName;
+                writeStringDB(playerName,"rooms/" + playerName + "/player1");
+                Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
+                intent.putExtra("roomName", roomName);
+                startActivity(intent);
+                /*roomName = playerName;
                 roomRef = database.getReference("rooms/" + roomName + "/player1");
                 addRoomEventListener();
-                roomRef.setValue(playerName);
+                roomRef.setValue(playerName);*/
 
             }
 
@@ -90,9 +93,32 @@ public class RoomChoice extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //join existing room and add yourself
                 roomName = roomsList.get(position);
-                roomRef = database.getReference("rooms/" + roomName);
+                // Adding the player to an existing room: he will be player 2,3, or 4 depending on how many players already joined the room
+                getRoomNbPlayersDB(new RoomChoice.RoomNbPlayersCallback() {
+                    @Override
+                    public void onCallback(long room_nb_players) {
+                        // Once the player has joined the room, this code will be run again as the DB has been modified
+                        // To avoid the player being registered inside the room multiple times, we check the boolean
+                        if((room_nb_players ==1) && (player_joined[0] == false)){
+                            writeStringDB(playerName,"rooms/" + roomName + "/player2");
+                            player_joined[0] = true; // The boolean must be an array to work inside this callback (no idea why?)
+                        }else if ((room_nb_players ==2) && (player_joined[0] == false)){
+                            writeStringDB(playerName,"rooms/" + roomName + "/player3");
+                            player_joined[0] = true;
+                        }else if ((room_nb_players ==3) && (player_joined[0] == false)){
+                            writeStringDB(playerName,"rooms/" + roomName + "/player4");
+                            player_joined[0] = true;
+                        }else {
+                            Message.message(getApplicationContext(), "Player 1 doesn't want to play with you");
+                        }
+                    }
+                },"rooms/" + roomName);
+                Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
+                intent.putExtra("roomName", roomName);
+                startActivity(intent);
+                /*roomRef = database.getReference("rooms/" + roomName);
                 addRoomEventListener();
-                roomRef.setValue(playerName);
+                roomRef.setValue(playerName);*/
             }
         });
         //show if new room is available
@@ -101,7 +127,7 @@ public class RoomChoice extends AppCompatActivity {
     }
 
 
-    private void addRoomEventListener() {
+    /*private void addRoomEventListener() {
         roomsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -109,6 +135,7 @@ public class RoomChoice extends AppCompatActivity {
                 button.setText("CREATE ROOM");
                 button.setEnabled(true);
                 long count = snapshot.child(roomName).getChildrenCount();
+                System.out.println("Count: " + count);
                 if(count ==1){
                     roomRef = database.getReference("rooms/" + roomName + "/player2");
                     roomRef.setValue(playerName);
@@ -137,7 +164,7 @@ public class RoomChoice extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 
     private void addRoomsEventListener() {
         roomsRef = database.getReference("rooms");
@@ -164,7 +191,41 @@ public class RoomChoice extends AppCompatActivity {
         });
     }
 
+    // Write to the database
+    public void writeStringDB(String string, String location) {
+        // Write to the database
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference mDbRef = mDatabase.getReference(location);
+        mDbRef.setValue(string).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) { // Error msg in Logcat in case the writing procedure fails
+                Log.d(TAG, e.getLocalizedMessage());
+            }
+        });
+    }
 
+    // Callback needed to retrieve data from the DB
+    public interface RoomNbPlayersCallback {
+        void onCallback(long value);
+    }
+
+    // Get nb of players already in a selected room from the database
+    public void getRoomNbPlayersDB(final RoomNbPlayersCallback myCallback, String location) {
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference mDbRef = mDatabase.getReference(location);
+        mDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long room_nb_players = dataSnapshot.getChildrenCount();
+                myCallback.onCallback(room_nb_players);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });
+    }
 
 }
 

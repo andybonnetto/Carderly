@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="200dp"
+    android:minHeight="150dp">
+
+    <ImageButton
+        android:id="@+id/clubs"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/trump_button_border"
+        android:scaleType="centerInside"
+        android:src="@drawable/clubs"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/spades"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/spades"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/trump_button_border"
+        android:scaleType="centerInside"
+        android:src="@drawable/spades"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/diamonds"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/clubs"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/diamonds"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/trump_button_border"
+        android:scaleType="centerInside"
+        android:src="@drawable/diamonds"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/hearts"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/spades"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/hearts"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/trump_button_border"
+        android:scaleType="centerInside"
+        android:src="@drawable/hearts"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/diamonds"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
