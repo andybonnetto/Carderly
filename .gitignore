@@ -1,3 +1,7 @@
 /Carderly_Vision/.idea/*
 CardValues.txt
 /Carderly_Vision/Vision_Card_Detection/Snapshots/*
+Carderly_Motor/__pycache__/Motor_DC.cpython-37.pyc
+Carderly_Motor/__pycache__/Motor_servo_angle.cpython-37.pyc
+Carderly_Motor/__pycache__/Motor_step.cpython-37.pyc
+Carderly_Display/Kivy_Display/__pycache__/database.cpython-37.pyc
