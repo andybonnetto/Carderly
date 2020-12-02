@@ -40,7 +40,6 @@ public class RoomChoice extends AppCompatActivity {
     String roomName = "";
 
     FirebaseDatabase database;
-    DatabaseReference roomRef;
     DatabaseReference roomsRef;
 
 
@@ -75,15 +74,10 @@ public class RoomChoice extends AppCompatActivity {
                 //create room and add yourself as player1
                 button.setText("CREATING ROOM");
                 button.setEnabled(false);
-                writeStringDB(playerName,"rooms/" + playerName + "/player1");
+                writeStringDB(playerName,"rooms/" + playerName + "/player1" + "/Name");
                 Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
                 intent.putExtra("roomName", roomName);
                 startActivity(intent);
-                /*roomName = playerName;
-                roomRef = database.getReference("rooms/" + roomName + "/player1");
-                addRoomEventListener();
-                roomRef.setValue(playerName);*/
-
             }
 
         });
@@ -100,71 +94,34 @@ public class RoomChoice extends AppCompatActivity {
                         // Once the player has joined the room, this code will be run again as the DB has been modified
                         // To avoid the player being registered inside the room multiple times, we check the boolean
                         if((room_nb_players ==1) && (player_joined[0] == false)){
-                            writeStringDB(playerName,"rooms/" + roomName + "/player2");
+                            writeStringDB(playerName,"rooms/" + roomName + "/player2" + "/Name");
                             player_joined[0] = true; // The boolean must be an array to work inside this callback (no idea why?)
+                            Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
+                            intent.putExtra("roomName", roomName);
+                            startActivity(intent);
                         }else if ((room_nb_players ==2) && (player_joined[0] == false)){
-                            writeStringDB(playerName,"rooms/" + roomName + "/player3");
+                            writeStringDB(playerName,"rooms/" + roomName + "/player3" + "/Name");
                             player_joined[0] = true;
+                            Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
+                            intent.putExtra("roomName", roomName);
+                            startActivity(intent);
                         }else if ((room_nb_players ==3) && (player_joined[0] == false)){
-                            writeStringDB(playerName,"rooms/" + roomName + "/player4");
+                            writeStringDB(playerName,"rooms/" + roomName + "/player4" + "/Name");
                             player_joined[0] = true;
+                            Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
+                            intent.putExtra("roomName", roomName);
+                            startActivity(intent);
                         }else {
                             Message.message(getApplicationContext(), "Player 1 doesn't want to play with you");
                         }
                     }
                 },"rooms/" + roomName);
-                Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
-                intent.putExtra("roomName", roomName);
-                startActivity(intent);
-                /*roomRef = database.getReference("rooms/" + roomName);
-                addRoomEventListener();
-                roomRef.setValue(playerName);*/
             }
         });
         //show if new room is available
         addRoomsEventListener();
 
     }
-
-
-    /*private void addRoomEventListener() {
-        roomsRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //join the room
-                button.setText("CREATE ROOM");
-                button.setEnabled(true);
-                long count = snapshot.child(roomName).getChildrenCount();
-                System.out.println("Count: " + count);
-                if(count ==1){
-                    roomRef = database.getReference("rooms/" + roomName + "/player2");
-                    roomRef.setValue(playerName);
-                }else if (count ==2){
-                    roomRef = database.getReference("rooms/" + roomName + "/player3");
-                    roomRef.setValue(playerName);
-                }else if (count ==3){
-                    roomRef = database.getReference("rooms/" + roomName + "/player4");
-                    roomRef.setValue(playerName);
-                }else if (count > 3){
-                    Message.message(getApplicationContext(), "Player 1 doesn't want to play with you");
-                }
-                Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
-                intent.putExtra("roomName", roomName);
-                startActivity(intent);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                //error
-                button.setText("CREATE ROOM");
-                button.setEnabled(true);
-                Toast.makeText(RoomChoice.this, "Error!", Toast.LENGTH_SHORT).show();
-
-
-            }
-        });
-    }*/
 
     private void addRoomsEventListener() {
         roomsRef = database.getReference("rooms");
@@ -191,7 +148,7 @@ public class RoomChoice extends AppCompatActivity {
         });
     }
 
-    // Write to the database
+    // Write a string to the database
     public void writeStringDB(String string, String location) {
         // Write to the database
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
