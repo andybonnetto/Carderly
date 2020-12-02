@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
-from Motor_servo_angle import ServoMotor
+from Motor_servo_angle import ServoAngle
+from Motor_servo_360 import Servo360
 from Motor_step import StepMotor
 from Motor_DC import DCMotor
 
@@ -8,7 +9,7 @@ from Motor_DC import DCMotor
 
 
 def call_servo_angle():
-    servo_motor = ServoMotor(5,3)
+    servo_motor = ServoAngle(5,3)
     servo_motor.activate(3)
     servo_motor.cleanup()
     
@@ -20,10 +21,12 @@ def call_stepper():
     step_motor.run_arm(nbStepsPerRev)
     pass
 def call_servo_360(status = 'input'):
+    servo_motor360 = Servo360(18)
     if status == 'input':
+        servo_motor360.actvate()
+    elif status == 'output':
         pass
-    elif status== 'output':
-        pass
+    servo_motor360.cleanup()
 
 def shuffle(DC_motor):
     #call the DC motor to go to next step separated by an interval of ? sec
@@ -42,3 +45,4 @@ def call_dc():
 if __name__ == "__main__":
     call_dc()
     call_servo_angle()
+    call_servo_360()

@@ -4,7 +4,7 @@ FREQ = 50
 DUTY_THRESHOLD = 50
 WAITING_TIME = 1.5 #in second
 MAX_DUTY_CYCLE = 12
-class ServoMotor:
+class ServoAngle:
     def __init__(self, pin, start_duty_cycle=2.5):
         self.PIN = pin
         GPIO.setmode(GPIO.BCM)
