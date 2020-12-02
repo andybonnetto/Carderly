@@ -18,18 +18,18 @@ EN2.ChangeDutyCycle(100)
 GPIO.output(Motor2['input1'], GPIO.HIGH)
 GPIO.output(Motor2['input2'], GPIO.LOW)
 
-sleep(5)
+sleep(0.5)
 
 print("STOP")
 EN2.ChangeDutyCycle(0)
 
-sleep(2)
+sleep(0.1)
 
 print("BACKWARD MOTION")
 EN2.ChangeDutyCycle(100)
 GPIO.output(Motor2['input1'], GPIO.LOW)
 GPIO.output(Motor2['input2'], GPIO.HIGH)
-sleep(5)
+sleep(0.5)
 
 print("STOP")
 EN2.ChangeDutyCycle(0)
