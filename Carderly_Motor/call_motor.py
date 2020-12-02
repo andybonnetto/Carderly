@@ -8,8 +8,8 @@ from Motor_DC import DCMotor
 
 
 def call_servo_angle():
-    servo_motor = ServoMotor(5,2.5)
-    servo_motor.activate(2.5)
+    servo_motor = ServoMotor(5,3)
+    servo_motor.activate(3)
     servo_motor.cleanup()
     
 def call_stepper():
