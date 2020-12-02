@@ -9,9 +9,9 @@ from Motor_DC import DCMotor
 
 def call_servo_angle():
     servo_motor = ServoMotor(5,2.5)
-    # servo_motor.activate(2.5)
-    # servo_motor.cleanup()
-    pass
+    servo_motor.activate(2.5)
+    servo_motor.cleanup()
+    
 def call_stepper():
     StepPins = [17, 4, 23, 24]
     step_motor = StepMotor(StepPins)
@@ -41,3 +41,4 @@ def call_dc():
 
 if __name__ == "__main__":
     call_dc()
+    call_servo_angle()
