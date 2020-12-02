@@ -23,7 +23,7 @@ def call_stepper():
 def call_servo_360(status = 'input'):
     servo_motor360 = Servo360(18)
     if status == 'input':
-        servo_motor360.activate()
+        servo_motor360.activate(1)
     elif status == 'output':
         pass
     servo_motor360.cleanup()
