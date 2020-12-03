@@ -12,7 +12,7 @@ import RPi.GPIO as GPIO
 import pyrebase
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 config = {
     "apiKey": "",
     "authDomain": "carderlydatabase.firebaseapp.com",
