@@ -24,7 +24,7 @@ ROOM_NAME = 'Faf'
 class MainWindow(Screen):
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
-        if GPIO.input(40) == GPIO.LOW:
+        if GPIO.input(40) == GPIO.HIGH:
             print("button pushed")
             self.shift_to_waiting()
     def shift_to_waiting(self):
@@ -56,7 +56,7 @@ class WaitingRoom(Screen):
         space = 0
         for contact in contacts.each():
             if space != 0:
-                self.add_widget(Label(text=contact.val(), font_size=50, pos=(-500 + space * 230, 0)))
+                self.add_widget(Label(text=contact.child('Name').get().val(), font_size=50, pos=(-500 + space * 230, 0)))
             space += 1
         if space >= 3:
             self.full = True
@@ -93,7 +93,7 @@ class GameWindow(Screen):
         space = 0
         for contact in contacts.each():
             if space != 0:
-                self.add_widget(Label(text=contact.val(), font_size=50, pos=(-450 + space * 220, -(space%2)*100+100)))
+                self.add_widget(Label(text=contact.child('Name').get().val(), font_size=50, pos=(-450 + space * 220, -(space%2)*100+100)))
             space += 1
         if space >= 4:
             self.full = True
@@ -166,7 +166,7 @@ class ContactWindow(Screen):
 
 class WindowManager(ScreenManager):
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # def popup_change():
 #     pop = Popup(title='Change Account',
