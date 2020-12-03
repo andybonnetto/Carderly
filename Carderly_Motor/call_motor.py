@@ -17,7 +17,7 @@ def call_stepper():
     StepPins = [17, 4, 23, 24]
     step_motor = StepMotor(StepPins)
     nbStepsPerRev = 100
-    step_motor.define_sequence('half')
+    step_motor.define_sequence('full')
     step_motor.run_arm(nbStepsPerRev)
     pass
 def call_servo_360(status = 'input'):
