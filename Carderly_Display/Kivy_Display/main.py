@@ -27,6 +27,9 @@ class MainWindow(Screen):
 
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
+        Clock.schedule_interval(self.button_callback, 0.01)
+
+    def button_callback(self):
         print("ima here")
         if GPIO.input(40) == GPIO.HIGH:
             print("button pushed")
