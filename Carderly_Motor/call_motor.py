@@ -16,7 +16,7 @@ def call_servo_angle():
 def call_stepper():
     StepPins = [17, 4, 23, 24]
     step_motor = StepMotor(StepPins)
-    nbStepsPerRev = 30
+    nbStepsPerRev = 50
     step_motor.define_sequence('half')
     step_motor.run_arm(nbStepsPerRev)
     pass
@@ -44,5 +44,6 @@ def call_dc():
 
 if __name__ == "__main__":
     call_dc()
-    call_servo_angle()
-    call_servo_360()
+    # call_servo_angle()
+    # call_servo_360()
+    call_stepper()
