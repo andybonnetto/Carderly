@@ -2,7 +2,7 @@
 * <b> make the launch file </b> </br>
 Launch file will call *call_motor.py*, *main.py* in Kivy_display, *Activate_vision.py* and do some sub fonctions which can be for example written in *subfunction.py* file in here.
 * <b> Display + SSH </b> (Andy) </br>
-For some reason the display turn off, maybe it is Ximing
+For some reason the display turns off, maybe it is Ximing
 
 ## Connecting to raspberry pi on windows
 * Connect the raspi by changing the *wpa_supplicant.conf* wifi parameters in boot of the sd card
