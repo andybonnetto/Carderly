@@ -24,7 +24,7 @@ ROOM_NAME = 'Faf'
 class MainWindow(Screen):
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
-        if GPIO.input(buttonPIN) == GPIO.HIGH:
+        if GPIO.input(40) == GPIO.HIGH:
             print("button pushed")
             self.shift_to_waiting()
     def shift_to_waiting(self):
@@ -190,7 +190,6 @@ if __name__ == "__main__":
     # player = database.child("Player 1")
     # card = player.child("Card 1").get().val()
     # print(card)
-    buttonPIN = 40
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(buttonPIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     MyMainApp().run()
