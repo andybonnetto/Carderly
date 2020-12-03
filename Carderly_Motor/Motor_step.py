@@ -73,8 +73,8 @@ class StepMotor:
         while not hasRun:
             self.steps(nb)  # parcourt un tour dans le sens horaire
             time.sleep(0.1)
-            self.steps(-nb)  # parcourt un tour dans le sens anti-horaire
-            time.sleep(1)
+            # self.steps(-nb)  # parcourt un tour dans le sens anti-horaire
+            # time.sleep(1)
             hasRun = True
             print("Stop motor")
             for pin in self.StepPins:
