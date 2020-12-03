@@ -24,7 +24,7 @@ ROOM_NAME = 'Faf'
 class MainWindow(Screen):
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
-        if GPIO.input(40) == GPIO.HIGH:
+        if GPIO.input(40) == GPIO.DOWN:
             print("button pushed")
             self.shift_to_waiting()
     def shift_to_waiting(self):
@@ -166,7 +166,7 @@ class ContactWindow(Screen):
 
 class WindowManager(ScreenManager):
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # def popup_change():
 #     pop = Popup(title='Change Account',
