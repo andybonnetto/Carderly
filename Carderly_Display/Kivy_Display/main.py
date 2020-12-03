@@ -57,7 +57,7 @@ class WaitingRoom(Screen):
         for contact in contacts.each():
             print(contact)
             if space != 0:
-                self.add_widget(Label(text=contact.val().child("Name").get().val(), font_size=50, pos=(-500 + space * 230, 0)))
+                self.add_widget(Label(text=contact.val()["Name"], font_size=50, pos=(-500 + space * 230, 0)))
             space += 1
         if space >= 3:
             self.full = True
