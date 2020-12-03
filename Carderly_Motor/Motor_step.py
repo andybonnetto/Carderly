@@ -13,6 +13,7 @@ class StepMotor:
             print("Setup pins")
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, False)
+        self.current_pos = 0
 
 
     def define_sequence(self,sequence):
@@ -79,3 +80,42 @@ class StepMotor:
             print("Stop motor")
             for pin in self.StepPins:
                 GPIO.output(pin, False)
+
+    def calculate_step_pos(self, pos):
+        val = int(pos / 4) + pos * 6
+        if pos % 4 >= 2:
+            val += 1
+        return val
+
+    def find_dir(self, pos):
+        pos_diff = self.current_pos - pos
+        if abs(pos_diff) < 15:
+            return -pos_diff
+        else:
+            return pos_diff
+
+    def go_to_pos(self, target_pos):
+        pos_diff = self.find_dir(target_pos)
+        target_steps = self.calculate_step_pos(target_pos)
+        current_steps = self.calculate_step_pos(self.current_pos)
+
+        if pos_diff == 0:
+            return self.current_pos
+        if pos_diff > 0:
+            if pos_diff > 15:
+                self.steps(200 - current_steps)
+                steps = target_steps
+                self.steps(steps)
+            else:
+                steps = target_steps - current_steps
+                self.steps(steps)
+
+        elif pos_diff < 0:
+            if pos_diff < -15:
+                self.steps(-current_steps)
+                steps = 200 - target_steps
+                self.steps(-steps)
+            else:
+                steps = target_steps - current_steps
+                self.steps(steps)
+        self.current_pos = target_pos
