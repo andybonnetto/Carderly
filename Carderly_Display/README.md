@@ -4,15 +4,15 @@ Carderly Display is using the Kivy package installed for Raspberry Pi. Very Hand
 The example display from the last video is stored in the *Kivy_GUI_Example* depositery
 
 ## TODO Display
-* <b> Show card to validate <b/></br>
+* <b> Show card to validate </b></br>
 Show the card seen in database already preprocessed which needs to be accepted by button in order to send this value to the App.
-* <b> Make commands for buttons <b/> (Andy)</br>
+* <b> Make commands for buttons </b>(Andy)</br>
 Kivy buttons works when you click on it but needs to work when color button is pressed
-* <b> Add "Insert Deck" Window <b/> </br>
+* <b> Add "Insert Deck" Window </b></br>
 Necessary window in between Main page and Waiting room, this window needs to show the Label "Insert Deck" and popup problems with the shuffling, if possible automatically change to waiting room when shuffling is done.
-* <b> Choose the room name to join <b/> </br>
+* <b> Choose the room name to join </b> </br>
 Diplay need to read the names in the person's waiting and for that needs a name.
-* <b> Autoconnect of the elderliy's account <b/> </br>
+* <b> Autoconnect of the elderliy's account </b> </br>
 
 ## Making on Windows
   After installing Kivy with conda, you can mess up with the two important files for the kivy display which are *main.py* and *my.kv* (some kv file, looks like OpenGL btw)
