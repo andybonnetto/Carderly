@@ -1,4 +1,4 @@
-# Motor
+# Carderly Motor
 Carderly uses 5 motors to work which are 2x 360servo motors for the casters, 1x angle servo motor for the flipping system, 1x stepper motor for the push push arm and 1x DC motor for the main wheel. 
 
 ## TODO Motors
