@@ -24,7 +24,7 @@ ROOM_NAME = 'Faf'
 class MainWindow(Screen):
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
-        if GPIO.input(40) == GPIO.DOWN:
+        if GPIO.input(40) == GPIO.LOW:
             print("button pushed")
             self.shift_to_waiting()
     def shift_to_waiting(self):
