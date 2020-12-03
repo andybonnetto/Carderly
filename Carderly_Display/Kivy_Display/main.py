@@ -10,9 +10,7 @@ from kivy.clock import Clock
 from kivy.graphics import *
 import RPi.GPIO as GPIO
 import pyrebase
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
 config = {
     "apiKey": "",
     "authDomain": "carderlydatabase.firebaseapp.com",
@@ -178,7 +176,9 @@ class ContactWindow(Screen):
             space += 30
 
 class WindowManager(ScreenManager):
-    pass
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # def popup_change():
 #     pop = Popup(title='Change Account',
