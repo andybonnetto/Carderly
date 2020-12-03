@@ -165,7 +165,8 @@ class ContactWindow(Screen):
             space += 30
 
 class WindowManager(ScreenManager):
-    pass
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # def popup_change():
 #     pop = Popup(title='Change Account',
@@ -190,6 +191,4 @@ if __name__ == "__main__":
     # player = database.child("Player 1")
     # card = player.child("Card 1").get().val()
     # print(card)
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     MyMainApp().run()
