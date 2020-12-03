@@ -55,8 +55,9 @@ class WaitingRoom(Screen):
         contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
         space = 0
         for contact in contacts.each():
+            print("contact")
             if space != 0:
-                self.add_widget(Label(text=contact.child('Name').get().val(), font_size=50, pos=(-500 + space * 230, 0)))
+                self.add_widget(Label(text=contact.get().val(), font_size=50, pos=(-500 + space * 230, 0)))
             space += 1
         if space >= 3:
             self.full = True
