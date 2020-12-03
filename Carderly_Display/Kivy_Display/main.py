@@ -22,28 +22,31 @@ database = firebase.database()
 ROOM_NAME = 'Faf'
 
 class MainWindow(Screen):
+
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setwarnings(False)
-        GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         if GPIO.input(40) == GPIO.HIGH:
             print("button pushed")
             self.shift_to_waiting()
+
     def shift_to_waiting(self):
+
         sm.current = "waiting"
     def shift_to_settings(self):
+
         sm.current = "settings"
     def shift_to_contact(self):
         sm.current = "contact"
 
 class WaitingRoom(Screen):
+
     def shift_to_game(self):
         # if self.full:
         #     sm.current = "game"
         # else:
         #     sm.current = "waiting"
         sm.current = "game"
+
     def shift_to_main(self):
         sm.current = "main_win"
 
@@ -58,7 +61,6 @@ class WaitingRoom(Screen):
         contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
         space = 0
         for contact in contacts.each():
-            print(contact)
             if space != 0:
                 self.add_widget(Label(text=contact.val()["Name"], font_size=50, pos=(-500 + space * 230, 0)))
             space += 1
@@ -68,6 +70,7 @@ class WaitingRoom(Screen):
 class GameWindow(Screen):
     def shift_to_waiting(self):
         sm.current = "waiting"
+
     def highlight_turn(self,token):
     #Draw green rectangle during player's turn or show "Your turn"
         player_turn = database.child('Current to play').get().val()
@@ -92,6 +95,7 @@ class GameWindow(Screen):
             self.rect = Rectangle(pos=(265,150),size=(250,100))
             self.canvas.add(self.rect)
             self.yourturn.text="[color=111111]Your turn[/color]"
+
     def name_display_game(self):
         contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
         space = 0
@@ -184,6 +188,10 @@ for screen in screens:
     sm.add_widget(screen)
 
 sm.current = "main_win"
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
+GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 class MyMainApp(App):
     def build(self):
