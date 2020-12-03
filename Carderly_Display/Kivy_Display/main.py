@@ -25,6 +25,7 @@ class MainWindow(Screen):
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
         GPIO.setmode(GPIO.BOARD)
+        GPIO.setwarnings(False)
         GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         if GPIO.input(40) == GPIO.HIGH:
             print("button pushed")
