@@ -9,8 +9,6 @@ from database import Database
 from kivy.clock import Clock
 from kivy.graphics import *
 import RPi.GPIO as GPIO
-buttonPIN = 40
-
 import pyrebase
 
 config = {
@@ -192,6 +190,7 @@ if __name__ == "__main__":
     # player = database.child("Player 1")
     # card = player.child("Card 1").get().val()
     # print(card)
+    buttonPIN = 40
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(buttonPIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     MyMainApp().run()
