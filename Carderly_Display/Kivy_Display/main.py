@@ -10,7 +10,9 @@ from kivy.clock import Clock
 from kivy.graphics import *
 import RPi.GPIO as GPIO
 import pyrebase
-
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 config = {
     "apiKey": "",
     "authDomain": "carderlydatabase.firebaseapp.com",
@@ -188,10 +190,6 @@ for screen in screens:
     sm.add_widget(screen)
 
 sm.current = "main_win"
-
-GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
-GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 class MyMainApp(App):
     def build(self):
