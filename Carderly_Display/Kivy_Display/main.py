@@ -27,6 +27,7 @@ class MainWindow(Screen):
 
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
+        print("ima here")
         if GPIO.input(40) == GPIO.HIGH:
             print("button pushed")
             self.shift_to_waiting()
