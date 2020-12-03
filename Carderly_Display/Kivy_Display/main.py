@@ -30,17 +30,16 @@ class MainWindow(Screen):
         Clock.schedule_interval(self.button_callback, 0.01)
 
     def button_callback(self,token):
-        print("ima here")
-        if GPIO.input(40) == GPIO.HIGH:
+        if GPIO.input(40) == GPIO.LOW:
             print("button pushed")
             self.shift_to_waiting()
 
     def shift_to_waiting(self):
-
         sm.current = "waiting"
-    def shift_to_settings(self):
 
+    def shift_to_settings(self):
         sm.current = "settings"
+
     def shift_to_contact(self):
         sm.current = "contact"
 
