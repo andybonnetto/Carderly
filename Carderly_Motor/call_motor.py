@@ -9,8 +9,8 @@ from Motor_DC import DCMotor
 
 
 def call_servo_angle():
-    servo_motor = ServoAngle(5,3)
-    servo_motor.activate(3)
+    servo_motor = ServoAngle(5,4)
+    servo_motor.activate(4)
     servo_motor.cleanup()
     
 def call_stepper():
@@ -23,7 +23,7 @@ def call_stepper():
 def call_servo_360(status = 'input'):
     servo_motor360 = Servo360(18)
     if status == 'input':
-        servo_motor360.activate(1)
+        servo_motor360.activate(5,dc=100)
     elif status == 'output':
         pass
     servo_motor360.cleanup()
