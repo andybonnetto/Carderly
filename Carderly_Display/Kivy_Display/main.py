@@ -94,7 +94,7 @@ class GameWindow(Screen):
         space = 0
         for contact in contacts.each():
             if space != 0:
-                self.add_widget(Label(text=contact.child('Name').get().val(), font_size=50, pos=(-450 + space * 220, -(space%2)*100+100)))
+                self.add_widget(Label(text=contact.val()["Name"], font_size=50, pos=(-450 + space * 220, -(space%2)*100+100)))
             space += 1
         if space >= 4:
             self.full = True
