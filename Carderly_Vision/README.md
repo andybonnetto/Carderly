@@ -1,11 +1,11 @@
 ## TODO for the VISION
 * <b>Preprocess_card</b> </br>
 Compare all the cards seen to the hand of player 1 in database and send only the estimated card played in the database, that can be done at the end of Activate Vision
-* <b>Condition for while loop</b> </br> (to decide) 
+* <b>Condition for while loop</b> (to decide) </br> 
 For now the vision is in a *while true* loop, we can either make a function and put the loop outside (in the lauch file) or make it run at all time
 * <b>Find the setup for changing cameras</b> (Andy) </br>
 I don't quite understand in which position the cameras are saved everytime I turn off and on the raspi, this needs to be setted in *Activate_vision.py; cv2.VideoCapture(cam_num)*
-* <b>Training for ditribution</b>(Andy) </br> 
+* <b>Training for ditribution</b> (Andy) </br> 
 New training needs to be done for the distribution with one of the cameras, which means they are not gonna be launched with the same tflite model.
 * <b>Make call_vision()</b> </br>
 Read in the database and detect if there is no card for distribution -> discard all cards.
