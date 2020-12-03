@@ -8,10 +8,9 @@ from kivy.uix.button import Button
 from database import Database
 from kivy.clock import Clock
 from kivy.graphics import *
-# import RPi.GPIO as GPIO
-# buttonPIN = 40
-# GPIO.setmode(GPIO.BOARD)
-# GPIO.setup(buttonPIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+import RPi.GPIO as GPIO
+buttonPIN = 40
+
 import pyrebase
 
 config = {
@@ -25,10 +24,11 @@ database = firebase.database()
 ROOM_NAME = 'Faf'
 
 class MainWindow(Screen):
-    # def __init__(self,**kwargs):
-    #     super(MainWindow,self).__init__(**kwargs)
-    #     if GPIO.input(buttonPIN) == GPIO.HIGH:
-    #         self.shift_to_waiting()
+    def __init__(self,**kwargs):
+        super(MainWindow,self).__init__(**kwargs)
+        if GPIO.input(buttonPIN) == GPIO.HIGH:
+            print("button pushed")
+            self.shift_to_waiting()
     def shift_to_waiting(self):
         sm.current = "waiting"
     def shift_to_settings(self):
@@ -192,4 +192,6 @@ if __name__ == "__main__":
     # player = database.child("Player 1")
     # card = player.child("Card 1").get().val()
     # print(card)
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(buttonPIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     MyMainApp().run()
