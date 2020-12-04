@@ -40,13 +40,13 @@ class VideoStream:
 
     # Variable to control when the camera is stopped
     #     self.stopped = False
-        with picamera.PiCamera() as camera:
-            camera.resolution = resolution
-            camera.framerate = framerate
-            time.sleep(2)
-            self.frame= np.empty((resolution[1],resolution[0],3),dtype=np.uint8)
-            camera.capture(self.frame, 'rgb')
-            self.stopped = False
+        self.camera = picamera.PiCamera()
+        camera.resolution = resolution
+        camera.framerate = framerate
+        time.sleep(2)
+        self.frame= np.empty((resolution[1],resolution[0],3),dtype=np.uint8)
+        camera.capture(self.frame, 'rgb')
+        self.stopped = False
 
     def start(self):
     # Start the thread that reads frames from the video stream
@@ -63,7 +63,7 @@ class VideoStream:
                 return
 
             # Otherwise, grab the next frame from the stream
-            camera.capture(self.frame, 'rgb')
+            self.camera.capture(self.frame, 'rgb')
 
     def read(self):
     # Return the most recent frame
