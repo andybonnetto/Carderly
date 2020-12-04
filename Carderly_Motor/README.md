@@ -12,13 +12,14 @@ In the launch file : you can use
 from call_motor import *
 
 call_servo_angle()
-call_servo_360(status) #status is either 'input' or 'output'
+call_servo_360(status) #status is either 'input' or 'output' to change the pin of the motor selected
 define_step_motor()
 ```
-The Stepper motor will be called in the *shuffle.py* and *discard.py* that you can call this way
+The Stepper motor will be called in the *shuffle* and *discard* functions that you can call this way
 ```
 from call motor import *
 
+step_motor = define_step_motor() #the class needs to be declared outside so we remember the current position of the wheel (other classes are declared inside)
 shuffle(step_motor)
 discard(step_motor,pos) #pos of the card to discard (quick np.where in the card saved list)
 ```
@@ -38,12 +39,38 @@ servo_motor.cleanup()
 ```
 
 ### Servo motor -360
-No function has been written yet, though must look like the angle one
+360 servo motors are used to turn the small casters in the input and output of the device. You must specify input or output in order to choose the pin to activate. For now the run at full speed during a constant period (magic number in call_motor). 
 
-(!!NOT TESTED!!)
-*TODO: find speed dependance on number of turn before testing and define speed ratio with PWM
+in call_motor : 
+```
+from Motor_servo_360 import Servo360
+
+ call_servo_360(status = 'input'):
+    motor_1 = Servo360(PIN1)
+    motor_2 = Servp360(PIN2)
+    if status == 'input':
+        servo_motor360.activate(period,dc=100)
+    elif status == 'output':
+        servo_motor360.activate(period,dc=100)
+    servo_motor360.cleanup()
+```
+Max speed is already quite low (1 turn per second) so no need to regulate with PWM
 
 ### Stepper motor
+Stepper motor controls the main Wheel, it is divided into 32 positions each separated by an irregular number of steps (6,7,6,6,6,7,6,6...). The calculation of steps needed to go to a certain position is already calculated in the *calculate_step_pos* function as well as the calculation for the quickest direction in *find_dir*. Anyway, the motor is a Nema17 which is a 100 steps per rotation motor but we are using the half-step sequence mode which allow us a precision of 1.8° per step. The maximum error of the motor for some of the positions is of 0.9°.
+
+The stepper needs to be declared first, the variable will keep the current position of the wheel memory (integer between 0 and 31).
+```
+step_motor = define_step_motor()
+```
+Then there is 2 cases which are either the shuffling, which goes only to the next position, it should be called in a for loop with the 32 positions,
+```
+shuffle(step_motor)
+```
+either the discard which goes to a specified position.
+```
+discard(step_motor,pos) #pos is an int in range(31)
+```
 
 ## Motors circuit
 
