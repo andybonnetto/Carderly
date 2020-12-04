@@ -8,7 +8,13 @@ from kivy.uix.button import Button
 from database import Database
 from kivy.clock import Clock
 from kivy.graphics import *
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+self.button= False
+
 # import pyrebase
 #
 # config = {
@@ -25,13 +31,7 @@ class MainWindow(Screen):
 
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
-        Clock.schedule_interval(self.button_callback, 0.01)
-
-    def button_callback(self,token):
-        # if GPIO.input(40) == GPIO.HIGH:
-        #     print("button pushed")
-        #     self.shift_to_waiting()
-        pass
+        # Clock.schedule_interval(self.button_callback, 0.01)
 
     def shift_to_insert(self):
         sm.current = "insert_deck"
@@ -196,10 +196,11 @@ class ContactWindow(Screen):
             space += 30
 
 class WindowManager(ScreenManager):
-    # GPIO.setmode(GPIO.BCM)
-    # GPIO.setwarnings(False)
-    # GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    pass
+    def button_callback(self):
+        self.button = False
+        if GPIO.input(40) == GPIO.HIGH:
+            print("button pushed")
+            self.button = True
 
 # def popup_change():
 #     pop = Popup(title='Change Account',
