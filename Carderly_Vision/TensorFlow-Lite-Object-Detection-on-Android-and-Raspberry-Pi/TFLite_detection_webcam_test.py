@@ -46,7 +46,7 @@ class VideoStream:
         time.sleep(2)
         self.frame = np.empty((resolution[1]*resolution[0]*3,),dtype=np.uint8)
         self.camera.capture(self.frame, 'rgb')
-        self.frame = self.frame.reshape((resolution[0],resolution[1],3))
+        self.frame = self.frame.reshape(resolution[0],resolution[1],3)
         self.stopped = False
 
     def start(self):
@@ -66,7 +66,7 @@ class VideoStream:
             # Otherwise, grab the next frame from the stream
             self.frame = np.empty((self.camera.resolution[1] * self.camera.resolution[0] * 3,), dtype=np.uint8)
             self.camera.capture(self.frame, 'rgb')
-            self.frame = self.frame.reshape((self.camera.resolution[0], self.camera.resolution[1], 3))
+            self.frame = self.frame.reshape(self.camera.resolution[0], self.camera.resolution[1], 3)
 
     def read(self):
     # Return the most recent frame
