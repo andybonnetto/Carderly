@@ -60,4 +60,4 @@ v4l2-ctl --all
 ```` 
 List of all the cameras seen by the raspberry
 
-*Note*:motion had been remove because it sucks
+<b>Note</b>: motion have been removed because it sucks
