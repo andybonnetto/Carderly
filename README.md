@@ -1,7 +1,7 @@
 # Carderly
 
 ## TODO general
-* <b> make the launch file </b> </br>
+* <b> make the launch file </b> (Carole) </br>
 Launch file will call *call_motor.py*, *main.py* in Kivy_display, *Activate_vision.py* and do some sub fonctions which can be for example written in *subfunction.py* file in here.
 * ~<b> Display + SSH </b> (Andy) </br>
 For some reason the display turns off, maybe it is Ximing~ </br>
