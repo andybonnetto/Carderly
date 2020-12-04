@@ -26,7 +26,7 @@ GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 # firebase = pyrebase.initialize_app(config)
 # database = firebase.database()
 ROOM_NAME = 'Faf'
-PIN_BLUE = 40
+PIN_BLUE = 21
 button_state = False
 
 class MainWindow(Screen):
@@ -48,7 +48,7 @@ class MainWindow(Screen):
                 if sm.current == "insert_deck":
                     sm.current = "main_win"
                     button_state = True
-                    return 
+                    return
         else:
             if GPIO.input(pin) == GPIO.LOW:
                 button_state = False
@@ -61,6 +61,15 @@ class MainWindow(Screen):
 
     def shift_to_contact(self):
         sm.current = "contact"
+
+    def shift_to_main(self):
+        sm.current = "main_win"
+
+    def shift_to_game(self):
+        sm.current = "game"
+
+    def shift_to_waiting(self):
+        sm.current = "waiting"
 
 class InsertDeck(Screen):
 
