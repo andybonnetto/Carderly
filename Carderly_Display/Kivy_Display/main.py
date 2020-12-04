@@ -44,9 +44,11 @@ class MainWindow(Screen):
                 if sm.current == "main_win":
                     self.shift_to_insert()
                     button_state = True
+                    return
                 if sm.current == "insert_deck":
                     sm.current = "main_win"
                     button_state = True
+                    return 
         else:
             if GPIO.input(pin) == GPIO.LOW:
                 button_state = False
