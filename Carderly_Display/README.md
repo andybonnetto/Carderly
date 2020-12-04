@@ -13,6 +13,9 @@ Necessary window in between Main page and Waiting room, this window needs to sho
 * <b> Choose the room name to join </b> </br>
 Diplay need to read the names in the person's waiting and for that needs a name.
 * <b> Autoconnect of the elderliy's account </b> </br>
+* <b> Block go back in waiting_room and insert deck </b> </br>
+* <b> Automatic go to game feature </b>
+* <b> Show l'atout on game window </b>
 
 ## Making on Windows
   After installing Kivy with conda, you can mess up with the two important files for the kivy display which are *main.py* and *my.kv* (some kv file, looks like OpenGL btw)
