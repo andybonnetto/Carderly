@@ -109,8 +109,8 @@ class MainWindow(Screen):
                     print("green")
                     green_button_state = True
                     return
-                if sm.current == "waiting":
-                    self.shift_to_game()
+                if sm.current == "main_win":
+                    self.shift_to_settings()
                     green_button_state = True
                     return
         else:
