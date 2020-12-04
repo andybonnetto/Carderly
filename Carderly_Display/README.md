@@ -6,10 +6,12 @@ The example display from the last video is stored in the *Kivy_GUI_Example* depo
 ## TODO Display
 * <b> Show card to validate </b></br>
 Show the card seen in database already preprocessed which needs to be accepted by button in order to send this value to the App.
-* <b> Make commands for buttons </b>(Andy)</br>
-Kivy buttons works when you click on it but needs to work when color button is pressed
-* <b> Add "Insert Deck" Window </b></br>
-Necessary window in between Main page and Waiting room, this window needs to show the Label "Insert Deck" and popup problems with the shuffling, if possible automatically change to waiting room when shuffling is done.
+* ~<b> Make commands for buttons </b>(Andy)</br>
+Kivy buttons works when you click on it but needs to work when color button is pressed~ </br>
+Solution: now buttons can be used to change the screen, all buttons commands are in the *Main_Window* screen, I still have no idea why it works that way but well..it works
+* ~<b> Add "Insert Deck" Window </b></br>
+Necessary window in between Main page and Waiting room, this window needs to show the Label "Insert Deck" and popup problems with the shuffling, if possible automatically change to waiting room when shuffling is done.~ </br>
+Solution : The window is created and show dynamic label of waiting, needs only to be link with database condition
 * <b> Choose the room name to join </b> </br>
 Diplay need to read the names in the person's waiting and for that needs a name.
 * <b> Autoconnect of the elderliy's account </b> </br>
