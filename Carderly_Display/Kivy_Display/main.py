@@ -11,9 +11,11 @@ from functools import partial
 from kivy.graphics import *
 import RPi.GPIO as GPIO
 
+PIN_BLUE = 21
+
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
-GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(PIN_BLUE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # import pyrebase
 #
@@ -26,7 +28,7 @@ GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 # firebase = pyrebase.initialize_app(config)
 # database = firebase.database()
 ROOM_NAME = 'Faf'
-PIN_BLUE = 21
+
 button_state = False
 
 class MainWindow(Screen):
