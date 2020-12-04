@@ -36,12 +36,18 @@ GPIO.setup(PIN_RED, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 ROOM_NAME = 'Faf'
 
 blue_button_state = False
+red_button_state = False
+green_button_state = False
+grey_button_state = False
 
 class MainWindow(Screen):
 
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
         Clock.schedule_interval(self.blue_button_callback, 0.1)
+        Clock.schedule_interval(self.green_button_callback, 0.1)
+        Clock.schedule_interval(self.red_button_callback, 0.1)
+        Clock.schedule_interval(self.grey_button_callback, 0.1)
 
 
     def blue_button_callback(self,token):
@@ -61,10 +67,76 @@ class MainWindow(Screen):
                     self.shift_to_game()
                     blue_button_state = True
                     return
+                if sm.current == "contact":
+                    self.shift_to_main()
+                    blue_button_state = True
+                    return
         else:
             if GPIO.input(PIN_BLUE) == GPIO.LOW:
                 blue_button_state = False
 
+    def red_button_callback(self,token):
+        global red_button_state
+        if not red_button_state:
+            red_button_state = False
+            if GPIO.input(PIN_BLUE) == GPIO.HIGH:
+                if sm.current == "main_win":
+                    self.shift_to_contact()
+                    red_button_state = True
+                    return
+                if sm.current == "insert_deck":
+                    self.shift_to_main()
+                    red_button_state = True
+                    return
+                if sm.current == "waiting":
+                    self.shift_to_insert()
+                    red_button_state = True
+                    return
+                if sm.current == "settings":
+                    self.shift_to_main()
+                    red_button_state = True
+                    return
+        else:
+            if GPIO.input(PIN_BLUE) == GPIO.LOW:
+                red_button_state = False
+
+    def green_button_callback(self, token):
+        global green_button_state
+        if not green_button_state:
+            green_button_state = False
+            if GPIO.input(PIN_BLUE) == GPIO.HIGH:
+                if sm.current == "insert_deck":
+                    print("green")
+                    green_button_state = True
+                    return
+                if sm.current == "waiting":
+                    self.shift_to_game()
+                    green_button_state = True
+                    return
+        else:
+            if GPIO.input(PIN_BLUE) == GPIO.LOW:
+                green_button_state = False
+
+    def grey_button_callback(self, token):
+        global grey_button_state
+        if not grey_button_state:
+            grey_button_state = False
+            if GPIO.input(PIN_BLUE) == GPIO.HIGH:
+                if sm.current == "main_win":
+                    self.shift_to_insert()
+                    grey_button_state = True
+                    return
+                if sm.current == "insert_deck":
+                    self.shift_to_waiting()
+                    grey_button_state = True
+                    return
+                if sm.current == "waiting":
+                    self.shift_to_game()
+                    grey_button_state = True
+                    return
+        else:
+            if GPIO.input(PIN_BLUE) == GPIO.LOW:
+                grey_button_state = False
 
     def shift_to_insert(self):
         sm.current = "insert_deck"
