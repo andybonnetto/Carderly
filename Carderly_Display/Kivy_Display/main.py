@@ -159,7 +159,7 @@ class MainWindow(Screen):
 class InsertDeck(Screen):
     def __init__(self,**kwargs):
         super(InsertDeck,self).__init__(**kwargs)
-        mess = ObjectProperty(None)
+        mess = ObjectProperty(Label)
         # Clock.schedule_interval(self.get_status, 3)
         condition = True
         if condition:
