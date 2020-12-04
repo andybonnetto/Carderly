@@ -36,6 +36,7 @@ public class WaitingRoom extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference roomRef;
+    int counter = 0;
 
 
     @Override
@@ -58,18 +59,11 @@ public class WaitingRoom extends AppCompatActivity {
 
         newPlayersEventListener();
 
-        //button.setOnClickListener(new View.OnClickListener() {
-           // @Override
-           // public void onClick(View v) {
-                //start game
-               // button.setText("Starting game");
-               // button.setEnabled(true);
+        //counting number of items in the list
+        //counter = playersList.size();
 
 
 
-            //}
-
-        //});
     }
 
     private void newPlayersEventListener() {
@@ -84,6 +78,12 @@ public class WaitingRoom extends AppCompatActivity {
                 System.out.println(Arrays.toString(playersList.toArray()));
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(WaitingRoom.this, R.layout.waiting_room_players_listview, playersList);
                 listView.setAdapter(adapter);
+                counter = playersList.size();
+                if (counter == 4){
+                    Intent intent = new Intent(WaitingRoom.this, MainActivity.class);
+                    intent.putExtra("listofPlayers",playersList);
+                    startActivity(intent);
+                }
             }
 
             @Override

@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     int[] last_two_digits = {0,0,0,0};
     int[] player_cards_id = {0,0,0,0,0,0,0,0}; // ID of the cards in hand of the player 1
     private final String TAG = this.getClass().getName();
+    ArrayList<String> playersList;
+
 
     // Variables related to the popup window for the trump selection
     private AlertDialog.Builder dialogBuilder;
@@ -56,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Check name of the players
+        playersList = (ArrayList<String>) getIntent().getSerializableExtra("listofPlayers");
 
         // Link the variables modified in the java file to the Views in the UI
         game_button = (Button) findViewById(R.id.game_button);

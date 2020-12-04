@@ -12,22 +12,17 @@ In the launch file : you can use
 from call_motor import *
 
 call_servo_angle()
-call_stepper()
 call_servo_360(status) #status is either 'input' or 'output'
+define_step_motor()
 ```
-The DC motor will be called in the *shuffle.py* and *discard.py* that you can call this way
-```
-from call motor import *
-
-shuffle()
-discard(pos) #pos of the card to discard (quick np.where in the card saved list)
-```
-And don't forget to cleanup the port for the DC motor which needs to keep on the whole process
+The Stepper motor will be called in the *shuffle.py* and *discard.py* that you can call this way
 ```
 from call motor import *
 
-clean_up_DC()
+shuffle(step_motor)
+discard(step_motor,pos) #pos of the card to discard (quick np.where in the card saved list)
 ```
+
 
 ### Servo motor -angle
 Angle servo motors work from 0° to 180° and uses only 1 command and 2 power supply cables with a PWM input. Demo file found in [Raspberry Pi tutorials](https://tutorials-raspberrypi.com/raspberry-pi-servo-motor-control/)
@@ -45,39 +40,10 @@ servo_motor.cleanup()
 ### Servo motor -360
 No function has been written yet, though must look like the angle one
 
-### DC motor
-For the wheel to operate correctly, certain positions must be reached. The positions are integers going from 1 to 32 and current position is initialized to 0 when first declaration of the motor class.
-Sub-functions exist in order to turn the motor in the right direction toward the targetted position according to the current position. Convert position shift to period of time and send to pwm with a certain fixed frequency.
-Class function are in *Motor_DC.py* and demo file comes from [Maker Pro](https://maker.pro/raspberry-pi/projects/raspberry-pi-dc-motor-control-with-custom-board). The motor chosen
-must be supplied by an external 12V battery.
-
-in call motor:
-```
-from Motor_DC import DCMotor
-
-dc_motor = DCMotor(PIN_enable, PIN_input1, PIN_input_2)
-dc_motor.go_to_position(target_position) #enter integer between 1 and 32
-dc_motor.cleanup
-```
 (!!NOT TESTED!!)
 *TODO: find speed dependance on number of turn before testing and define speed ratio with PWM
 
 ### Stepper motor
-A sequence for the arm with 2 position is created in *Motor_step.py* (should do 180° but can be arranged). Parameters are nb/turn per revolution : find in datasheet, and a string
-for the sequence name which must be "arm" but other demos are created for "full" speed turn and "half" speed turn. Something must be done for the direction of rotation (still dunno how this work)
-Demo file comes from [aranacorp](https://www.aranacorp.com/fr/pilotez-un-moteur-pas-a-pas-avec-raspberrypi/)
-
-in call motor:
-```
-from Motor_step import StepMotor
-
-step_motor = StepMotor(StepPins) #list of used pins [pin1,pin2,pin3,pin4] (TODO find the pins)
-sequence = step_motor.define_sequence("arm")
-step_motor.steps(Nb_per_turn, sequence)
-step_motor.cleanup
-```
-(!!NOT TESTED!!)
-*TODO : find datasheet speed and pins
 
 ## Motors circuit
 
