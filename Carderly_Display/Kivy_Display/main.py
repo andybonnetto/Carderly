@@ -7,6 +7,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from database import Database
 from kivy.clock import Clock
+from functools import partial
 from kivy.graphics import *
 import RPi.GPIO as GPIO
 
@@ -25,26 +26,27 @@ GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 # firebase = pyrebase.initialize_app(config)
 # database = firebase.database()
 ROOM_NAME = 'Faf'
+PIN_BLUE = 40
 button_state = False
 
 class MainWindow(Screen):
 
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
-        Clock.schedule_interval(self.button_callback, 0.1)
+        Clock.schedule_interval(partial(self.button_callback,PIN_BLUE), 0.1)
 
 
-    def button_callback(self,token):
+    def button_callback(self,pin,token):
         global button_state
         if not button_state:
             button_state = False
-            if GPIO.input(40) == GPIO.HIGH:
-                # self.shift_to_insert()
-                print("shift")
+            if GPIO.input(pin) == GPIO.HIGH:
+                print("pressed")
+                self.shift_to_insert()
                 button_state = True
         else:
-            if GPIO.input(40) == GPIO.LOW:
-                print("button released")
+            if GPIO.input(pin) == GPIO.LOW:
+                print("released")
                 button_state = False
 
     def shift_to_insert(self):
