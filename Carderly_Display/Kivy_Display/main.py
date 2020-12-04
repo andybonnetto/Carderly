@@ -25,6 +25,7 @@ GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 # firebase = pyrebase.initialize_app(config)
 # database = firebase.database()
 ROOM_NAME = 'Faf'
+button_state = False
 
 class MainWindow(Screen):
 
@@ -32,9 +33,19 @@ class MainWindow(Screen):
         super(MainWindow,self).__init__(**kwargs)
         Clock.schedule_interval(self.button_callback, 0.1)
 
+
     def button_callback(self,token):
-        if GPIO.input(40) == GPIO.HIGH:
-            print("button pushed")
+        global button_state
+        if not button_state:
+            button_state = False
+            if GPIO.input(40) == GPIO.HIGH:
+                # self.shift_to_insert()
+                print("shift")
+                button_state = True
+        else:
+            if GPIO.input(40) == GPIO.LOW:
+                print("button released")
+                button_state = False
 
     def shift_to_insert(self):
         sm.current = "insert_deck"
