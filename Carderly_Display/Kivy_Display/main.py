@@ -13,7 +13,6 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-self.button= False
 
 # import pyrebase
 #
