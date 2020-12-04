@@ -172,7 +172,7 @@ class InsertDeck(Screen):
     def get_shift_on(self,token):
         self.mess = ""
     def get_shift_off(self,token):
-        self.mess = "please wait..."
+        self.mess = "Card treatment, please wait..."
 
 class WaitingRoom(Screen):
 
@@ -343,6 +343,8 @@ class MyMainApp(App):
     def build(self):
         return sm
 
+def main():
+    MyMainApp().run()
 
 if __name__ == "__main__":
     MyMainApp().run()
