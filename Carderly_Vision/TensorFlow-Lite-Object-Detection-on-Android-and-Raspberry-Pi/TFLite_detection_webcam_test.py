@@ -64,7 +64,7 @@ class VideoStream:
                 return
 
             # Otherwise, grab the next frame from the stream
-            self.frame = np.empty((resolution[1] * resolution[0] * 3,), dtype=np.uint8)
+            self.frame = np.empty((self.camera.resolution[1] * self.camera.resolution[0] * 3,), dtype=np.uint8)
             self.camera.capture(self.frame, 'rgb')
             self.frame = self.frame.reshape((self.camera.resolution[1], self.camera.resolution[0], 3))
 
