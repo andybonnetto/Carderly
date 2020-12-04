@@ -30,7 +30,7 @@ class MainWindow(Screen):
 
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
-        Clock.schedule_interval(self.button_callback, 0.01)
+        # Clock.schedule_interval(self.button_callback, 0.01)
 
     def shift_to_insert(self):
         sm.current = "insert_deck"
@@ -213,10 +213,10 @@ sm.current = "main_win"
 
 class MyMainApp(App):
     def build(self):
-        return sm
-    def button_callback(self):
         if GPIO.input(40) == GPIO.HIGH:
             print("button pushed")
+        return sm
+
 
 if __name__ == "__main__":
     MyMainApp().run()
