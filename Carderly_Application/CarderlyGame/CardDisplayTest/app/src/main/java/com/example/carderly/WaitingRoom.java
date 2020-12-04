@@ -31,6 +31,7 @@ public class WaitingRoom extends AppCompatActivity {
     Button  button;
     TextView textView;
     public static String roomName ="";
+    public static int player_ID;
     ArrayList<String> playersList;
     ArrayAdapter<String> adapter;
 
@@ -53,6 +54,7 @@ public class WaitingRoom extends AppCompatActivity {
 
         Intent intent = getIntent();
         roomName = (String) intent.getSerializableExtra("roomName");
+        player_ID = (int) intent.getSerializableExtra("playerID");
 
         database = FirebaseDatabase.getInstance();
         textView.setText("Room name :" + roomName);
@@ -75,13 +77,14 @@ public class WaitingRoom extends AppCompatActivity {
                 for (DataSnapshot childrenSnapshot: dataSnapshot.getChildren()) {
                     playersList.add(childrenSnapshot.child("Name").getValue(String.class));
                 }
-                System.out.println(Arrays.toString(playersList.toArray()));
+                //System.out.println(Arrays.toString(playersList.toArray()));
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(WaitingRoom.this, R.layout.waiting_room_players_listview, playersList);
                 listView.setAdapter(adapter);
                 counter = playersList.size();
                 if (counter == 4){
                     Intent intent = new Intent(WaitingRoom.this, MainActivity.class);
                     intent.putExtra("listofPlayers",playersList);
+                    intent.putExtra("playerID",player_ID);
                     startActivity(intent);
                 }
             }

@@ -77,6 +77,7 @@ public class RoomChoice extends AppCompatActivity {
                 writeStringDB(playerName,"rooms/" + playerName + "/player1" + "/Name");
                 Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
                 intent.putExtra("roomName", roomName);
+                intent.putExtra("playerID",1);
                 startActivity(intent);
             }
 
@@ -98,18 +99,21 @@ public class RoomChoice extends AppCompatActivity {
                             player_joined[0] = true; // The boolean must be an array to work inside this callback (no idea why?)
                             Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
                             intent.putExtra("roomName", roomName);
+                            intent.putExtra("playerID",2);
                             startActivity(intent);
                         }else if ((room_nb_players ==2) && (player_joined[0] == false)){
                             writeStringDB(playerName,"rooms/" + roomName + "/player3" + "/Name");
                             player_joined[0] = true;
                             Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
                             intent.putExtra("roomName", roomName);
+                            intent.putExtra("playerID",3);
                             startActivity(intent);
                         }else if ((room_nb_players ==3) && (player_joined[0] == false)){
                             writeStringDB(playerName,"rooms/" + roomName + "/player4" + "/Name");
                             player_joined[0] = true;
                             Intent intent = new Intent(getApplicationContext(), WaitingRoom.class);
                             intent.putExtra("roomName", roomName);
+                            intent.putExtra("playerID",4);
                             startActivity(intent);
                         }else {
                             Message.message(getApplicationContext(), "Player 1 doesn't want to play with you");
