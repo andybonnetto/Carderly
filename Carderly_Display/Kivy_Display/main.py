@@ -169,9 +169,9 @@ class InsertDeck(Screen):
     def get_status(self):
         pass
         #read database shuffling starts
-    def get_shift_on(self):
+    def get_shift_on(self,token):
         self.mess = ""
-    def get_shift_off(self):
+    def get_shift_off(self,token):
         self.mess = "please wait..."
 
 class WaitingRoom(Screen):
