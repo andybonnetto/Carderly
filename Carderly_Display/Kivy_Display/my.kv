@@ -9,6 +9,7 @@
     FloatLayout:
 
         Button:
+            background_color: 0,0,1,1
             pos_hint:{"x":0.35,"y":0.15}
             size_hint: 0.3, 0.1
             font_size: (root.width**2 + root.height**2) / 12**4
@@ -19,6 +20,7 @@
                 root.shift_to_insert()
 
         Button:
+            background_color: 1,0,0,1
             pos_hint:{"x":0.05,"y":0.15}
             size_hint: 0.25, 0.1
             font_size: (root.width**2 + root.height**2) / 12**4
@@ -29,6 +31,7 @@
                 root.shift_to_contact()
 
         Button:
+            background_color: 0,1,0,1
             pos_hint:{"x":0.7,"y":0.15}
             size_hint: 0.25, 0.1
             font_size: (root.width**2 + root.height**2) / 12**4
@@ -218,7 +221,7 @@
                 root.manager.transition.direction = "left"
                 root.shift_to_main()
 <InsertDeck>
-
+    mess : wait_mess
     canvas.before:
         Rectangle:
             pos: self.pos
@@ -232,6 +235,13 @@
             size_hint:1, 1.7
             font_size: (root.width + root.height) / 25
             text: "Insert Deck"
+
+        Label:
+            id: wait_mess
+            tpos_hint:{"x": 0.9, "y":0.4}
+            size_hint:1, 1.2
+            font_size: (root.width + root.height) / 29
+            text: "Card treatment, please wait..."
 
         Button:
             background_color: 0,0,1,0.8
