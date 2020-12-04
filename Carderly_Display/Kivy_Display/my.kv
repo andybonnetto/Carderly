@@ -49,18 +49,49 @@
             source: "background.png"
 
     FloatLayout:
+        canvas:
+            Color:
+                rgba : 0.,0.,0.,0.7
+            Rectangle:
+                pos : 80,170
+                size : 190,290
+            Rectangle:
+                pos : 305,170
+                size : 190,290
+            Rectangle:
+                pos : 525,170
+                size : 190,290
+
         Label:
             id: "title_waiting"
             tpos_hint:{"x": 0.9, "y":0.9}
             size_hint:1, 1.7
             font_size: (root.width + root.height) / 20
             text: "Waiting Room"
+        Label:
+            id: "Player_1"
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:0.45, 1.4
+            font_size: (root.width + root.height) / 27
+            text: "Player 1"
+        Label:
+            id: "Player_2"
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:1, 1.4
+            font_size: (root.width + root.height) / 27
+            text: "Player 2"
+        Label:
+            id: "Player_3"
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:1.55, 1.4
+            font_size: (root.width + root.height) / 27
+            text: "Player 3"
         Button:
             background_color: 0,0,1,0.8
             pos_hint:{"x":0.65,"y":0.1}
             size_hint: 0.3, 0.1
             font_size: (root.width**2 + root.height**2) / 12**4
-            text: "Next"
+            text: "Game"
             on_release:
                 root.manager.transition.direction = "left"
                 root.shift_to_game()
@@ -73,11 +104,18 @@
             on_release:
                 root.manager.transition.direction = "right"
                 root.shift_to_main()
+        Button:
+            background_color: 1,1,1,0.8
+            pos_hint:{"x":0.3,"y":0.0}
+            size_hint: 0.4, 0.1
+            font_size: (root.width**2 + root.height**2) / 12**4
+            text: "Join another"
+            on_release:
+
 
 
 <GameWindow>
     name : "game"
-
     canvas.before:
         Rectangle:
             pos: self.pos
@@ -101,6 +139,7 @@
             on_release:
                 root.manager.transition.direction = "right"
                 root.shift_to_waiting()
+
 <Settings>
     name : "settings"
 
