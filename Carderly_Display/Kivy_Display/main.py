@@ -8,17 +8,17 @@ from kivy.uix.button import Button
 from database import Database
 from kivy.clock import Clock
 from kivy.graphics import *
-import RPi.GPIO as GPIO
-import pyrebase
-
-config = {
-    "apiKey": "",
-    "authDomain": "carderlydatabase.firebaseapp.com",
-    "databaseURL": "https://carderlydatabase.firebaseio.com/",
-    "storageBucket": "carderlydatabase.appspot.com"
-}
-firebase = pyrebase.initialize_app(config)
-database = firebase.database()
+# import RPi.GPIO as GPIO
+# import pyrebase
+#
+# config = {
+#     "apiKey": "",
+#     "authDomain": "carderlydatabase.firebaseapp.com",
+#     "databaseURL": "https://carderlydatabase.firebaseio.com/",
+#     "storageBucket": "carderlydatabase.appspot.com"
+# }
+# firebase = pyrebase.initialize_app(config)
+# database = firebase.database()
 ROOM_NAME = 'Faf'
 
 class MainWindow(Screen):
@@ -28,23 +28,24 @@ class MainWindow(Screen):
         Clock.schedule_interval(self.button_callback, 0.01)
 
     def button_callback(self,token):
-        if GPIO.input(40) == GPIO.HIGH:
-            print("button pushed")
-            self.shift_to_waiting()
+        # if GPIO.input(40) == GPIO.HIGH:
+        #     print("button pushed")
+        #     self.shift_to_waiting()
+        pass
 
-    def shift_to_waiting(self):
-        sm.current = "waiting"
+    def shift_to_insert(self):
+        sm.current = "insert_deck"
 
     def shift_to_settings(self):
         sm.current = "settings"
 
     def shift_to_contact(self):
         sm.current = "contact"
-    def __init__(self,**kwargs):
-        super(MainWindow, self).__init__(**kwargs)
-        if GPIO.input(10) == GPIO.HIGH:
-            print("button pressed")
-            self.shift_to_waiting()
+
+class InsertDeck(Screen):
+
+    def shift_to_waiting(self):
+        sm.current = "waiting"
 
 class WaitingRoom(Screen):
 
@@ -66,14 +67,19 @@ class WaitingRoom(Screen):
         Clock.schedule_interval(self.name_display, 3)
 
     def name_display(self,token):
-        contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
-        space = 0
-        for contact in contacts.each():
-            if space != 0:
-                self.add_widget(Label(text=contact.val()["Name"], font_size=50, pos=(-500 + space * 230, 0)))
-            space += 1
-        if space >= 3:
-            self.full = True
+        # contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
+        # space = 0
+        # contact_name = [0, 0, 0, 0]
+        # for i in range(4):
+        #     contact_name[i] = Label(text="", font_size=50, pos=(-500 + space * 230, 0))
+        # for contact in contacts.each():
+        #     if space != 0:
+        #         contact_name[space].text = contact.val()["Name"]
+        #         self.add_widget(contact_name[space])
+        #     space += 1
+        # if space >= 3:
+        #     self.full = True
+        pass
 
 class GameWindow(Screen):
     def shift_to_waiting(self):
@@ -81,7 +87,8 @@ class GameWindow(Screen):
 
     def highlight_turn(self,token):
     #Draw green rectangle during player's turn or show "Your turn"
-        player_turn = database.child('Current to play').get().val()
+        # player_turn = database.child('Current to play').get().val()
+        player_turn = 2 #CHAAAAAAAAAAAAAAAAANGE
         self.yourturn.text= ""
         self.canvas.add(Color(0,1,0,0.5, mode='rgba'))
         try:
@@ -105,14 +112,15 @@ class GameWindow(Screen):
             self.yourturn.text="[color=111111]Your turn[/color]"
 
     def name_display_game(self):
-        contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
-        space = 0
-        for contact in contacts.each():
-            if space != 0:
-                self.add_widget(Label(text=contact.val()["Name"], font_size=50, pos=(-450 + space * 220, -(space%2)*100+100)))
-            space += 1
-        if space >= 4:
-            self.full = True
+        # contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
+        # space = 0
+        # for contact in contacts.each():
+        #     if space != 0:
+        #         self.add_widget(Label(text=contact.val()["Name"], font_size=50, pos=(-450 + space * 220, -(space%2)*100+100)))
+        #     space += 1
+        # if space >= 4:
+        #     self.full = True
+        pass
     def __init__(self,**kwargs):
         super(GameWindow, self).__init__(**kwargs)
         self.yourturn = Label(text="", pos=(-10,-80), font_size=50,markup=True)
@@ -121,22 +129,28 @@ class GameWindow(Screen):
         self.choose_atout()
         Clock.schedule_interval(self.highlight_turn, 0.5)
     def choose_atout(self):
+        # db_atout = database.child("Atout")
+        pass
         def choose_spade(instance):
             print("you choose {}".format(instance.text))
             self.atout = "spade"
             self.remove_buttons()
+            # db_atout.set(self.atout)
         def choose_heart(instance):
             print("you choose {}".format(instance.text))
             self.atout = "heart"
             self.remove_buttons()
+            # db_atout.set(self.atout)
         def choose_diamond(instance):
             print("you choose {}".format(instance.text))
             self.atout = "diamond"
             self.remove_buttons()
+            # db_atout.set(self.atout)
         def choose_clubs(instance):
             print("you choose {}".format(instance.text))
             self.atout = "clubs"
             self.remove_buttons()
+            # db_atout.set(self.atout)
 
         self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(300,200))
         self.Spade.bind(on_press=choose_spade)
@@ -155,6 +169,7 @@ class GameWindow(Screen):
         self.remove_widget(self.Heart)
         self.remove_widget(self.Diamond)
         self.remove_widget(self.Clubs)
+
 
 
 
@@ -181,9 +196,10 @@ class ContactWindow(Screen):
             space += 30
 
 class WindowManager(ScreenManager):
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setwarnings(False)
-    GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    # GPIO.setmode(GPIO.BCM)
+    # GPIO.setwarnings(False)
+    # GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    pass
 
 # def popup_change():
 #     pop = Popup(title='Change Account',
@@ -193,7 +209,7 @@ class WindowManager(ScreenManager):
 
 sm = WindowManager()
 kv = Builder.load_file("my.kv")
-screens = [MainWindow(name="main_win"), WaitingRoom(name="waiting"),GameWindow(name="game"),Settings(name="settings"),ContactWindow(name="contact")]
+screens = [MainWindow(name="main_win"), WaitingRoom(name="waiting"),GameWindow(name="game"),Settings(name="settings"),ContactWindow(name="contact"),InsertDeck(name="insert_deck")]
 for screen in screens:
     sm.add_widget(screen)
 

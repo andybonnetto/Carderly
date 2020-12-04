@@ -16,7 +16,7 @@
             text: "Connexion"
             on_release:
                 root.manager.transition.direction = "left"
-                root.shift_to_waiting()
+                root.shift_to_insert()
 
         Button:
             pos_hint:{"x":0.05,"y":0.15}
@@ -217,12 +217,28 @@
             on_release:
                 root.manager.transition.direction = "left"
                 root.shift_to_main()
+<InsertDeck>
+
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "background.png"
+
+    FloatLayout:
+        Label:
+            id: "title_Insert"
+            tpos_hint:{"x": 0.9, "y":0.7}
+            size_hint:1, 1.7
+            font_size: (root.width + root.height) / 25
+            text: "Insert Deck"
 
         Button:
-            background_color: 0,1,0,0.81
+            background_color: 0,0,1,0.8
             pos_hint:{"x":0.65,"y":0.1}
             size_hint: 0.3, 0.1
             font_size: (root.width**2 + root.height**2) / 12**4
-            text: "PRESS"
+            text: "Waiting"
             on_release:
-                root.read_contacts()
+                root.manager.transition.direction = "left"
+                root.shift_to_waiting()
