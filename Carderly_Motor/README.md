@@ -13,7 +13,7 @@ from call_motor import *
 
 call_servo_angle()
 call_servo_360(status) #status is either 'input' or 'output' to change the pin of the motor selected
-define_step_motor()
+call_dc() #do the back and forth movement of the arm
 ```
 The Stepper motor will be called in the *shuffle* and *discard* functions that you can call this way
 ```
