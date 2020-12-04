@@ -10,7 +10,7 @@ from kivy.clock import Clock
 from kivy.graphics import *
 import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
@@ -30,7 +30,7 @@ class MainWindow(Screen):
 
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
-        # Clock.schedule_interval(self.button_callback, 0.01)
+        Clock.schedule_interval(self.button_callback, 0.01)
 
     def shift_to_insert(self):
         sm.current = "insert_deck"
@@ -195,10 +195,7 @@ class ContactWindow(Screen):
             space += 30
 
 class WindowManager(ScreenManager):
-    button = False
-    if GPIO.input(40) == GPIO.HIGH:
-        print("button pushed")
-        button = True
+    pass
 
 # def popup_change():
 #     pop = Popup(title='Change Account',
@@ -217,10 +214,9 @@ sm.current = "main_win"
 class MyMainApp(App):
     def build(self):
         return sm
+    def button_callback(self):
+        if GPIO.input(40) == GPIO.HIGH:
+            print("button pushed")
 
 if __name__ == "__main__":
-    # database = firebase.database()
-    # player = database.child("Player 1")
-    # card = player.child("Card 1").get().val()
-    # print(card)
     MyMainApp().run()
