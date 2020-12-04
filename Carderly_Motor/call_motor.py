@@ -20,19 +20,20 @@ def call_stepper():
     pass
 
 def call_servo_360(status = 'input'):
-    servo_motor360 = Servo360(18)
+    servo_motor360_in = Servo360(18)
+    servo_motor360_out = Servo360(27)
     if status == 'input':
-        servo_motor360.activate(5,dc=100)
+        servo_motor360_in.activate(5,dc=100) #period and dc
+        servo_motor360_in.cleanup()
     elif status == 'output':
-        pass
-    servo_motor360.cleanup()
+        servo_motor360_out.activate(5,dc=100)
+        servo_motor360_out.cleanup()
+
 
 def shuffle(step_motor):
     #call the DC motor to go to next step separated by an interval of ? sec
-    for current_pos in range(31):
-        step_motor.go_to_pos(current_pos+1)
-        time.sleep(0.5)
-    #naps between each steps
+    step_motor.go_to_pos(current_pos+1)
+    time.sleep(0.5) #naps between each steps
 
 def discard(step_motor, pos):
     #call the DC motor to go to card in the database position (np.where in saved list)
