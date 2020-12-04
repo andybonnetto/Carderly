@@ -1,7 +1,7 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty,StringProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.uix.button import Button
@@ -157,13 +157,15 @@ class MainWindow(Screen):
         sm.current = "waiting"
 
 class InsertDeck(Screen):
+    mess = StringProperty()
+
     def __init__(self,**kwargs):
         super(InsertDeck,self).__init__(**kwargs)
-        mess = ObjectProperty(Label)
+
         # Clock.schedule_interval(self.get_status, 3)
         condition = True
         if condition:
-            mess.text = ""
+            self.mess.text = ""
     def shift_to_waiting(self):
         sm.current = "waiting"
     def get_status(self):
