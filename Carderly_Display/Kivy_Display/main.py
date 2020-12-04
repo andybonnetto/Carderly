@@ -157,9 +157,18 @@ class MainWindow(Screen):
         sm.current = "waiting"
 
 class InsertDeck(Screen):
-
+    def __init__(self,**kwargs):
+        super(InsertDeck,self).__init__(**kwargs)
+        mess = ObjectProperty(None)
+        # Clock.schedule_interval(self.get_status, 3)
+        condition = True
+        if condition:
+            mess.text = ""
     def shift_to_waiting(self):
         sm.current = "waiting"
+    def get_status(self):
+        #read database shuffling starts
+        pass
 
 class WaitingRoom(Screen):
 
