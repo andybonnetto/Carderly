@@ -157,7 +157,7 @@ class MainWindow(Screen):
         sm.current = "waiting"
 
 class InsertDeck(Screen):
-    mess = StringProperty()
+    mess = ObjectProperty(None)
 
     def __init__(self,**kwargs):
         super(InsertDeck,self).__init__(**kwargs)
