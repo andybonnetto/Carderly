@@ -161,16 +161,17 @@ class InsertDeck(Screen):
 
     def __init__(self,**kwargs):
         super(InsertDeck,self).__init__(**kwargs)
+        Clock.schedule_interval(self.get_shift_on, 3)
+        Clock.schedule_interval(self.get_shift_off, 4)
 
-        # Clock.schedule_interval(self.get_status, 3)
-        condition = True
-        if condition:
-            self.mess = ""
     def shift_to_waiting(self):
         sm.current = "waiting"
     def get_status(self):
         #read database shuffling starts
-        pass
+    def shift_on(self):
+        self.mess = ""
+    def shift_off(self):
+        self.mess = "please wait..."
 
 class WaitingRoom(Screen):
 
