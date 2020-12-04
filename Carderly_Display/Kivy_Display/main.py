@@ -6,6 +6,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from database import Database
 from kivy.clock import Clock
+import RPi.GPIO as GPIO
 
 
 class MainWindow(Screen):
@@ -15,6 +16,11 @@ class MainWindow(Screen):
         sm.current = "settings"
     def shift_to_contact(self):
         sm.current = "contact"
+    def __init__(self,**kwargs):
+        super(MainWindow, self).__init__(**kwargs)
+        if GPIO.input(10) == GPIO.HIGH:
+            print("button pressed")
+            self.shift_to_waiting()
 
 class WaitingRoom(Screen):
     def shift_to_game(self):
@@ -92,4 +98,7 @@ class MyMainApp(App):
         return sm
 
 if __name__ == "__main__":
+    GPIO.setwarnings(False)  # Ignore warning for now
+    GPIO.setmode(GPIO.BOARD)  # Use physical pin numbering
+    GPIO.setup(40, GPIO.IN,pull_up_down=GPIO.PUD_DOWN)  # Set pin 40 to be an input pin and set initial value to be pulled low (off)
     MyMainApp().run()

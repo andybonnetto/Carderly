@@ -1,9 +1,28 @@
+# Carderly Vision
+
+## TODO for the VISION
+* <b>Preprocess_card</b> </br>
+Compare all the cards seen to the hand of player 1 in database and send only the estimated card played in the database, that can be done at the end of Activate Vision
+* <b>Condition for while loop</b> (to decide) </br> 
+For now the vision is in a *while true* loop, we can either make a function and put the loop outside (in the lauch file) or make it run at all time and put a condition in the database
+* <b>Find the setup for changing cameras</b> (Andy) </br>
+I don't quite understand in which position the cameras are saved everytime I turn off and on the raspi, this needs to be setted in *Activate_vision.py; cv2.VideoCapture(cam_num)*
+* <b>Training for ditribution</b> (Andy) </br> 
+New training needs to be done for the distribution with one of the cameras, which means they are not gonna be launched with the same tflite model.
+* <b>Make call_vision()</b> </br>
+Read in the database and detect if there is no card for distribution -> discard all cards.
+
 ## Object detection with API
-A graph had been trained with 52 cards (soon with 32) and converted into "detect.tflite". With the company of the "labelmap.txt" file, it contains the dection model which can be tested by launching the 
+A graph had been trained with 32 and converted into "detect.tflite". With the company of the "labelmap.txt" file, it contains the dection model which can be tested by launching the 
 ```
-python /path/to/TFLite_detection_webcam.py –modeldir=/path/to/tflite_folder 
+python TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_vision.py –-modeldir=../TFlite_models/32 
 ```
-(soon files and paths on github) </br>
+for now it prints the value of all the cards seen for each frame.
+
+I can write a program to read the value in the database so we only only care about the vision when we want just by reading in the database at the right time.
+```
+python call_vision
+```
 tutorials: </br>
 https://medium.com/@Elenche.Zetetique/object-detection-with-tensorflow-42eda282d915 </br>
 https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10 </br>
