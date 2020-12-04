@@ -41,11 +41,11 @@ class VideoStream:
     # Variable to control when the camera is stopped
     #     self.stopped = False
         self.camera = picamera.PiCamera()
-        camera.resolution = resolution
-        camera.framerate = framerate
+        self.camera.resolution = resolution
+        self.camera.framerate = framerate
         time.sleep(2)
         self.frame= np.empty((resolution[1],resolution[0],3),dtype=np.uint8)
-        camera.capture(self.frame, 'rgb')
+        self.camera.capture(self.frame, 'rgb')
         self.stopped = False
 
     def start(self):
