@@ -167,6 +167,7 @@ class InsertDeck(Screen):
     def shift_to_waiting(self):
         sm.current = "waiting"
     def get_status(self):
+        pass
         #read database shuffling starts
     def shift_on(self):
         self.mess = ""
