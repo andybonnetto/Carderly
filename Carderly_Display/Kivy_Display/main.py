@@ -196,11 +196,10 @@ class ContactWindow(Screen):
             space += 30
 
 class WindowManager(ScreenManager):
-    def button_callback(self):
-        self.button = False
-        if GPIO.input(40) == GPIO.HIGH:
-            print("button pushed")
-            self.button = True
+    button = False
+    if GPIO.input(40) == GPIO.HIGH:
+        print("button pushed")
+        button = True
 
 # def popup_change():
 #     pop = Popup(title='Change Account',
