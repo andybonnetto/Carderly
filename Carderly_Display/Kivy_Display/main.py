@@ -11,11 +11,17 @@ from functools import partial
 from kivy.graphics import *
 import RPi.GPIO as GPIO
 
-PIN_BLUE = 21
+PIN_BLUE = 40
+PIN_GREEN = 38
+PIN_RED = 32
+PIN_GREY = 36
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
+GPIO.setup(PIN_GREEN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(PIN_BLUE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(PIN_GREY, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(PIN_RED, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # import pyrebase
 #
@@ -29,31 +35,36 @@ GPIO.setup(PIN_BLUE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 # database = firebase.database()
 ROOM_NAME = 'Faf'
 
-button_state = False
+blue_button_state = False
 
 class MainWindow(Screen):
 
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
-        Clock.schedule_interval(partial(self.button_callback,PIN_BLUE), 0.1)
+        Clock.schedule_interval(self.blue_button_callback, 0.1)
 
 
-    def button_callback(self,pin,token):
-        global button_state
-        if not button_state:
-            button_state = False
-            if GPIO.input(pin) == GPIO.HIGH:
+    def blue_button_callback(self,token):
+        global blue_button_state
+        if not blue_button_state:
+            blue_button_state = False
+            if GPIO.input(PIN_BLUE) == GPIO.HIGH:
                 if sm.current == "main_win":
                     self.shift_to_insert()
-                    button_state = True
+                    blue_button_state = True
                     return
                 if sm.current == "insert_deck":
-                    sm.current = "main_win"
-                    button_state = True
+                    self.shift_to_waiting()
+                    blue_button_state = True
+                    return
+                if sm.current == "waiting":
+                    self.shift_to_game()
+                    blue_button_state = True
                     return
         else:
-            if GPIO.input(pin) == GPIO.LOW:
-                button_state = False
+            if GPIO.input(PIN_BLUE) == GPIO.LOW:
+                blue_button_state = False
+
 
     def shift_to_insert(self):
         sm.current = "insert_deck"
