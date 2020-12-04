@@ -19,7 +19,11 @@ Diplay need to read the names in the person's waiting and for that needs a name.
 
 ## Making on Windows
   After installing Kivy with conda, you can mess up with the two important files for the kivy display which are *main.py* and *my.kv* (some kv file, looks like OpenGL btw)
-Kind of like HTML/CSS the kv file is responsible for all the layout part and the python handles the functions
+Kind of like HTML/CSS the kv file is responsible for all the layout part and the python handles the functions. In order to use Kivy you will need to install the kivy packaging by using
+```
+pip install kivy
+```
+in your python environment or add the package in the python interpreter of PyCharm to do small tests. This will give the possiblity to use sub kivy packaging such as the Buttons the Labels or even the ScreenManager.
 ## Test on Raspberry
   to launch the kivy programm on raspberry using putty on SSH, you will need to specify the display (default value LCD) in order for Ximing to recognize it type the following in a terminal (change to 0 for LCD display)
 ```
