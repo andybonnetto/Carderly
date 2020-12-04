@@ -41,12 +41,13 @@ class MainWindow(Screen):
         if not button_state:
             button_state = False
             if GPIO.input(pin) == GPIO.HIGH:
-                print("pressed")
-                self.shift_to_insert()
                 button_state = True
+                if sm.current == "main_win":
+                    self.shift_to_insert()
+                if sm.current == "insert_deck":
+                    sm.current = "main_win"
         else:
             if GPIO.input(pin) == GPIO.LOW:
-                print("released")
                 button_state = False
 
     def shift_to_insert(self):
