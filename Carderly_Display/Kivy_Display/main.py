@@ -165,7 +165,7 @@ class InsertDeck(Screen):
         # Clock.schedule_interval(self.get_status, 3)
         condition = True
         if condition:
-            self.mess.text = ""
+            self.mess = ""
     def shift_to_waiting(self):
         sm.current = "waiting"
     def get_status(self):
