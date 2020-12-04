@@ -79,7 +79,7 @@ class MainWindow(Screen):
         global red_button_state
         if not red_button_state:
             red_button_state = False
-            if GPIO.input(PIN_BLUE) == GPIO.HIGH:
+            if GPIO.input(PIN_RED) == GPIO.HIGH:
                 if sm.current == "main_win":
                     self.shift_to_contact()
                     red_button_state = True
@@ -104,7 +104,7 @@ class MainWindow(Screen):
         global green_button_state
         if not green_button_state:
             green_button_state = False
-            if GPIO.input(PIN_BLUE) == GPIO.HIGH:
+            if GPIO.input(PIN_GREEN) == GPIO.HIGH:
                 if sm.current == "insert_deck":
                     print("green")
                     green_button_state = True
@@ -121,7 +121,7 @@ class MainWindow(Screen):
         global grey_button_state
         if not grey_button_state:
             grey_button_state = False
-            if GPIO.input(PIN_BLUE) == GPIO.HIGH:
+            if GPIO.input(PIN_GREY) == GPIO.HIGH:
                 if sm.current == "main_win":
                     self.shift_to_insert()
                     grey_button_state = True
