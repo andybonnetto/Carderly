@@ -109,6 +109,7 @@ def compare_to_database(label):
     not_name = False
     i = 0
     for card in db_cards.each():
+        print(card.val())
         if not_name:
             hand = card.val()["Card{}".format(i)]
             if hand == num:
