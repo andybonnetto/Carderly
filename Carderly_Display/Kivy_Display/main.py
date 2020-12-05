@@ -40,6 +40,30 @@ red_button_state = False
 green_button_state = False
 grey_button_state = False
 
+def num_to_label(num):
+    color_num = int(num/100)
+    if color_num == 1:
+        color = "Clubs"
+    elif color_num == 2:
+        color = "Spade"
+    elif color_num == 3:
+        color = "Diamond"
+    else:
+        color = "Heart"
+    val_num = num - color_num
+    if val_num == 11:
+        val = "Jack"
+    elif val_num == 12:
+        val = "Queen"
+    elif val_num == 13:
+        val = "King"
+    elif val_num == 14:
+        val = "Ace"
+    else:
+        val = str(val_num)
+    label = val + "of" + color
+    return label
+
 class MainWindow(Screen):
 
     def __init__(self,**kwargs):
@@ -314,7 +338,8 @@ class GameWindow(Screen):
         db_vision = database.child("Vision").get()
         card_seen = db_vision.val()
         if card_seen:
-            self.card_vis = card_seen
+            label = num_to_label(card_seen)
+            self.card_vis = label
 
 
 
