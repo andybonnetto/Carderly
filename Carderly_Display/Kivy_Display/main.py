@@ -258,24 +258,26 @@ class GameWindow(Screen):
         Clock.schedule_interval(self.highlight_turn, 0.5)
         Clock.schedule_interval(self.show_atout,0.05)
     def choose_atout(self):
-        db_atout = database.child("Atout")
-        pass
         def choose_spade(instance):
+            db_atout = database.child("Atout")
             print("you choose {}".format(instance.text))
             self.atout = "spade"
             self.remove_buttons()
             db_atout.set(self.atout)
         def choose_heart(instance):
+            db_atout = database.child("Atout")
             print("you choose {}".format(instance.text))
             self.atout = "heart"
             self.remove_buttons()
             db_atout.set(self.atout)
         def choose_diamond(instance):
+            db_atout = database.child("Atout")
             print("you choose {}".format(instance.text))
             self.atout = "diamond"
             self.remove_buttons()
             db_atout.set(self.atout)
         def choose_clubs(instance):
+            db_atout = database.child("Atout")
             print("you choose {}".format(instance.text))
             self.atout = "clubs"
             self.remove_buttons()
