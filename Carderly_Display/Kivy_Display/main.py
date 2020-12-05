@@ -209,7 +209,8 @@ class WaitingRoom(Screen):
         pass
 
 class GameWindow(Screen):
-    atout_kv = ObjectProperty()
+    atout_kv = ObjectProperty(None)
+    im_atout_kv = ObjectProperty(None)
     def shift_to_waiting(self):
         sm.current = "waiting"
 
@@ -306,6 +307,7 @@ class GameWindow(Screen):
         atout = db_atout.get().val()
         if atout:
             self.atout_kv = atout
+            self.im_atout_kv = "{}.png".format(atout)
 
 
 
