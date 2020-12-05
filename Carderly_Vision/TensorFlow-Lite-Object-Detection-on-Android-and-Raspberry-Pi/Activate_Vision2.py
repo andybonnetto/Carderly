@@ -80,13 +80,13 @@ class VideoStream:
 def label_to_num(label):
     label_list = list(label)
     if label_list[-1] == "c":
-        first_num = "1"
+        first_num = 1
     elif label_list[-1] == "s":
-        first_num = "2"
+        first_num = 2
     elif label_list[-1] == "d":
-        first_num = "3"
+        first_num = 3
     else:
-        first_num = "4"
+        first_num = 4
 
     if label_list[0] == "1":
         second_num = 10
