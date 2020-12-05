@@ -50,7 +50,7 @@ def num_to_label(num):
         color = "Diamond"
     else:
         color = "Heart"
-    val_num = num - color_num
+    val_num = num - color_num*100
     if val_num == 11:
         val = "Jack"
     elif val_num == 12:
@@ -340,6 +340,8 @@ class GameWindow(Screen):
         if card_seen:
             label = num_to_label(card_seen)
             self.card_vis = label
+        elif card_seen == 0:
+            self.card_vis = ""
 
 
 
