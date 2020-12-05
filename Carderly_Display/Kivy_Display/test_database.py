@@ -9,5 +9,5 @@ config = {
 firebase = pyrebase.initialize_app(config)
 database = firebase.database()
 
-child = database.child("token").child("stuff")
-child.set("spade")
+child = database.child("Atout")
+child.set("coucou")

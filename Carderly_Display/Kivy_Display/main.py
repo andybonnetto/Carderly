@@ -23,16 +23,16 @@ GPIO.setup(PIN_BLUE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(PIN_GREY, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(PIN_RED, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-# import pyrebase
-#
-# config = {
-#     "apiKey": "",
-#     "authDomain": "carderlydatabase.firebaseapp.com",
-#     "databaseURL": "https://carderlydatabase.firebaseio.com/",
-#     "storageBucket": "carderlydatabase.appspot.com"
-# }
-# firebase = pyrebase.initialize_app(config)
-# database = firebase.database()
+import pyrebase
+
+config = {
+    "apiKey": "",
+    "authDomain": "carderlydatabase.firebaseapp.com",
+    "databaseURL": "https://carderlydatabase.firebaseio.com/",
+    "storageBucket": "carderlydatabase.appspot.com"
+}
+firebase = pyrebase.initialize_app(config)
+database = firebase.database()
 ROOM_NAME = 'Faf'
 
 blue_button_state = False
@@ -256,28 +256,28 @@ class GameWindow(Screen):
         self.choose_atout()
         Clock.schedule_interval(self.highlight_turn, 0.5)
     def choose_atout(self):
-        # db_atout = database.child("Atout")
+        db_atout = database.child("Atout")
         pass
         def choose_spade(instance):
             print("you choose {}".format(instance.text))
             self.atout = "spade"
             self.remove_buttons()
-            # db_atout.set(self.atout)
+            db_atout.set(self.atout)
         def choose_heart(instance):
             print("you choose {}".format(instance.text))
             self.atout = "heart"
             self.remove_buttons()
-            # db_atout.set(self.atout)
+            db_atout.set(self.atout)
         def choose_diamond(instance):
             print("you choose {}".format(instance.text))
             self.atout = "diamond"
             self.remove_buttons()
-            # db_atout.set(self.atout)
+            db_atout.set(self.atout)
         def choose_clubs(instance):
             print("you choose {}".format(instance.text))
             self.atout = "clubs"
             self.remove_buttons()
-            # db_atout.set(self.atout)
+            db_atout.set(self.atout)
 
         self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(300,200))
         self.Spade.bind(on_press=choose_spade)
