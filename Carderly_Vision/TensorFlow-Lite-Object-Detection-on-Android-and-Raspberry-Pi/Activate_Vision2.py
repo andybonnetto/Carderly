@@ -22,7 +22,17 @@ import sys
 import time
 from threading import Thread
 import importlib.util
+import pyrebase
 
+config = {
+    "apiKey": "",
+    "authDomain": "carderlydatabase.firebaseapp.com",
+    "databaseURL": "https://carderlydatabase.firebaseio.com/",
+    "storageBucket": "carderlydatabase.appspot.com"
+}
+firebase = pyrebase.initialize_app(config)
+database = firebase.database()
+ROOM_NAME = "Andy"
 
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
@@ -66,6 +76,46 @@ class VideoStream:
     def stop(self):
         # Indicate that the camera and thread should be stopped
         self.stopped = True
+
+def label_to_num(label):
+    label_list = list(label)
+    if label_list[-1] == "c":
+        first_num = "1"
+    elif label_list[-1] == "s":
+        first_num = "2"
+    elif label_list[-1] == "d":
+        first_num = "3"
+    else:
+        first_num = "4"
+
+    if label_list[0] == "1":
+        second_num = 10
+    elif label_list[0] == "J":
+        second_num = 11
+    elif label_list[0] == "Q":
+        second_num = 12
+    elif label_list[0] == "K":
+        second_num = 13
+    elif label_list[0] == "A":
+        second_num = 14
+    else:
+        second_num = parseInt(label_list[0])
+    num = first_num*100+second_num
+    return num
+
+def compare_to_database(label):
+    num = label_to_num(label)
+    db_cards = database.child("rooms").child(ROOM_NAME).child("Player1").get()
+    not_name = False
+    i = 0
+    for card in db_cards.each():
+        if not_name:
+            hand = card.val()["Card{}".format(i)]
+            if hand == num:
+                return num
+        not_name = True
+        i += 1
+    return None
 
 
 # Define and parse input arguments
@@ -215,6 +265,12 @@ while not some_condition:
             # cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
             #             2)  # Draw label text
             print(object_name)
+            card_seen = compare_to_database(object_name) #return card_seen in numbers
+            if card_seen:
+                database.child("Vision").set(card_seen)
+
+
+
 
     # Draw framerate in corner of frame
     cv2.putText(frame, 'FPS: {0:.2f}'.format(frame_rate_calc), (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2,
