@@ -121,6 +121,7 @@
     name : "game"
     atout_kv : atout
     im_atout_kv : "im_atout"
+    card_vis : vision
     canvas.before:
         Rectangle:
             pos: self.pos
@@ -153,6 +154,13 @@
             size_hint:1.65,0.2
             font_size: (root.width + root.height) / 30
             text: str(root.atout_kv)
+
+        Label:
+            id: vision
+            tpos_hint:{"x":0.5, "y":0.5}
+            size_hint:1,0.2
+            font_size: (root.width + root.height) / 40
+            text: str(root.card_vis)
 
         Button:
             background_color: 1,0,0,0.81

@@ -211,6 +211,7 @@ class WaitingRoom(Screen):
 class GameWindow(Screen):
     atout_kv = ObjectProperty(None)
     im_atout_kv = ObjectProperty(None)
+    card_vis = ObjectProperty(None)
     def shift_to_waiting(self):
         sm.current = "waiting"
 
@@ -258,6 +259,7 @@ class GameWindow(Screen):
         self.choose_atout()
         Clock.schedule_interval(self.highlight_turn, 0.5)
         Clock.schedule_interval(self.show_atout,0.05)
+        Clock.schedule_interval(self.show_vis,0.05)
     def choose_atout(self):
         def choose_spade(instance):
             db_atout = database.child("Atout")
@@ -308,6 +310,11 @@ class GameWindow(Screen):
         if atout:
             self.atout_kv = atout
             self.im_atout_kv = "{}.png".format(atout)
+    def show_vis(self,token):
+        db_vision = database.child("Vision").get()
+        card_seen = db_vision.val()
+        if card_seen:
+            self.card_vis = card_seen
 
 
 
