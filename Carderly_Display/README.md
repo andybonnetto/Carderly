@@ -1,5 +1,4 @@
 # Carderly Display
-
 Carderly Display is using the Kivy package installed for Raspberry Pi. Very Handful tutorials gives the basics of Kivy functionalities at https://www.youtube.com/playlist?list=PLzMcBGfZo4-kSJVMyYeOQ8CXJ3z1k7gHn 
 The example display from the last video is stored in the *Kivy_GUI_Example* depositery
 
@@ -18,6 +17,8 @@ Diplay need to read the names in the person's waiting and for that needs a name.
 * <b> Block go back in waiting_room and insert deck </b> </br>
 * <b> Automatic go to game feature </b>
 * <b> Show l'atout on game window </b>
+
+![display](https://github.com/andybonnetto/Carderly/blob/main/Carderly_Display/Display.PNG?raw=false) 
 
 ## Making on Windows
   After installing Kivy with conda, you can mess up with the two important files for the kivy display which are *main.py* and *my.kv* (some kv file, looks like OpenGL btw)
