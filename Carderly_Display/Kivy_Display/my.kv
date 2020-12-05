@@ -128,7 +128,7 @@
             source: "background.jpg"
         Rectangle:
             id: im_atout
-            pos : 550,10
+            pos : 520,10
             size : 100,150
             source: str(root.im_atout_kv)
 
@@ -139,6 +139,13 @@
             size_hint:1, 1.7
             font_size: (root.width + root.height) / 25
             text: "Game"
+
+        Label:
+            id: "atout_title"
+            tpos_hint:{"x": 0.9, "y":0.9}
+            size_hint:1.65, 0.5
+            font_size: (root.width + root.height) / 25
+            text: "Atout:"
 
         Label:
             id: atout
