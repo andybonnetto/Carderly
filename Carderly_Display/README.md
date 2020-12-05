@@ -3,8 +3,9 @@ Carderly Display is using the Kivy package installed for Raspberry Pi. Very Hand
 The example display from the last video is stored in the *Kivy_GUI_Example* depositery
 
 ## TODO Display
-* <b> Show card to validate </b></br>
-Show the card seen in database already preprocessed which needs to be accepted by button in order to send this value to the App.
+* ~<b> Show card to validate </b></br>
+Show the card seen in database already preprocessed which needs to be accepted by button in order to send this value to the App.~
+Solution: passive field in the database created called Vision where the values of the cards in numbers show up, conversion from number to card value is done in main.py
 * ~<b> Make commands for buttons </b>(Andy)</br>
 Kivy buttons works when you click on it but needs to work when color button is pressed~ </br>
 Solution: now buttons can be used to change the screen, all buttons commands are in the *Main_Window* screen, I still have no idea why it works that way but well..it works
