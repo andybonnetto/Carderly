@@ -301,7 +301,8 @@ class GameWindow(Screen):
         self.remove_widget(self.Clubs)
     def show_atout(self,token):
         db_atout = database.child("Atout")
-        self.atout_kv = db_atout.get().val()
+        atout = db_atout.get().val()
+        self.atout_kv = atout
 
 
 
