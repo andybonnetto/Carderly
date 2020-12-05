@@ -119,6 +119,7 @@
 
 <GameWindow>
     name : "game"
+    atout_kv : atout
     canvas.before:
         Rectangle:
             pos: self.pos
@@ -132,6 +133,13 @@
             size_hint:1, 1.7
             font_size: (root.width + root.height) / 25
             text: "Game"
+
+        Label:
+            id: atout
+            tpos_hint:{"x":0.2, "y":0.1}
+            size_hint:1,1.2
+            font_size: (root.width + root.height) / 30
+            text: str(root.atout_kv)
 
         Button:
             background_color: 1,0,0,0.81

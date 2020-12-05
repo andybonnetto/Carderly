@@ -209,6 +209,7 @@ class WaitingRoom(Screen):
         pass
 
 class GameWindow(Screen):
+    atout_kv = ObjectProperty(None)
     def shift_to_waiting(self):
         sm.current = "waiting"
 
@@ -255,6 +256,7 @@ class GameWindow(Screen):
         self.name_display_game()
         self.choose_atout()
         Clock.schedule_interval(self.highlight_turn, 0.5)
+        Clock.schedule_interval(self.show_atout,0.05)
     def choose_atout(self):
         db_atout = database.child("Atout")
         pass
@@ -291,12 +293,15 @@ class GameWindow(Screen):
         self.add_widget(self.Heart)
         self.add_widget(self.Diamond)
         self.add_widget(self.Clubs)
+
     def remove_buttons(self):
         self.remove_widget(self.Spade)
         self.remove_widget(self.Heart)
         self.remove_widget(self.Diamond)
         self.remove_widget(self.Clubs)
-
+    def show_atout(self):
+        db_atout = database.child("Atout")
+        self.atout_kv = db_atout.get().val()
 
 
 
