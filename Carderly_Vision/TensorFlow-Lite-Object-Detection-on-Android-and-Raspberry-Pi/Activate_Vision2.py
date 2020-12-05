@@ -108,8 +108,7 @@ def compare_to_database(label):
     db_cards = database.child("rooms").child(ROOM_NAME).child("Player1").get()
     i = 0
     for card in db_cards.each():
-        print(card)
-        hand = card["Card{}".format(i)]
+        hand = card.val()
         if hand == num:
             return num
         i += 1
