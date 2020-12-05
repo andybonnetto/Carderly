@@ -302,7 +302,7 @@ class GameWindow(Screen):
     def show_atout(self,token):
         db_atout = database.child("Atout")
         atout = db_atout.get().val()
-        self.atout_kv = atout
+        print(atout)
 
 
 
