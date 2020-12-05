@@ -61,7 +61,7 @@ def num_to_label(num):
         val = "Ace"
     else:
         val = str(val_num)
-    label = val + "of" + color
+    label = val + " of " + color
     return label
 
 class MainWindow(Screen):
