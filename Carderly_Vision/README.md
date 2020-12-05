@@ -1,8 +1,8 @@
 # Carderly Vision
 
 ## TODO for the VISION
-* <b>Preprocess_card</b> </br>
-Compare all the cards seen to the hand of player 1 in database and send only the estimated card played in the database, that can be done at the end of Activate Vision
+* ~<b>Preprocess_card</b> </br>
+Compare all the cards seen to the hand of player 1 in database and send only the estimated card played in the database, that can be done at the end of Activate Vision~
 * ~<b>Condition for while loop</b> (to decide) </br> 
 For now the vision is in a *while true* loop, we can either make a function and put the loop outside (in the lauch file) or make it run at all time and put a condition in the database~ </br>
 Solution : external condition in the database when all players are here and distribution is finished
