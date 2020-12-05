@@ -209,7 +209,7 @@ class WaitingRoom(Screen):
         pass
 
 class GameWindow(Screen):
-    atout_kv = ObjectProperty(None)
+    atout_kv = ObjectProperty()
     def shift_to_waiting(self):
         sm.current = "waiting"
 
