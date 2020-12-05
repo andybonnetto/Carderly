@@ -99,7 +99,7 @@ def label_to_num(label):
     elif label_list[0] == "A":
         second_num = 14
     else:
-        second_num = parseInt(label_list[0])
+        second_num = int(label_list[0])
     num = first_num*100+second_num
     return num
 
