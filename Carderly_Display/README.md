@@ -16,7 +16,7 @@ Diplay need to read the names in the person's waiting and for that needs a name.
 * <b> Autoconnect of the elderliy's account </b> </br>
 * <b> Block go back in waiting_room and insert deck </b> </br>
 * <b> Automatic go to game feature </b>
-* <b> Show l'atout on game window </b>
+* ~<b> Show l'atout on game window </b>~
 
 ![display](https://github.com/andybonnetto/Carderly/blob/main/Carderly_Display/Display.PNG?raw=false) 
 
