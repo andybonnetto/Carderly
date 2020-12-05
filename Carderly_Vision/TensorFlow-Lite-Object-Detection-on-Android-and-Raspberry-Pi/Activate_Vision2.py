@@ -106,15 +106,12 @@ def label_to_num(label):
 def compare_to_database(label):
     num = label_to_num(label)
     db_cards = database.child("rooms").child(ROOM_NAME).child("Player1").get()
-    not_name = False
     i = 0
     for card in db_cards.each():
-        print(card.val())
-        if not_name:
-            hand = card.val()["Card{}".format(i)]
-            if hand == num:
-                return num
-        not_name = True
+        print(card)
+        hand = card["Card{}".format(i)]
+        if hand == num:
+            return num
         i += 1
     return None
 
