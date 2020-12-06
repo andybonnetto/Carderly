@@ -265,9 +265,9 @@ while not some_condition:
             card_seen = compare_to_database(object_name) #return card_seen in numbers
             if card_seen:
                 database.child("Vision").set(card_seen)
-            else:
-                database.child("Vision").set(0)
-
+                
+        if len(scores) == 0:
+            database.child("Vision").set(0)
 
 
 
