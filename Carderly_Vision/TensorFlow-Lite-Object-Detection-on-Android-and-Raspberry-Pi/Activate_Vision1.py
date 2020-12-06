@@ -266,8 +266,8 @@ while not some_condition:
             if card_seen:
                 database.child("Vision").set(card_seen)
 
-        if len(scores) == 0:
-            database.child("Vision").set(0)
+    if len(scores) == 0:
+        database.child("Vision").set(0)
 
 
 
