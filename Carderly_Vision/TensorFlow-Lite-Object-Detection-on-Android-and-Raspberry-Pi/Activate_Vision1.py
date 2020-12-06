@@ -240,6 +240,7 @@ while not some_condition:
     scores = interpreter.get_tensor(output_details[2]['index'])[0]  # Confidence of detected objects
     # num = interpreter.get_tensor(output_details[3]['index'])[0]  # Total number of detected objects (inaccurate and not needed)
     # Loop over all detections and draw detection box if confidence is above minimum threshold
+    card_seen = 0
     for i in range(len(scores)):
         if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
             # Get bounding box coordinates and draw box
@@ -262,11 +263,11 @@ while not some_condition:
             # cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
             #             2)  # Draw label text
             print(object_name)
-            card_seen = compare_to_database(object_name) #return card_seen in numbers
+            card_seen = label_to_num(object_name) #return card_seen in numbers
             if card_seen:
                 database.child("Vision").set(card_seen)
 
-    if len(scores) == 0:
+    if not card_seen:
         database.child("Vision").set(0)
 
 
