@@ -55,8 +55,9 @@ def define_step_motor():
 
 if __name__ == "__main__":
     call_dc()
-    # call_servo_angle()
-    # call_servo_360()
+    call_servo_angle()
+    call_servo_360()
     step_motor = define_step_motor()
     shuffle(step_motor)
+    time.sleep(1)
     discard(step_motor,6)
