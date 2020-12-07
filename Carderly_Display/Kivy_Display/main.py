@@ -219,7 +219,7 @@ class WaitingRoom(Screen):
         super(WaitingRoom,self).__init__(**kwargs)
         token = False
         self.name_display(token)
-        Clock.schedule_interval(self.name_display, 3)
+        Clock.schedule_interval(self.name_display, 0.1)
 
     def name_display(self,token):
         contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
@@ -251,9 +251,9 @@ class GameWindow(Screen):
 
         player_turn = database.child('Current to play').get().val()
 
-        self.R1 = 0
-        self.R2 = 0
-        self.R3 = 0
+        self.r1 = 0
+        self.r2 = 0
+        self.r3 = 0
         self.yourturn = ""
 
         if player_turn == 2:
@@ -281,7 +281,7 @@ class GameWindow(Screen):
         self.add_widget(self.yourturn)
         self.name_display_game()
         self.choose_atout()
-        Clock.schedule_interval(self.highlight_turn, 0.5)
+        Clock.schedule_interval(self.highlight_turn, 0.1)
         Clock.schedule_interval(self.show_atout,0.05)
         Clock.schedule_interval(self.show_vis,0.05)
     def choose_atout(self):
