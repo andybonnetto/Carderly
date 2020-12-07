@@ -250,8 +250,6 @@ class GameWindow(Screen):
 
     def __init__(self,**kwargs):
         super(GameWindow, self).__init__(**kwargs)
-        # self.yourturn = Label(text="", pos=(-10,-80), font_size=50,markup=True)
-        # self.add_widget(self.yourturn)
         self.name_display_game()
         self.choose_atout()
         Clock.schedule_interval(self.highlight_turn, 1)
@@ -285,13 +283,6 @@ class GameWindow(Screen):
 
     def name_display_game(self):
         contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
-        # space = 0
-        # for contact in contacts.each():
-        #     if space != 0:
-        #         self.add_widget(Label(text=contact.val()["Name"], font_size=50, pos=(-450 + space * 220, -(space%2)*100+100)))
-        #     space += 1
-        # if space >= 4:
-        #     self.full = True
         i = 0
         contact_name = [0,0,0,0]
         for contact in contacts.each():
