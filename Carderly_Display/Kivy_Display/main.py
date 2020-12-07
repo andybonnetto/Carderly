@@ -268,11 +268,11 @@ class GameWindow(Screen):
         self.yourturn = ""
 
         if player_turn == 2:
-            self.r1 = 0.5
+            self.r1 = 0.8
         elif player_turn == 3:
-            self.r2 = 0.5
+            self.r2 = 0.8
         elif player_turn == 4:
-            self.r3 = 0.5
+            self.r3 = 0.8
         else:
             self.yourturn = "Your Turn"
 
