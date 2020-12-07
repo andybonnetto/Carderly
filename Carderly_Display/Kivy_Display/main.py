@@ -242,7 +242,7 @@ class GameWindow(Screen):
     yourturn = ObjectProperty(None)
     r1 = ObjectProperty()
     r2 = ObjectProperty()
-    r3 = ObjectProperty()
+    rec = ObjectProperty()
 
     def __init__(self,**kwargs):
         super(GameWindow, self).__init__(**kwargs)
@@ -264,7 +264,7 @@ class GameWindow(Screen):
 
         self.r1 = 0
         self.r2 = 0
-        self.r3 = 0
+        self.rec = 0
         self.yourturn = ""
 
         if player_turn == 2:
@@ -272,7 +272,7 @@ class GameWindow(Screen):
         elif player_turn == 3:
             self.r2 = 0.5
         elif player_turn == 4:
-            self.r3 = 0.5
+            self.rec = 0.5
         else:
             self.yourturn = "Your Turn"
 
