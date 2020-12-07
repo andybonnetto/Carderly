@@ -240,9 +240,9 @@ class GameWindow(Screen):
     im_atout_kv = ObjectProperty(None)
     card_vis = ObjectProperty(None)
     yourturn = ObjectProperty(None)
-    r1 = ObjectProperty(0.2)
-    r2 = ObjectProperty(0.2)
-    r3 = ObjectProperty(0.2)
+    r1 = ObjectProperty(0.0)
+    r2 = ObjectProperty(0.0)
+    r3 = ObjectProperty(0.0)
 
     def __init__(self,**kwargs):
         super(GameWindow, self).__init__(**kwargs)
@@ -262,17 +262,17 @@ class GameWindow(Screen):
 
         player_turn = database.child('Current to play').get().val()
 
-        self.r1 = 0.5
-        self.r2 = 0.5
-        self.r3 = 0.5
+        self.r1 = 0
+        self.r2 = 0
+        self.r3 = 0
         self.yourturn = ""
 
         if player_turn == 2:
-            self.r1 = 0.8
+            self.r1 = 0.7
         elif player_turn == 3:
-            self.r2 = 0.8
+            self.r2 = 0.7
         elif player_turn == 4:
-            self.r3 = 0.8
+            self.r3 = 0.7
         else:
             self.yourturn = "Your Turn"
 
