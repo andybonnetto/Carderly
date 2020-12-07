@@ -9,7 +9,6 @@ from database import Database
 from kivy.clock import Clock
 from functools import partial
 from kivy.graphics import *
-import numpy as np
 import RPi.GPIO as GPIO
 
 PIN_BLUE = 40
@@ -233,8 +232,8 @@ class WaitingRoom(Screen):
         self.p2 = contact_name[2]
         self.p3 = contact_name[3]
 
-        if np.prod(contact_name) != 0:
-            self.full = 1
+        if i == 4:
+            self.full = True
 
 class GameWindow(Screen):
     atout_kv = ObjectProperty(None)
