@@ -246,8 +246,8 @@ class GameWindow(Screen):
 
     def __init__(self,**kwargs):
         super(GameWindow, self).__init__(**kwargs)
-        self.yourturn = Label(text="", pos=(-10,-80), font_size=50,markup=True)
-        self.add_widget(self.yourturn)
+        # self.yourturn = Label(text="", pos=(-10,-80), font_size=50,markup=True)
+        # self.add_widget(self.yourturn)
         self.name_display_game()
         self.choose_atout()
         Clock.schedule_interval(self.highlight_turn, 1)
