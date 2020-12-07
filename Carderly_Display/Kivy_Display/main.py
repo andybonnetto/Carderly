@@ -262,17 +262,17 @@ class GameWindow(Screen):
 
         player_turn = database.child('Current to play').get().val()
 
-        self.visible1 = 0
-        self.visible2 = 0
-        self.visible3 = 0
+        self.r1 = 0
+        self.r2 = 0
+        self.r3 = 0
         self.yourturn = ""
 
         if player_turn == 2:
-            self.visible1 = 1
+            self.r1 = 0.5
         elif player_turn == 3:
-            self.visible2 = 1
+            self.r2 = 0.5
         elif player_turn == 4:
-            self.visible3 = 1
+            self.r3 = 0.5
         else:
             self.yourturn = "Your Turn"
 
