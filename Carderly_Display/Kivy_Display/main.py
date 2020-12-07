@@ -244,6 +244,9 @@ class GameWindow(Screen):
     r2 = ObjectProperty(0.0)
     r3 = ObjectProperty(0.0)
     r4 = ObjectProperty(0.0)
+    p1 = ObjectProperty(None)
+    p2 = ObjectProperty(None)
+    p3 = ObjectProperty(None)
 
     def __init__(self,**kwargs):
         super(GameWindow, self).__init__(**kwargs)
