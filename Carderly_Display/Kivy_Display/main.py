@@ -201,9 +201,9 @@ class InsertDeck(Screen):
 
 class WaitingRoom(Screen):
 
-    P1 = ObjectProperty(None)
-    P2 = ObjectProperty(None)
-    P3 = ObjectProperty(None)
+    p1 = ObjectProperty(None)
+    p2 = ObjectProperty(None)
+    p3 = ObjectProperty(None)
 
     def shift_to_game(self):
         # if self.full:
@@ -229,9 +229,9 @@ class WaitingRoom(Screen):
         for contact in contacts:
             contact_name[i] = contact.val()["Name"]
             i += 1
-        self.P1 = contact_name[1]
-        self.P2 = contact_name[2]
-        self.P3 = contact_name[3]
+        self.p1 = contact_name[1]
+        self.p2 = contact_name[2]
+        self.p3 = contact_name[3]
 
         if np.prod(contact_name) != 0:
             self.full = 1
