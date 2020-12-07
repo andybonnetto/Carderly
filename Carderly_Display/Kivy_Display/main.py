@@ -262,8 +262,10 @@ class GameWindow(Screen):
             self.r2 = 0.5
         elif player_turn == 4:
             self.r3 = 0.5
-        elif player_turn == 1:
+        else:
             self.yourturn = "Your Turn"
+
+        print(self.r1, self.r2, self.r3)
 
     def name_display_game(self):
         contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
