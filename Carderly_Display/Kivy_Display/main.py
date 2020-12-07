@@ -226,7 +226,7 @@ class WaitingRoom(Screen):
         contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
         i = 0
         contact_name = [0, 0, 0, 0]
-        for contact in contacts:
+        for contact in contacts.each():
             contact_name[i] = contact.val()["Name"]
             i += 1
         self.p1 = contact_name[1]
