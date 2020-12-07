@@ -281,7 +281,7 @@ class GameWindow(Screen):
         self.add_widget(self.yourturn)
         self.name_display_game()
         self.choose_atout()
-        Clock.schedule_interval(self.highlight_turn, 0.1)
+        Clock.schedule_interval(self.highlight_turn, 1)
         Clock.schedule_interval(self.show_atout,0.05)
         Clock.schedule_interval(self.show_vis,0.05)
     def choose_atout(self):
