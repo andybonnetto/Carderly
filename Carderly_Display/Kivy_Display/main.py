@@ -262,9 +262,9 @@ class GameWindow(Screen):
 
         player_turn = database.child('Current to play').get().val()
 
-        self.r1 = 0
-        self.r2 = 0
-        self.r3 = 0
+        self.r1 = 0.5
+        self.r2 = 0.5
+        self.r3 = 0.5
         self.yourturn = ""
 
         if player_turn == 2:
