@@ -239,9 +239,9 @@ class GameWindow(Screen):
     atout_kv = ObjectProperty(None)
     im_atout_kv = ObjectProperty(None)
     card_vis = ObjectProperty(None)
-    r1 = NumericProperty()
-    r2 = NumericProperty()
-    r3 = NumericProperty()
+    visible1 = ObjectProperty()
+    visible2 = ObjectProperty()
+    visible3 = ObjectProperty()
     yourturn = ObjectProperty(None)
     def shift_to_waiting(self):
         sm.current = "waiting"
@@ -251,17 +251,17 @@ class GameWindow(Screen):
 
         player_turn = database.child('Current to play').get().val()
 
-        self.r1 = 0
-        self.r2 = 0
-        self.r3 = 0
+        self.visible1 = 0
+        self.visible2 = 0
+        self.visible3 = 0
         self.yourturn = ""
 
         if player_turn == 2:
-            self.r1 = 0.5
+            self.visible1 = 1
         elif player_turn == 3:
-            self.r2 = 0.5
+            self.visible2 = 1
         elif player_turn == 4:
-            self.r3 = 0.5
+            self.visible3 = 1
         else:
             self.yourturn = "Your Turn"
 
