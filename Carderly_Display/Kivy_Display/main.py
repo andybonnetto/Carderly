@@ -239,9 +239,6 @@ class GameWindow(Screen):
     atout_kv = ObjectProperty(None)
     im_atout_kv = ObjectProperty(None)
     card_vis = ObjectProperty(None)
-    visible1 = ObjectProperty()
-    visible2 = ObjectProperty()
-    visible3 = ObjectProperty()
     yourturn = ObjectProperty(None)
 
     def __init__(self,**kwargs):
