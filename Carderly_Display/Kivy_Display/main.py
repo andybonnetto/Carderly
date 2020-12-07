@@ -1,7 +1,7 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.properties import ObjectProperty,StringProperty
+from kivy.properties import ObjectProperty,NumericProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.uix.button import Button
@@ -239,9 +239,9 @@ class GameWindow(Screen):
     atout_kv = ObjectProperty(None)
     im_atout_kv = ObjectProperty(None)
     card_vis = ObjectProperty(None)
-    r1 = ObjectProperty(None)
-    r2 = ObjectProperty(None)
-    r3 = ObjectProperty(None)
+    r1 = NumericProperty()
+    r2 = NumericProperty()
+    r3 = NumericProperty()
     yourturn = ObjectProperty(None)
     def shift_to_waiting(self):
         sm.current = "waiting"
