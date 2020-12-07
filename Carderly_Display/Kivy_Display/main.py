@@ -9,6 +9,7 @@ from database import Database
 from kivy.clock import Clock
 from functools import partial
 from kivy.graphics import *
+import numpy as np
 import RPi.GPIO as GPIO
 
 PIN_BLUE = 40
@@ -200,6 +201,10 @@ class InsertDeck(Screen):
 
 class WaitingRoom(Screen):
 
+    P1 = ObjectProperty(None)
+    P2 = ObjectProperty(None)
+    P3 = ObjectProperty(None)
+
     def shift_to_game(self):
         # if self.full:
         #     sm.current = "game"
@@ -218,62 +223,58 @@ class WaitingRoom(Screen):
         Clock.schedule_interval(self.name_display, 3)
 
     def name_display(self,token):
-        # contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
-        # space = 0
-        # contact_name = [0, 0, 0, 0]
-        # for i in range(4):
-        #     contact_name[i] = Label(text="", font_size=50, pos=(-500 + space * 230, 0))
-        # for contact in contacts.each():
-        #     if space != 0:
-        #         contact_name[space].text = contact.val()["Name"]
-        #         self.add_widget(contact_name[space])
-        #     space += 1
-        # if space >= 3:
-        #     self.full = True
-        pass
+        contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
+        i = 0
+        contact_name = [0, 0, 0, 0]
+        for contact in contacts:
+            contact_name[i] = contact.val()["Name"]
+            i += 1
+        self.P1 = contact_name[1]
+        self.P2 = contact_name[2]
+        self.P3 = contact_name[3]
+
+        if np.prod(contact_name) != 0:
+            self.full = 1
 
 class GameWindow(Screen):
     atout_kv = ObjectProperty(None)
     im_atout_kv = ObjectProperty(None)
     card_vis = ObjectProperty(None)
+    R1 = ObjectProperty(None)
+    R2 = ObjectProperty(None)
+    R3 = ObjectProperty(None)
+    yourturn = ObjectProperty(None)
     def shift_to_waiting(self):
         sm.current = "waiting"
 
     def highlight_turn(self,token):
     #Draw green rectangle during player's turn or show "Your turn"
-        # player_turn = database.child('Current to play').get().val()
-        player_turn = 2 #CHAAAAAAAAAAAAAAAAANGE
-        self.yourturn.text= ""
-        self.canvas.add(Color(0,1,0,0.5, mode='rgba'))
-        try:
-            self.canvas.remove(self.rect)
-        except:
-            print("your turn")
+
+        player_turn = database.child('Current to play').get().val()
+
+        self.R1 = 0
+        self.R2 = 0
+        self.R3 = 0
+        self.yourturn = ""
 
         if player_turn == 2:
-            self.rect = Rectangle(pos=(80,250),size=(200,100))
-            self.canvas.add(self.rect)
+            self.R1 = 0.5
         elif player_turn == 3:
-            self.rect = Rectangle(pos=(320,350),size=(200,100))
-            self.canvas.add(self.rect)
+            self.R1 = 0.5
         elif player_turn == 4:
-            self.rect = Rectangle(pos=(520,250),size=(200,100))
-            self.canvas.add (self.rect)
+            self.R3 = 0.5
         elif player_turn == 1:
-            self.canvas.add(Color(1, 1, 1, 0.2, mode='rgba'))
-            self.rect = Rectangle(pos=(265,150),size=(250,100))
-            self.canvas.add(self.rect)
-            self.yourturn.text="[color=111111]Your turn[/color]"
+            self.yourturn = "Your Turn"
 
     def name_display_game(self):
-        # contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
-        # space = 0
-        # for contact in contacts.each():
-        #     if space != 0:
-        #         self.add_widget(Label(text=contact.val()["Name"], font_size=50, pos=(-450 + space * 220, -(space%2)*100+100)))
-        #     space += 1
-        # if space >= 4:
-        #     self.full = True
+        contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
+        space = 0
+        for contact in contacts.each():
+            if space != 0:
+                self.add_widget(Label(text=contact.val()["Name"], font_size=50, pos=(-450 + space * 220, -(space%2)*100+100)))
+            space += 1
+        if space >= 4:
+            self.full = True
         pass
     def __init__(self,**kwargs):
         super(GameWindow, self).__init__(**kwargs)

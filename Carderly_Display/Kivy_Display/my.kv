@@ -44,6 +44,9 @@
 
 <WaitingRoom>
     name : "waiting"
+    P1 : P1
+    P2 : P2
+    P3 : P3
 
     canvas.before:
         Rectangle:
@@ -89,6 +92,28 @@
             size_hint:1.55, 1.4
             font_size: (root.width + root.height) / 27
             text: "Player 3"
+
+        Label:
+            id: P1
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:0.45, 1
+            font_size: (root.width + root.height) / 30
+            text: str(root.P1)
+
+        Label:
+            id: P2
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:1, 1
+            font_size: (root.width + root.height) / 30
+            text: str(root.P2)
+
+        Label:
+            id: P3
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:1.55, 1
+            font_size: (root.width + root.height) / 30
+            text: str(root.P3)
+
         Button:
             background_color: 0,0,1,0.8
             pos_hint:{"x":0.65,"y":0.1}
@@ -122,6 +147,10 @@
     atout_kv : atout
     im_atout_kv : "im_atout"
     card_vis : vision
+    R1 : R1
+    R2 : R2
+    R3 : R3
+    yourturn : YourTurn
     canvas.before:
         Rectangle:
             pos: self.pos
@@ -132,6 +161,27 @@
             pos : 500,10
             size : 100,100
             source: str(root.im_atout_kv)
+    canvas:
+        Color:
+            id : R1
+            rgba : 0.,1.,0.,root.R1
+        Rectangle:
+            pos : 80,250
+            size : 200,100
+    canvas:
+        Color:
+            id : R2
+            rgba : 0.,1.,0.,root.R2
+        Rectangle:
+            pos : 320,350
+            size : 200,100
+    canvas:
+        Color:
+            id : R3
+            rgba : 0.,1.,0.,root.R3
+        Rectangle:
+            pos : 520,250
+            size : 200,100
 
     FloatLayout:
         Label:
@@ -161,6 +211,13 @@
             size_hint:1,0.2
             font_size: (root.width + root.height) / 40
             text: str(root.card_vis)
+
+        Label
+            id: YourTurn
+            pos : -10,-80
+            size_hint:1,0.2
+            font_size: 50
+            text: str(root.yourturn)
 
         Button:
             background_color: 1,0,0,0.81
