@@ -243,6 +243,17 @@ class GameWindow(Screen):
     visible2 = ObjectProperty()
     visible3 = ObjectProperty()
     yourturn = ObjectProperty(None)
+
+    def __init__(self,**kwargs):
+        super(GameWindow, self).__init__(**kwargs)
+        self.yourturn = Label(text="", pos=(-10,-80), font_size=50,markup=True)
+        self.add_widget(self.yourturn)
+        self.name_display_game()
+        self.choose_atout()
+        Clock.schedule_interval(self.highlight_turn, 1)
+        Clock.schedule_interval(self.show_atout,0.05)
+        Clock.schedule_interval(self.show_vis,0.05)
+
     def shift_to_waiting(self):
         sm.current = "waiting"
 
@@ -265,7 +276,6 @@ class GameWindow(Screen):
         else:
             self.yourturn = "Your Turn"
 
-        print(self.r1, self.r2, self.r3)
 
     def name_display_game(self):
         contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
@@ -277,15 +287,7 @@ class GameWindow(Screen):
         if space >= 4:
             self.full = True
         pass
-    def __init__(self,**kwargs):
-        super(GameWindow, self).__init__(**kwargs)
-        self.yourturn = Label(text="", pos=(-10,-80), font_size=50,markup=True)
-        self.add_widget(self.yourturn)
-        self.name_display_game()
-        self.choose_atout()
-        Clock.schedule_interval(self.highlight_turn, 1)
-        Clock.schedule_interval(self.show_atout,0.05)
-        Clock.schedule_interval(self.show_vis,0.05)
+
     def choose_atout(self):
         def choose_spade(instance):
             db_atout = database.child("Atout")
