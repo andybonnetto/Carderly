@@ -282,14 +282,21 @@ class GameWindow(Screen):
 
     def name_display_game(self):
         contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
-        space = 0
+        # space = 0
+        # for contact in contacts.each():
+        #     if space != 0:
+        #         self.add_widget(Label(text=contact.val()["Name"], font_size=50, pos=(-450 + space * 220, -(space%2)*100+100)))
+        #     space += 1
+        # if space >= 4:
+        #     self.full = True
+        i = 0
+        contact_name = [0,0,0,0]
         for contact in contacts.each():
-            if space != 0:
-                self.add_widget(Label(text=contact.val()["Name"], font_size=50, pos=(-450 + space * 220, -(space%2)*100+100)))
-            space += 1
-        if space >= 4:
-            self.full = True
-        pass
+            contact_name[i] = contact.val()["Name"]
+            i += 1
+        self.p1 = contact_name[1]
+        self.p2 = contact_name[2]
+        self.p3 = contact_name[3]
 
     def choose_atout(self):
         def choose_spade(instance):

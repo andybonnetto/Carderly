@@ -151,6 +151,9 @@
     r1 : 0.5
     r2 : 0.5
     r3 : 0.5
+    p1 : "P1"
+    p2 : "P2"
+    p3 : "P3"
     canvas.before:
         Rectangle:
             pos: self.pos
@@ -223,6 +226,27 @@
             font_size: 50
             color: 0,0,0
             text: str(root.yourturn)
+
+        Label:
+            id: P1
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:0.45, 1
+            font_size: (root.width + root.height) / 30
+            text: str(root.p1)
+
+        Label:
+            id: P2
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:1, 1.5
+            font_size: (root.width + root.height) / 30
+            text: str(root.p2)
+
+        Label:
+            id: P3
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:1.55, 1
+            font_size: (root.width + root.height) / 30
+            text: str(root.p3)
 
         Button:
             background_color: 1,0,0,0.81
