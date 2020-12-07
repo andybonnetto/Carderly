@@ -240,9 +240,9 @@ class GameWindow(Screen):
     im_atout_kv = ObjectProperty(None)
     card_vis = ObjectProperty(None)
     yourturn = ObjectProperty(None)
-    r1 = NumericProperty()
-    r2 = NumericProperty()
-    r3 = NumericProperty()
+    r1 = NumericProperty(0.)
+    r2 = NumericProperty(0.)
+    r3 = NumericProperty(0.)
 
     def __init__(self,**kwargs):
         super(GameWindow, self).__init__(**kwargs)
