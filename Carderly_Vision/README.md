@@ -1,21 +1,25 @@
 # Carderly Vision
 
 ## TODO for the VISION
-* <b>Preprocess_card</b> </br>
-Compare all the cards seen to the hand of player 1 in database and send only the estimated card played in the database, that can be done at the end of Activate Vision
-* <b>Condition for while loop</b> (to decide) </br> 
-For now the vision is in a *while true* loop, we can either make a function and put the loop outside (in the lauch file) or make it run at all time and put a condition in the database
-* <b>Find the setup for changing cameras</b> (Andy) </br>
-I don't quite understand in which position the cameras are saved everytime I turn off and on the raspi, this needs to be setted in *Activate_vision.py; cv2.VideoCapture(cam_num)*
+* ~<b>Preprocess_card</b> </br>
+Compare all the cards seen to the hand of player 1 in database and send only the estimated card played in the database, that can be done at the end of Activate Vision~
+Solution : Preprocess function is done by comparing card values to dataset, only the card estimated is saved and if other card showed save a 0 value.
+* ~<b>Condition for while loop</b> (to decide) </br> 
+For now the vision is in a *while true* loop, we can either make a function and put the loop outside (in the lauch file) or make it run at all time and put a condition in the database~ </br>
+Solution : external condition in the database when all players are here and distribution is finished
+* ~<b>Find the setup for changing cameras</b> (Andy) </br>
+I don't quite understand in which position the cameras are saved everytime I turn off and on the raspi, this needs to be setted in *Activate_vision.py; cv2.VideoCapture(cam_num)*~ </br>
+Solution: You need to plug the USB after the raspberry pi starts to get the picamer to auto-config correctly, *Activate_vision1* starts the pi-camera and *Activate_vision2* starts the vision with the webcam.
 * <b>Training for ditribution</b> (Andy) </br> 
-New training needs to be done for the distribution with one of the cameras, which means they are not gonna be launched with the same tflite model.
-* <b>Make call_vision()</b> </br>
+New training needs to be done for the distribution with one of the cameras, which means they are not gonna be launched with the same tflite model.(One tried but failed, no idea why maybe the number of boxes anyway next try next week)
+* <b>Make call_vision()</b>(Optional) </br>
 Read in the database and detect if there is no card for distribution -> discard all cards.
 
 ## Object detection with API
 A graph had been trained with 32 and converted into "detect.tflite". With the company of the "labelmap.txt" file, it contains the dection model which can be tested by launching the 
 ```
-python TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_vision.py –-modeldir=../TFlite_models/32 
+python TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_vision1.py –-modeldir=../TFlite_models/distrib
+python TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_vision2.py –-modeldir=../TFlite_models/32 
 ```
 for now it prints the value of all the cards seen for each frame.
 
@@ -52,18 +56,10 @@ xdg-open snapshot<whateverthenumber>.jpg
 fswebcam <image_name.jpg>
 ```
 Take snapshot names image_name.jpg in the folder in which you are running the command
-```
-sudo service motion start
-sudo service motion stop
-sudo service motion restart
-```
-Load the camera stream on the port *8081* of the card's IP address, can be visualized using a browser (commands are sent on port *8080*, can be changed in configs)
-```
-sudo nano  /etc/motion/motion.conf
-```
-Modify the configurations of motion
-```
-workon cv3
-```
-A virtual environment has been created for the python packaging related to opencv, *workon* connects to the environnement (*deactivate* to quit any environnement)
+``` 
+sudo modprobe bcm2835-v4l2 #make the camera visible
+v4l2-ctl --all
+```` 
+List of all the cameras seen by the raspberry
 
+<b>Note</b>: motion have been removed because it sucks

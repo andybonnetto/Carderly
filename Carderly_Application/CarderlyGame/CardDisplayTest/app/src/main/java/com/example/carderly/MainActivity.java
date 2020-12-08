@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     int[] last_two_digits = {0,0,0,0};
     int[] player_cards_id = {0,0,0,0,0,0,0,0}; // ID of the cards in hand of the player 1
     private final String TAG = this.getClass().getName();
-    ArrayList<String> playersList;
+    ArrayList<String> players_name;
 
 
     // Variables related to the popup window for the trump selection
@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Check name of the players
-        playersList = (ArrayList<String>) getIntent().getSerializableExtra("listofPlayers");
+        player_id = (int) getIntent().getSerializableExtra("playerID");
+        players_name = (ArrayList<String>) getIntent().getSerializableExtra("listofPlayers");
 
         // Link the variables modified in the java file to the Views in the UI
         game_button = (Button) findViewById(R.id.game_button);
@@ -91,8 +92,6 @@ public class MainActivity extends AppCompatActivity {
         writeIntDB(1,"Current to play");
 
         // Get through the intent that started the activity the ID of the player
-        //Intent intent = getIntent();
-        //String player_ID = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         strings_DB = new ArrayList<>();
         switch(player_id) { // Locations where the values will be stored in the database
             case 1:
@@ -108,10 +107,10 @@ public class MainActivity extends AppCompatActivity {
                 strings_DB.add("Player 3/Card played");
                 strings_DB.add("Player 2/Card played");
                 strings_DB.add("Player 4/Card played");
-                name_player.setText("Player 1");
-                name_opponent_left.setText("Player 3");
-                name_ally.setText("Player 2");
-                name_opponent_right.setText("Player 4");
+                name_player.setText(players_name.get(0));
+                name_opponent_left.setText(players_name.get(2));
+                name_ally.setText(players_name.get(1));
+                name_opponent_right.setText(players_name.get(3));
                 break;
             case 2:
                 strings_DB.add("Player 2/Card 1");
@@ -126,10 +125,10 @@ public class MainActivity extends AppCompatActivity {
                 strings_DB.add("Player 4/Card played");
                 strings_DB.add("Player 1/Card played");
                 strings_DB.add("Player 3/Card played");
-                name_player.setText("Player 2");
-                name_opponent_left.setText("Player 4");
-                name_ally.setText("Player 1");
-                name_opponent_right.setText("Player 3");
+                name_player.setText(players_name.get(1));
+                name_opponent_left.setText(players_name.get(3));
+                name_ally.setText(players_name.get(0));
+                name_opponent_right.setText(players_name.get(2));
                 break;
             case 3:
                 strings_DB.add("Player 3/Card 1");
@@ -144,10 +143,10 @@ public class MainActivity extends AppCompatActivity {
                 strings_DB.add("Player 2/Card played");
                 strings_DB.add("Player 4/Card played");
                 strings_DB.add("Player 1/Card played");
-                name_player.setText("Player 3");
-                name_opponent_left.setText("Player 2");
-                name_ally.setText("Player 4");
-                name_opponent_right.setText("Player 1");
+                name_player.setText(players_name.get(2));
+                name_opponent_left.setText(players_name.get(1));
+                name_ally.setText(players_name.get(3));
+                name_opponent_right.setText(players_name.get(0));
                 break;
             case 4:
                 strings_DB.add("Player 4/Card 1");
@@ -162,10 +161,10 @@ public class MainActivity extends AppCompatActivity {
                 strings_DB.add("Player 1/Card played");
                 strings_DB.add("Player 3/Card played");
                 strings_DB.add("Player 2/Card played");
-                name_player.setText("Player 4");
-                name_opponent_left.setText("Player 1");
-                name_ally.setText("Player 3");
-                name_opponent_right.setText("Player 2");
+                name_player.setText(players_name.get(3));
+                name_opponent_left.setText(players_name.get(0));
+                name_ally.setText(players_name.get(2));
+                name_opponent_right.setText(players_name.get(1));
                 break;
         }
 

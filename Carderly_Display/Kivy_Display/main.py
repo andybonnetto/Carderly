@@ -1,57 +1,357 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty,NumericProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+from kivy.uix.button import Button
 from database import Database
 from kivy.clock import Clock
+from functools import partial
+from kivy.graphics import *
 import RPi.GPIO as GPIO
 
+PIN_BLUE = 40
+PIN_GREEN = 38
+PIN_RED = 32
+PIN_GREY = 36
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
+GPIO.setup(PIN_GREEN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(PIN_BLUE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(PIN_GREY, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(PIN_RED, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+import pyrebase
+
+config = {
+    "apiKey": "",
+    "authDomain": "carderlydatabase.firebaseapp.com",
+    "databaseURL": "https://carderlydatabase.firebaseio.com/",
+    "storageBucket": "carderlydatabase.appspot.com"
+}
+firebase = pyrebase.initialize_app(config)
+database = firebase.database()
+ROOM_NAME = 'Faf'
+
+blue_button_state = False
+red_button_state = False
+green_button_state = False
+grey_button_state = False
+
+def num_to_label(num):
+    color_num = int(num/100)
+    if color_num == 1:
+        color = "Clubs"
+    elif color_num == 2:
+        color = "Spade"
+    elif color_num == 3:
+        color = "Diamond"
+    else:
+        color = "Heart"
+    val_num = num - color_num*100
+    if val_num == 11:
+        val = "Jack"
+    elif val_num == 12:
+        val = "Queen"
+    elif val_num == 13:
+        val = "King"
+    elif val_num == 14:
+        val = "Ace"
+    else:
+        val = str(val_num)
+    label = val + " of " + color
+    return label
 
 class MainWindow(Screen):
-    def shift_to_waiting(self):
-        sm.current = "waiting"
+
+    def __init__(self,**kwargs):
+        super(MainWindow,self).__init__(**kwargs)
+        Clock.schedule_interval(self.blue_button_callback, 0.1)
+        Clock.schedule_interval(self.green_button_callback, 0.1)
+        Clock.schedule_interval(self.red_button_callback, 0.1)
+        Clock.schedule_interval(self.grey_button_callback, 0.1)
+
+
+    def blue_button_callback(self,token):
+        global blue_button_state
+        if not blue_button_state:
+            blue_button_state = False
+            if GPIO.input(PIN_BLUE) == GPIO.HIGH:
+                if sm.current == "main_win":
+                    self.shift_to_insert()
+                    blue_button_state = True
+                    return
+                if sm.current == "insert_deck":
+                    self.shift_to_waiting()
+                    blue_button_state = True
+                    return
+                if sm.current == "waiting":
+                    self.shift_to_game()
+                    blue_button_state = True
+                    return
+                if sm.current == "contact":
+                    self.shift_to_main()
+                    blue_button_state = True
+                    return
+        else:
+            if GPIO.input(PIN_BLUE) == GPIO.LOW:
+                blue_button_state = False
+
+    def red_button_callback(self,token):
+        global red_button_state
+        if not red_button_state:
+            red_button_state = False
+            if GPIO.input(PIN_RED) == GPIO.HIGH:
+                if sm.current == "main_win":
+                    self.shift_to_contact()
+                    red_button_state = True
+                    return
+                if sm.current == "insert_deck":
+                    self.shift_to_main()
+                    red_button_state = True
+                    return
+                if sm.current == "waiting":
+                    self.shift_to_insert()
+                    red_button_state = True
+                    return
+                if sm.current == "settings":
+                    self.shift_to_main()
+                    red_button_state = True
+                    return
+        else:
+            if GPIO.input(PIN_BLUE) == GPIO.LOW:
+                red_button_state = False
+
+    def green_button_callback(self, token):
+        global green_button_state
+        if not green_button_state:
+            green_button_state = False
+            if GPIO.input(PIN_GREEN) == GPIO.HIGH:
+                if sm.current == "insert_deck":
+                    print("green")
+                    green_button_state = True
+                    return
+                if sm.current == "main_win":
+                    self.shift_to_settings()
+                    green_button_state = True
+                    return
+        else:
+            if GPIO.input(PIN_BLUE) == GPIO.LOW:
+                green_button_state = False
+
+    def grey_button_callback(self, token):
+        global grey_button_state
+        if not grey_button_state:
+            grey_button_state = False
+            if GPIO.input(PIN_GREY) == GPIO.HIGH:
+                if sm.current == "main_win":
+                    self.shift_to_insert()
+                    grey_button_state = True
+                    return
+                if sm.current == "insert_deck":
+                    self.shift_to_waiting()
+                    grey_button_state = True
+                    return
+                if sm.current == "waiting":
+                    self.shift_to_game()
+                    grey_button_state = True
+                    return
+        else:
+            if GPIO.input(PIN_BLUE) == GPIO.LOW:
+                grey_button_state = False
+
+    def shift_to_insert(self):
+        sm.current = "insert_deck"
+
     def shift_to_settings(self):
         sm.current = "settings"
+
     def shift_to_contact(self):
         sm.current = "contact"
-    def __init__(self,**kwargs):
-        super(MainWindow, self).__init__(**kwargs)
-        if GPIO.input(10) == GPIO.HIGH:
-            print("button pressed")
-            self.shift_to_waiting()
 
-class WaitingRoom(Screen):
-    def shift_to_game(self):
-        if self.full:
-            sm.current = "game"
-        else:
-            sm.current = "waiting"
     def shift_to_main(self):
         sm.current = "main_win"
-    def read_waiting_file(self):
-        wf = Database("waiting.txt")
-        return wf
+
+    def shift_to_game(self):
+        sm.current = "game"
+
+    def shift_to_waiting(self):
+        sm.current = "waiting"
+
+class InsertDeck(Screen):
+    mess = ObjectProperty(None)
+
+    def __init__(self,**kwargs):
+        super(InsertDeck,self).__init__(**kwargs)
+        Clock.schedule_interval(self.get_shift_on, 3)
+        Clock.schedule_interval(self.get_shift_off, 4)
+
+    def shift_to_waiting(self):
+        sm.current = "waiting"
+    def get_status(self):
+        pass
+        #read database shuffling starts
+    def get_shift_on(self,token):
+        self.mess = ""
+    def get_shift_off(self,token):
+        self.mess = "Card treatment, please wait..."
+
+class WaitingRoom(Screen):
+
+    p1 = ObjectProperty(None)
+    p2 = ObjectProperty(None)
+    p3 = ObjectProperty(None)
+
+    def shift_to_game(self):
+        # if self.full:
+        #     sm.current = "game"
+        # else:
+        #     sm.current = "waiting"
+        sm.current = "game"
+
+    def shift_to_main(self):
+        sm.current = "main_win"
+
     def __init__(self,**kwargs):
         self.full = False
         super(WaitingRoom,self).__init__(**kwargs)
         token = False
         self.name_display(token)
-        Clock.schedule_interval(self.name_display, 3)
+        Clock.schedule_interval(self.name_display, 0.1)
 
     def name_display(self,token):
-        wf = self.read_waiting_file()
-        space = 0
-        for contact in wf.contact:
-            self.add_widget(Label(text=contact, font_size=30, pos=(-150 + space*120, 130 - space*120)))
-            space += 1
-        if space >=3:
+        contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
+        i = 0
+        contact_name = [0, 0, 0, 0]
+        for contact in contacts.each():
+            contact_name[i] = contact.val()["Name"]
+            i += 1
+        self.p1 = contact_name[1]
+        self.p2 = contact_name[2]
+        self.p3 = contact_name[3]
+
+        if i == 4:
             self.full = True
 
 class GameWindow(Screen):
+    atout_kv = ObjectProperty(None)
+    im_atout_kv = ObjectProperty(None)
+    card_vis = ObjectProperty(None)
+    yourturn = ObjectProperty(None)
+    r1 = ObjectProperty(0.0)
+    r2 = ObjectProperty(0.0)
+    r3 = ObjectProperty(0.0)
+    r4 = ObjectProperty(0.0)
+    p1 = ObjectProperty(None)
+    p2 = ObjectProperty(None)
+    p3 = ObjectProperty(None)
+
+    def __init__(self,**kwargs):
+        super(GameWindow, self).__init__(**kwargs)
+        self.name_display_game()
+        self.choose_atout()
+        Clock.schedule_interval(self.highlight_turn, 1)
+        Clock.schedule_interval(self.show_atout,0.05)
+        Clock.schedule_interval(self.show_vis,0.05)
+
     def shift_to_waiting(self):
         sm.current = "waiting"
+
+    def highlight_turn(self,token):
+    #Draw green rectangle during player's turn or show "Your turn"
+
+        player_turn = database.child('Current to play').get().val()
+
+        self.r1 = 0
+        self.r2 = 0
+        self.r3 = 0
+        self.r4 = 0
+        self.yourturn = ""
+
+        if player_turn == 2:
+            self.r1 = 0.7
+        elif player_turn == 3:
+            self.r2 = 0.7
+        elif player_turn == 4:
+            self.r3 = 0.7
+        else:
+            self.yourturn = "Your Turn"
+            self.r4 = 0.7
+
+
+    def name_display_game(self):
+        contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
+        i = 0
+        contact_name = [0,0,0,0]
+        for contact in contacts.each():
+            contact_name[i] = contact.val()["Name"]
+            i += 1
+        self.p1 = contact_name[1]
+        self.p2 = contact_name[2]
+        self.p3 = contact_name[3]
+
+    def choose_atout(self):
+        def choose_spade(instance):
+            db_atout = database.child("Atout")
+            print("you choose {}".format(instance.text))
+            self.atout = "spade"
+            self.remove_buttons()
+            db_atout.set(self.atout)
+        def choose_heart(instance):
+            db_atout = database.child("Atout")
+            print("you choose {}".format(instance.text))
+            self.atout = "heart"
+            self.remove_buttons()
+            db_atout.set(self.atout)
+        def choose_diamond(instance):
+            db_atout = database.child("Atout")
+            print("you choose {}".format(instance.text))
+            self.atout = "diamond"
+            self.remove_buttons()
+            db_atout.set(self.atout)
+        def choose_clubs(instance):
+            db_atout = database.child("Atout")
+            print("you choose {}".format(instance.text))
+            self.atout = "clubs"
+            self.remove_buttons()
+            db_atout.set(self.atout)
+
+        self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(300,200))
+        self.Spade.bind(on_press=choose_spade)
+        self.Heart = Button(text="heart", size_hint=(0.3,0.1), pos=(100,300))
+        self.Heart.bind(on_press=choose_heart)
+        self.Diamond = Button(text="diamond", size_hint=(0.3,0.1), pos=(300,400))
+        self.Diamond.bind(on_press=choose_diamond)
+        self.Clubs = Button(text="clubs", size_hint=(0.3,0.1), pos=(500,300))
+        self.Clubs.bind(on_press=choose_clubs)
+        self.add_widget(self.Spade)
+        self.add_widget(self.Heart)
+        self.add_widget(self.Diamond)
+        self.add_widget(self.Clubs)
+
+    def remove_buttons(self):
+        self.remove_widget(self.Spade)
+        self.remove_widget(self.Heart)
+        self.remove_widget(self.Diamond)
+        self.remove_widget(self.Clubs)
+    def show_atout(self,token):
+        db_atout = database.child("Atout")
+        atout = db_atout.get().val()
+        if atout:
+            self.atout_kv = atout
+            self.im_atout_kv = "{}.png".format(atout)
+    def show_vis(self,token):
+        db_vision = database.child("Vision").get()
+        card_seen = db_vision.val()
+        if card_seen:
+            label = num_to_label(card_seen)
+            self.card_vis = label
+        elif card_seen == 0:
+            self.card_vis = ""
+
+
 
 class Settings(Screen):
     def shift_to_main(self):
@@ -85,20 +385,18 @@ class WindowManager(ScreenManager):
 
 sm = WindowManager()
 kv = Builder.load_file("my.kv")
-screens = [MainWindow(name="main_win"), WaitingRoom(name="waiting"),GameWindow(name="game"),Settings(name="settings"),ContactWindow(name="contact")]
+screens = [MainWindow(name="main_win"), WaitingRoom(name="waiting"),GameWindow(name="game"),Settings(name="settings"),ContactWindow(name="contact"),InsertDeck(name="insert_deck")]
 for screen in screens:
     sm.add_widget(screen)
 
 sm.current = "main_win"
 
-
-
 class MyMainApp(App):
     def build(self):
         return sm
 
+def main():
+    MyMainApp().run()
+
 if __name__ == "__main__":
-    GPIO.setwarnings(False)  # Ignore warning for now
-    GPIO.setmode(GPIO.BOARD)  # Use physical pin numbering
-    GPIO.setup(40, GPIO.IN,pull_up_down=GPIO.PUD_DOWN)  # Set pin 40 to be an input pin and set initial value to be pulled low (off)
     MyMainApp().run()

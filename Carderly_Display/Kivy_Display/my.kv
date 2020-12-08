@@ -9,6 +9,7 @@
     FloatLayout:
 
         Button:
+            background_color: 0,0,1,1
             pos_hint:{"x":0.35,"y":0.15}
             size_hint: 0.3, 0.1
             font_size: (root.width**2 + root.height**2) / 12**4
@@ -16,9 +17,10 @@
             text: "Connexion"
             on_release:
                 root.manager.transition.direction = "left"
-                root.shift_to_waiting()
+                root.shift_to_insert()
 
         Button:
+            background_color: 1,0,0,1
             pos_hint:{"x":0.05,"y":0.15}
             size_hint: 0.25, 0.1
             font_size: (root.width**2 + root.height**2) / 12**4
@@ -29,6 +31,7 @@
                 root.shift_to_contact()
 
         Button:
+            background_color: 0,1,0,1
             pos_hint:{"x":0.7,"y":0.15}
             size_hint: 0.25, 0.1
             font_size: (root.width**2 + root.height**2) / 12**4
@@ -41,26 +44,82 @@
 
 <WaitingRoom>
     name : "waiting"
+    p1 : "P1"
+    p2 : "P2"
+    p3 : "P3"
 
     canvas.before:
         Rectangle:
             pos: self.pos
             size: self.size
-            source: "background.png"
+            source: "background.jpg"
 
     FloatLayout:
+        canvas:
+            Color:
+                rgba : 0.,0.,0.,0.7
+            Rectangle:
+                pos : 80,170
+                size : 190,290
+            Rectangle:
+                pos : 305,170
+                size : 190,290
+            Rectangle:
+                pos : 525,170
+                size : 190,290
+
         Label:
             id: "title_waiting"
             tpos_hint:{"x": 0.9, "y":0.9}
             size_hint:1, 1.7
             font_size: (root.width + root.height) / 20
             text: "Waiting Room"
+        Label:
+            id: "Player_1"
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:0.45, 1.4
+            font_size: (root.width + root.height) / 27
+            text: "Player 1"
+        Label:
+            id: "Player_2"
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:1, 1.4
+            font_size: (root.width + root.height) / 27
+            text: "Player 2"
+        Label:
+            id: "Player_3"
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:1.55, 1.4
+            font_size: (root.width + root.height) / 27
+            text: "Player 3"
+
+        Label:
+            id: P1
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:0.45, 1
+            font_size: (root.width + root.height) / 30
+            text: str(root.p1)
+
+        Label:
+            id: P2
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:1, 1
+            font_size: (root.width + root.height) / 30
+            text: str(root.p2)
+
+        Label:
+            id: P3
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:1.55, 1
+            font_size: (root.width + root.height) / 30
+            text: str(root.p3)
+
         Button:
             background_color: 0,0,1,0.8
             pos_hint:{"x":0.65,"y":0.1}
             size_hint: 0.3, 0.1
             font_size: (root.width**2 + root.height**2) / 12**4
-            text: "Next"
+            text: "Game"
             on_release:
                 root.manager.transition.direction = "left"
                 root.shift_to_game()
@@ -73,16 +132,63 @@
             on_release:
                 root.manager.transition.direction = "right"
                 root.shift_to_main()
+        Button:
+            background_color: 1,1,1,0.8
+            pos_hint:{"x":0.3,"y":0.0}
+            size_hint: 0.4, 0.1
+            font_size: (root.width**2 + root.height**2) / 12**4
+            text: "Join another"
+            on_release:
+
 
 
 <GameWindow>
     name : "game"
-
+    atout_kv : atout
+    im_atout_kv : "im_atout"
+    card_vis : vision
+    yourturn : "YourTurn"
+    r1 : 0.5
+    r2 : 0.5
+    r3 : 0.5
+    p1 : "P1"
+    p2 : "P2"
+    p3 : "P3"
     canvas.before:
         Rectangle:
             pos: self.pos
             size: self.size
-            source: "background.png"
+            source: "background.jpg"
+        Rectangle:
+            id: im_atout
+            pos : 500,10
+            size : 100,100
+            source: str(root.im_atout_kv)
+    canvas:
+        Color:
+            id : "R1"
+            rgba : 0.,1.,0.,root.r1
+        Rectangle:
+            pos : 80,250
+            size : 200,100
+        Color:
+            id :"R2"
+            rgba : 0.,1.,0.,root.r2
+        Rectangle:
+            pos : 320,350
+            size : 200,100
+        Color:
+            id :"R3"
+            rgba : 0.,1.,0.,root.r3
+        Rectangle:
+            pos : 520,250
+            size : 200,100
+        Color:
+            id :"R4"
+            rgba : 1,1,1,root.r4
+        Rectangle:
+            pos : 270,210
+            size : 250,50
 
     FloatLayout:
         Label:
@@ -91,6 +197,56 @@
             size_hint:1, 1.7
             font_size: (root.width + root.height) / 25
             text: "Game"
+
+        Label:
+            id: "atout_title"
+            tpos_hint:{"x": 0.9, "y":0.9}
+            size_hint:1.65, 0.5
+            font_size: (root.width + root.height) / 28
+            text: "Atout:"
+
+        Label:
+            id: atout
+            tpos_hint:{"x":0.5, "y":0.5}
+            size_hint:1.65,0.2
+            font_size: (root.width + root.height) / 30
+            text: str(root.atout_kv)
+
+        Label:
+            id: vision
+            tpos_hint:{"x":0.5, "y":0.5}
+            size_hint:1,0.2
+            font_size: (root.width + root.height) / 40
+            text: str(root.card_vis)
+
+        Label
+            id: YourTurn
+            tpos_hint:{"x":0.5, "y":0.5}
+            size_hint:1,0.8
+            font_size: 50
+            color: 0,0,0
+            text: str(root.yourturn)
+
+        Label:
+            id: P1
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:0.45, 1
+            font_size: (root.width + root.height) / 30
+            text: str(root.p1)
+
+        Label:
+            id: P2
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:1, 1.35
+            font_size: (root.width + root.height) / 30
+            text: str(root.p2)
+
+        Label:
+            id: P3
+            tpos_hint:{"x": 0.5, "y":0.5}
+            size_hint:1.55, 1
+            font_size: (root.width + root.height) / 30
+            text: str(root.p3)
 
         Button:
             background_color: 1,0,0,0.81
@@ -101,6 +257,7 @@
             on_release:
                 root.manager.transition.direction = "right"
                 root.shift_to_waiting()
+
 <Settings>
     name : "settings"
 
@@ -108,7 +265,7 @@
         Rectangle:
             pos: self.pos
             size: self.size
-            source: "background.png"
+            source: "background.jpg"
 
     FloatLayout:
         Label:
@@ -159,7 +316,7 @@
         Rectangle:
             pos: self.pos
             size: self.size
-            source: "background.png"
+            source: "background.jpg"
 
     FloatLayout:
         Label:
@@ -170,20 +327,43 @@
             text: "Contacts"
 
         Button:
-            background_color: 1,0,0,0.81
-            pos_hint:{"x":0.05,"y":0.1}
+            background_color: 0,0,1,0.81
+            pos_hint:{"x":0.65,"y":0.1}
             size_hint: 0.3, 0.1
             font_size: (root.width**2 + root.height**2) / 12**4
             text: "Return"
             on_release:
                 root.manager.transition.direction = "left"
                 root.shift_to_main()
+<InsertDeck>
+    mess : wait_mess
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "background.jpg"
+
+    FloatLayout:
+        Label:
+            id: "title_Insert"
+            tpos_hint:{"x": 0.9, "y":0.7}
+            size_hint:1, 1.7
+            font_size: (root.width + root.height) / 25
+            text: "Insert Deck"
+
+        Label:
+            id: wait_mess
+            tpos_hint:{"x": 0.9, "y":0.4}
+            size_hint:1, 1.2
+            font_size: (root.width + root.height) / 29
+            text: str(root.mess)
 
         Button:
-            background_color: 0,1,0,0.81
+            background_color: 0,0,1,0.8
             pos_hint:{"x":0.65,"y":0.1}
             size_hint: 0.3, 0.1
             font_size: (root.width**2 + root.height**2) / 12**4
-            text: "PRESS"
+            text: "Waiting"
             on_release:
-                root.read_contacts()
+                root.manager.transition.direction = "left"
+                root.shift_to_waiting()
