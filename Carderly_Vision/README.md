@@ -18,7 +18,7 @@ Read in the database and detect if there is no card for distribution -> discard 
 ## Object detection with API
 A graph had been trained with 32 and converted into "detect.tflite". With the company of the "labelmap.txt" file, it contains the dection model which can be tested by launching the 
 ```
-python TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_vision1.py –-modeldir=../TFlite_models/32
+python TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_vision1.py –-modeldir=../TFlite_models/distrib
 python TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_vision2.py –-modeldir=../TFlite_models/32 
 ```
 for now it prints the value of all the cards seen for each frame.
