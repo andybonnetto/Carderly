@@ -313,7 +313,7 @@ class GameWindow(Screen):
             print("you choose {}".format(instance.text))
             self.atout = "heart"
             self.remove_buttons()
-            db_atout.set(2)
+            db_atout.set(4)
         def choose_diamond(instance):
             db_atout = database.child("Trump")
             print("you choose {}".format(instance.text))
@@ -325,7 +325,7 @@ class GameWindow(Screen):
             print("you choose {}".format(instance.text))
             self.atout = "clubs"
             self.remove_buttons()
-            db_atout.set(4)
+            db_atout.set(2)
 
         self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(300,200))
         self.Spade.bind(on_press=choose_spade)
