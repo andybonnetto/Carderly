@@ -105,7 +105,7 @@ def label_to_num(label):
 
 def compare_to_database(label):
     num = label_to_num(label)
-    db_cards = database.child("rooms").child(ROOM_NAME).child("Player1").get()
+    db_cards = database.child("Player 1").get()
     i = 0
     for card in db_cards.each():
         hand = card.val()
