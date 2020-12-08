@@ -327,7 +327,7 @@ class GameWindow(Screen):
             self.remove_buttons()
             db_atout.set(2)
 
-        self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(300,200))
+        self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(300,200), font_size=(self.width + self.height)/12**4,background_color=(0,0,1,0.8))
         self.Spade.bind(on_press=choose_spade)
         self.Heart = Button(text="heart", size_hint=(0.3,0.1), pos=(100,300))
         self.Heart.bind(on_press=choose_heart)
