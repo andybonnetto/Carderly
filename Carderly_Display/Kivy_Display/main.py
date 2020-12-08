@@ -64,6 +64,15 @@ def num_to_label(num):
     label = val + " of " + color
     return label
 
+def num_to_trump(atout):
+    if atout == 1:
+        return "spade"
+    elif atout == 2:
+        return "clubs"
+    elif atout == 3:
+        return "diamond"
+    else:
+        return "heart"
 class MainWindow(Screen):
 
     def __init__(self,**kwargs):
@@ -294,29 +303,29 @@ class GameWindow(Screen):
 
     def choose_atout(self):
         def choose_spade(instance):
-            db_atout = database.child("Atout")
+            db_atout = database.child("Trump")
             print("you choose {}".format(instance.text))
             self.atout = "spade"
             self.remove_buttons()
-            db_atout.set(self.atout)
+            db_atout.set(1)
         def choose_heart(instance):
-            db_atout = database.child("Atout")
+            db_atout = database.child("Trump")
             print("you choose {}".format(instance.text))
             self.atout = "heart"
             self.remove_buttons()
-            db_atout.set(self.atout)
+            db_atout.set(2)
         def choose_diamond(instance):
-            db_atout = database.child("Atout")
+            db_atout = database.child("Trump")
             print("you choose {}".format(instance.text))
             self.atout = "diamond"
             self.remove_buttons()
-            db_atout.set(self.atout)
+            db_atout.set(3)
         def choose_clubs(instance):
-            db_atout = database.child("Atout")
+            db_atout = database.child("Trump")
             print("you choose {}".format(instance.text))
             self.atout = "clubs"
             self.remove_buttons()
-            db_atout.set(self.atout)
+            db_atout.set(4)
 
         self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(300,200))
         self.Spade.bind(on_press=choose_spade)
@@ -337,10 +346,11 @@ class GameWindow(Screen):
         self.remove_widget(self.Diamond)
         self.remove_widget(self.Clubs)
     def show_atout(self,token):
-        db_atout = database.child("Atout")
+        db_atout = database.child("Trump")
         atout = db_atout.get().val()
+        trump = num_to_trump(atout)
         if atout:
-            self.atout_kv = atout
+            self.atout_kv = trump
             self.im_atout_kv = "{}.png".format(atout)
     def show_vis(self,token):
         db_vision = database.child("Vision").get()
