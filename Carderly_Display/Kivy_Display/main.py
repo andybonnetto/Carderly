@@ -92,18 +92,26 @@ class MainWindow(Screen):
                     self.shift_to_insert()
                     blue_button_state = True
                     return
-                if sm.current == "insert_deck":
+                elif sm.current == "insert_deck":
                     self.shift_to_waiting()
                     blue_button_state = True
                     return
-                if sm.current == "waiting":
+                elif sm.current == "waiting":
                     self.shift_to_game()
                     blue_button_state = True
                     return
-                if sm.current == "contact":
+                elif sm.current == "contact":
                     self.shift_to_main()
                     blue_button_state = True
                     return
+                # elif sm.current == "game":
+                #     db = database.child("Choose Trump").get().val()
+                #     if db == 1:
+                #         self.choose_atout()
+                #         self.choose_atout.choose_spade()
+                #         self.remove_button()
+                #         blue_button_state = True
+
         else:
             if GPIO.input(PIN_BLUE) == GPIO.LOW:
                 blue_button_state = False
