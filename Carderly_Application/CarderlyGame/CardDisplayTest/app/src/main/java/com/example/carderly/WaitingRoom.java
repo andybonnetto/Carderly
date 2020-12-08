@@ -59,9 +59,6 @@ public class WaitingRoom extends AppCompatActivity {
 
         newPlayersEventListener();
 
-        //counting number of items in the list
-        //counter = playersList.size();
-
 
 
     }
