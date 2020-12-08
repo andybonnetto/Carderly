@@ -351,7 +351,7 @@ class GameWindow(Screen):
         trump = num_to_trump(atout)
         if atout:
             self.atout_kv = trump
-            self.im_atout_kv = "{}.png".format(atout)
+            self.im_atout_kv = "{}.png".format(trump)
     def show_vis(self,token):
         db_vision = database.child("Vision").get()
         card_seen = db_vision.val()
