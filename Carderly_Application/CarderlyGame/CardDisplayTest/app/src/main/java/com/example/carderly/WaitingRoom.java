@@ -50,7 +50,7 @@ public class WaitingRoom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_room);
 
-        button = (Button) findViewById(R.id.button_startgame);
+        //button = (Button) findViewById(R.id.button_startgame);
         textView = (TextView) findViewById(R.id.textView_room);
         listView = (ListView) findViewById(R.id.ListPlayers);
         playersList = new ArrayList<String>();
@@ -65,6 +65,12 @@ public class WaitingRoom extends AppCompatActivity {
         textView.setText("Room name :" + roomName);
 
         newPlayersEventListener();
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> 4def93449aef1c0da89f80484cfdd4f2e420cb7d
     }
 
     private void newPlayersEventListener() {

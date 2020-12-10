@@ -44,24 +44,12 @@
         android:id="@+id/ListPlayers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_startgame"
         android:layout_below="@+id/editTextTextPersonName3"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="-550dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="100dp">
 
     </ListView>
-
-    <Button
-        android:id="@+id/button_startgame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="80dp"
-        android:text="Start" />
 
     <TextView
         android:id="@+id/textView_room"
