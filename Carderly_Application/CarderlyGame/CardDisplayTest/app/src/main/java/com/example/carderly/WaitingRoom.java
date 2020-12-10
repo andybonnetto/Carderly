@@ -45,7 +45,7 @@ public class WaitingRoom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_room);
 
-        button = (Button) findViewById(R.id.button_startgame);
+        //button = (Button) findViewById(R.id.button_startgame);
         textView = (TextView) findViewById(R.id.textView_room);
         listView = (ListView) findViewById(R.id.ListPlayers);
         playersList = new ArrayList<String>();
