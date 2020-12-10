@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Rect;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -48,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getName();
     ArrayList<String> players_name;
 
+    FirebaseDatabase database;
+    DatabaseReference Ref;
+
 
     // Variables related to the popup window for the trump selection
     private AlertDialog.Builder dialogBuilder;
@@ -62,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
         //Check name of the players
         player_id = (int) getIntent().getSerializableExtra("playerID");
         players_name = (ArrayList<String>) getIntent().getSerializableExtra("listofPlayers");
+        cards = new ArrayList<>();
+        cards = (ArrayList<Integer>) getIntent().getSerializableExtra("cards");
+        //player_id = 1;
 
         // Link the variables modified in the java file to the Views in the UI
         game_button = (Button) findViewById(R.id.game_button);
@@ -192,46 +200,6 @@ public class MainActivity extends AppCompatActivity {
                 name_opponent_left.setVisibility(View.VISIBLE);
                 name_opponent_right.setVisibility(View.VISIBLE);
                 name_ally.setVisibility(View.VISIBLE);
-                if(player_id == 1) { // Only player 1 shuffles and uploads the cards on the database
-                    // All cards are stored in an array, and each card has an ID number of 3 digits:
-                    // 1st one for the colour, and the 2 others for the value
-                    // When a card is distributed, its value in the array is set to 0
-                    cards = new ArrayList<>();
-                    cards.add(107); // 7 of clubs
-                    cards.add(108); // 8 of clubs
-                    cards.add(109); // 9 of clubs
-                    cards.add(110); // 10 of clubs
-                    cards.add(111); // jester of clubs
-                    cards.add(112); // queen of clubs
-                    cards.add(113); // king of clubs
-                    cards.add(114); // ace of clubs
-                    cards.add(207); // 7 of spades
-                    cards.add(208); // 8 of spades
-                    cards.add(209); // 9 of spades
-                    cards.add(210); // 10 of spades
-                    cards.add(211); // jester of spades
-                    cards.add(212); // queen of spades
-                    cards.add(213); // king of spades
-                    cards.add(214); // ace of spades
-                    cards.add(307); // 7 of diamonds
-                    cards.add(308); // 8 of diamonds
-                    cards.add(309); // 9 of diamonds
-                    cards.add(310); // 10 of diamonds
-                    cards.add(311); // jester of diamonds
-                    cards.add(312); // queen of diamonds
-                    cards.add(313); // king of diamonds
-                    cards.add(314); // ace of diamonds
-                    cards.add(407); // 7 of hearts
-                    cards.add(408); // 8 of hearts
-                    cards.add(409); // 9 of hearts
-                    cards.add(410); // 10 of hearts
-                    cards.add(411); // jester of hearts
-                    cards.add(412); // queen of hearts
-                    cards.add(413); // king of hearts
-                    cards.add(414); // ace of hearts
-                    Collections.shuffle(cards); // Cards are shuffled before being uploaded on the database
-                    writeListDB(cards, "Cards");
-                }
 
                 // Make the cards clickable again in case the game has been restarted by clicking the game button
                 card1.setClickable(true);
@@ -261,14 +229,6 @@ public class MainActivity extends AppCompatActivity {
                         player_cards_id[i] = cards.get(i+24);
                     }
                 }
-                //System.out.println("random_id 0: " + random_id[0]);
-                //System.out.println("random_id 1: " + random_id[1]);
-                //System.out.println("random_id 2: " + random_id[2]);
-                //System.out.println("random_id 3: " + random_id[3]);
-                //System.out.println("random_id 4: " + random_id[4]);
-                //System.out.println("random_id 5: " + random_id[5]);
-                //System.out.println("random_id 6: " + random_id[6]);
-                //System.out.println("random_id 7: " + random_id[7]);
 
                 // Make the cards of the principal player appear and send them to the database
                 assignCard(player_cards_id[0],card1);
@@ -537,18 +497,19 @@ public class MainActivity extends AppCompatActivity {
         void onCallback(int value);
     }
 
-    // Get card value from the database
+    // Get list of cards from the database
     public void getCardListDB(final CardListCallback myCallback, String location) {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference mDbRef = mDatabase.getReference(location);
-        mDbRef.addValueEventListener(new ValueEventListener() {
+        ArrayList<Integer> card_list = new ArrayList<>();
+        mDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     int card_value = snapshot.getValue(int.class);
-                    cards.add(card_value);
+                    card_list.add(card_value);
                 }
-                myCallback.onCallback(cards);
+                myCallback.onCallback(card_list);
             }
 
             @Override
