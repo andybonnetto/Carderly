@@ -80,7 +80,7 @@ public class WaitingRoom extends AppCompatActivity {
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(WaitingRoom.this, R.layout.waiting_room_players_listview, playersList);
                 listView.setAdapter(adapter);
                 counter = playersList.size();
-                if (counter == 4){
+                if(counter == 1){
                     cards = new ArrayList<>();
                     // All cards are stored in an array, and each card has an ID number of 3 digits:
                     // 1st one for the colour, and the 2 others for the value
@@ -118,12 +118,12 @@ public class WaitingRoom extends AppCompatActivity {
                     cards.add(413); // king of hearts
                     cards.add(414); // ace of hearts
                     Collections.shuffle(cards); // Cards are shuffled before being uploaded on the database
-                    writeListDB(cards, "Cards");
-
+                    writeListDB(cards,"Cards");
+                }
+                if (counter == 4){
                     Intent intent = new Intent(WaitingRoom.this, MainActivity.class);
                     intent.putExtra("listofPlayers",playersList);
                     intent.putExtra("playerID",player_ID);
-                    intent.putExtra("cards",cards);
                     startActivity(intent);
                 }
             }

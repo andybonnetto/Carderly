@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference Ref;
 
-
     // Variables related to the popup window for the trump selection
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -64,12 +63,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Check name of the players
+        // Get info from the intent of the waiting room
         player_id = (int) getIntent().getSerializableExtra("playerID");
         players_name = (ArrayList<String>) getIntent().getSerializableExtra("listofPlayers");
-        cards = new ArrayList<>();
-        cards = (ArrayList<Integer>) getIntent().getSerializableExtra("cards");
-        //player_id = 1;
 
         // Link the variables modified in the java file to the Views in the UI
         game_button = (Button) findViewById(R.id.game_button);
@@ -99,7 +95,10 @@ public class MainActivity extends AppCompatActivity {
         writeIntDB(1,"First turn");
         writeIntDB(1,"Current to play");
 
-        // Get through the intent that started the activity the ID of the player
+        // Get the all the cards in the array "cards" from the DB
+        cards = new ArrayList<Integer>();
+        getCardListDB();
+
         strings_DB = new ArrayList<>();
         switch(player_id) { // Locations where the values will be stored in the database
             case 1:
@@ -195,6 +194,26 @@ public class MainActivity extends AppCompatActivity {
                             trumpSelectionDialog();
                     }
                 },"First turn");
+                // Listener for the trump (for players who do not select it)
+                getCardValueDB(new CardValueCallback() {
+                    @Override
+                    public void onCallback(int trumpDB) {
+                        trump = trumpDB;
+                        if(trump == 1){
+                            trump_view.setImageResource(R.drawable.clubs);
+                            trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                        } else if(trump == 2) {
+                            trump_view.setImageResource(R.drawable.spades);
+                            trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                        } else if(trump == 3) {
+                            trump_view.setImageResource(R.drawable.diamonds);
+                            trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                        } else if(trump == 4) {
+                            trump_view.setImageResource(R.drawable.hearts);
+                            trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                        }
+                    }
+                },"Trump");
                 // Make the names visible
                 name_player.setVisibility(View.VISIBLE);
                 name_opponent_left.setVisibility(View.VISIBLE);
@@ -498,8 +517,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Get list of cards from the database
-    public void getCardListDB(final CardListCallback myCallback, String location) {
+    public void getCardListDB() {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference mDbRef = mDatabase.getReference("Cards");
+        mDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childrenSnapshot: dataSnapshot.getChildren()) {
+                    cards.add(childrenSnapshot.getValue(int.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });
+        /*FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference mDbRef = mDatabase.getReference(location);
         ArrayList<Integer> card_list = new ArrayList<>();
         mDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -516,7 +550,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 throw databaseError.toException();
             }
-        });
+        });*/
     }
 
     // Get card value from the database
@@ -588,8 +622,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 trump = 1;
-                trump_view.setImageResource(R.drawable.clubs); // Display the trump on the top right corner of the screen
-                trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                writeIntDB(trump,"Trump");
+                //trump_view.setImageResource(R.drawable.clubs); // Display the trump on the top right corner of the screen
+                //trump_view.setBackgroundResource(R.drawable.trump_button_border);
                 dialog.dismiss();
             }
         });
@@ -597,8 +632,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 trump = 2;
-                trump_view.setImageResource(R.drawable.spades);
-                trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                writeIntDB(trump,"Trump");
+                //trump_view.setImageResource(R.drawable.spades);
+                //trump_view.setBackgroundResource(R.drawable.trump_button_border);
                 dialog.dismiss();
             }
         });
@@ -606,8 +642,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 trump = 3;
-                trump_view.setImageResource(R.drawable.diamonds);
-                trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                writeIntDB(trump,"Trump");
+                //trump_view.setImageResource(R.drawable.diamonds);
+                //trump_view.setBackgroundResource(R.drawable.trump_button_border);
                 dialog.dismiss();
             }
         });
@@ -615,8 +652,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 trump = 4;
-                trump_view.setImageResource(R.drawable.hearts);
-                trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                writeIntDB(trump,"Trump");
+                //trump_view.setImageResource(R.drawable.hearts);
+                //trump_view.setBackgroundResource(R.drawable.trump_button_border);
                 dialog.dismiss();
             }
         });
@@ -715,11 +753,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        System.out.println("Trump: " + trump);
+        /*System.out.println("Trump: " + trump);
         System.out.println("Suit: " + suit);
         System.out.println("Player cards ID: " + Arrays.toString(player_cards_id));
         System.out.println("Round winner: " + round_winner);
-        /*System.out.println("First digit: " + Arrays.toString(first_digit));
+        System.out.println("First digit: " + Arrays.toString(first_digit));
         System.out.println("Last two digits: " + Arrays.toString(last_two_digits));*/
         setColorWinningCard(round_winner,Color.argb(100, 0, 200, 0));
 
