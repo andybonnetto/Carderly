@@ -64,6 +64,15 @@ def num_to_label(num):
     label = val + " of " + color
     return label
 
+def num_to_trump(atout):
+    if atout == 1:
+        return "spade"
+    elif atout == 2:
+        return "clubs"
+    elif atout == 3:
+        return "diamond"
+    else:
+        return "heart"
 class MainWindow(Screen):
 
     def __init__(self,**kwargs):
@@ -83,18 +92,26 @@ class MainWindow(Screen):
                     self.shift_to_insert()
                     blue_button_state = True
                     return
-                if sm.current == "insert_deck":
+                elif sm.current == "insert_deck":
                     self.shift_to_waiting()
                     blue_button_state = True
                     return
-                if sm.current == "waiting":
+                elif sm.current == "waiting":
                     self.shift_to_game()
                     blue_button_state = True
                     return
-                if sm.current == "contact":
+                elif sm.current == "contact":
                     self.shift_to_main()
                     blue_button_state = True
                     return
+                # elif sm.current == "game":
+                #     db = database.child("Choose Trump").get().val()
+                #     if db == 1:
+                #         self.choose_atout()
+                #         self.choose_atout.choose_spade()
+                #         self.remove_button()
+                #         blue_button_state = True
+
         else:
             if GPIO.input(PIN_BLUE) == GPIO.LOW:
                 blue_button_state = False
@@ -294,37 +311,37 @@ class GameWindow(Screen):
 
     def choose_atout(self):
         def choose_spade(instance):
-            db_atout = database.child("Atout")
+            db_atout = database.child("Trump")
             print("you choose {}".format(instance.text))
             self.atout = "spade"
             self.remove_buttons()
-            db_atout.set(self.atout)
+            db_atout.set(1)
         def choose_heart(instance):
-            db_atout = database.child("Atout")
+            db_atout = database.child("Trump")
             print("you choose {}".format(instance.text))
             self.atout = "heart"
             self.remove_buttons()
-            db_atout.set(self.atout)
+            db_atout.set(4)
         def choose_diamond(instance):
-            db_atout = database.child("Atout")
+            db_atout = database.child("Trump")
             print("you choose {}".format(instance.text))
             self.atout = "diamond"
             self.remove_buttons()
-            db_atout.set(self.atout)
+            db_atout.set(3)
         def choose_clubs(instance):
-            db_atout = database.child("Atout")
+            db_atout = database.child("Trump")
             print("you choose {}".format(instance.text))
             self.atout = "clubs"
             self.remove_buttons()
-            db_atout.set(self.atout)
+            db_atout.set(2)
 
-        self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(300,200))
+        self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(280,200), font_size=(self.width + self.height)/5,background_color=(1,1,0))
         self.Spade.bind(on_press=choose_spade)
-        self.Heart = Button(text="heart", size_hint=(0.3,0.1), pos=(100,300))
+        self.Heart = Button(text="heart", size_hint=(0.3,0.1), pos=(100,280), font_size=(self.width + self.height)/5,background_color=(1,0,0))
         self.Heart.bind(on_press=choose_heart)
-        self.Diamond = Button(text="diamond", size_hint=(0.3,0.1), pos=(300,400))
+        self.Diamond = Button(text="diamond", size_hint=(0.3,0.1), pos=(300,380), font_size=(self.width + self.height)/5,background_color=(0,1,0))
         self.Diamond.bind(on_press=choose_diamond)
-        self.Clubs = Button(text="clubs", size_hint=(0.3,0.1), pos=(500,300))
+        self.Clubs = Button(text="clubs", size_hint=(0.3,0.1), pos=(500,280), font_size=(self.width + self.height)/5,background_color=(0,0,1))
         self.Clubs.bind(on_press=choose_clubs)
         self.add_widget(self.Spade)
         self.add_widget(self.Heart)
@@ -337,11 +354,12 @@ class GameWindow(Screen):
         self.remove_widget(self.Diamond)
         self.remove_widget(self.Clubs)
     def show_atout(self,token):
-        db_atout = database.child("Atout")
+        db_atout = database.child("Trump")
         atout = db_atout.get().val()
+        trump = num_to_trump(atout)
         if atout:
-            self.atout_kv = atout
-            self.im_atout_kv = "{}.png".format(atout)
+            self.atout_kv = trump
+            self.im_atout_kv = "{}.png".format(trump)
     def show_vis(self,token):
         db_vision = database.child("Vision").get()
         card_seen = db_vision.val()
