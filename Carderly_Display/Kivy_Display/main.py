@@ -229,7 +229,8 @@ class WaitingRoom(Screen):
 
     def get_status(self,token):
         if database.child("PlayGame").get().val():
-            self.shift_to_game()
+            # self.shift_to_game()
+            pass
 
     def __init__(self,**kwargs):
         super(WaitingRoom,self).__init__(**kwargs)
