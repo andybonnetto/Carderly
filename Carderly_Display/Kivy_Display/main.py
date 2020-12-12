@@ -233,18 +233,16 @@ class WaitingRoom(Screen):
         Clock.schedule_interval(self.name_display, 0.1)
 
     def name_display(self,token):
-        contacts = [database.child("rooms").child(ROOM_NAME).child("Player 1"), database.child("rooms").child(ROOM_NAME).child("Player 2"), database.child("rooms").child(ROOM_NAME).child("Player 3"), database.child("rooms").child(ROOM_NAME).child("Player 4")]
-        i = 0
-        contact_name = ["0", "0", "0", "0"]
-        for contact in contacts:
-            contact_name[i] = contact.child("Name").get().val()
-            i += 1
-        if contact_name[1]:
-            self.p1 = contact_name[1]
-        if contact_name[2]:
-            self.p2 = contact_name[2]
-        if contact_name[3]:
-            self.p3 = contact_name[3]
+        contacts = [database.child("rooms").child(ROOM_NAME).child("Player 1").child("Name").get().val(),
+                    database.child("rooms").child(ROOM_NAME).child("Player 2").child("Name").get().val(),
+                    database.child("rooms").child(ROOM_NAME).child("Player 3").child("Name").get().val(),
+                    database.child("rooms").child(ROOM_NAME).child("Player 4").child("Name").get().val()]
+        if contacts[1]:
+            self.p1 = contacts[1]
+        if contacts[2]:
+            self.p2 = contacts[2]
+        if contacts[3]:
+            self.p3 = contacts[3]
 
 class GameWindow(Screen):
     atout_kv = ObjectProperty(None)
@@ -293,19 +291,17 @@ class GameWindow(Screen):
 
 
     def name_display_game(self):
-        contacts = [database.child("rooms").child(ROOM_NAME).child("Player 1"), database.child("rooms").child(ROOM_NAME).child("Player 2"), database.child("rooms").child(ROOM_NAME).child("Player 3"),
-                    database.child("rooms").child(ROOM_NAME).child("Player 4")]
-        i = 0
-        contact_name = ["0","0","0","0"]
-        for contact in contacts:
-            contact_name[i] = contact.child("Name").get().val()
-            i += 1
-        if contact_name[1]:
-            self.p1 = contact_name[1]
-        if contact_name[2]:
-            self.p2 = contact_name[2]
-        if contact_name[3]:
-            self.p3 = contact_name[3]
+        contacts = [database.child("rooms").child(ROOM_NAME).child("Player 1").child("Name").get().val(),
+                    database.child("rooms").child(ROOM_NAME).child("Player 2").child("Name").get().val(),
+                    database.child("rooms").child(ROOM_NAME).child("Player 3").child("Name").get().val(),
+                    database.child("rooms").child(ROOM_NAME).child("Player 4").child("Name").get().val()]
+
+        if contacts[1]:
+            self.p1 = contacts[1]
+        if contacts[2]:
+            self.p2 = contacts[2]
+        if contacts[3]:
+            self.p3 = contacts[3]
 
     def choose_atout(self):
         def choose_spade(instance):
