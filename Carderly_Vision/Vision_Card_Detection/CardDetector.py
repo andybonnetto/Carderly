@@ -76,7 +76,7 @@ while cam_quit == 0:
         # For each contour detected:
         for i in range(len(cnts_sort)):
             if (cnt_is_card[i] == 1):
-
+                print(cnts_sort[i])
                 # Create a card object from the contour and append it to the list of cards.
                 # preprocess_card function takes the card contour and contour and
                 # determines the cards properties (corner points, etc). It generates a
