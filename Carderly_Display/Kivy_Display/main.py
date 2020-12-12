@@ -203,12 +203,12 @@ class InsertDeck(Screen):
         super(InsertDeck,self).__init__(**kwargs)
         Clock.schedule_interval(self.get_shift_on, 3)
         Clock.schedule_interval(self.get_shift_off, 4)
-        Clock.schedule_interval(self.get_status, 0.05)
+        Clock.schedule_interval(self.get_status, 1)
 
     def shift_to_waiting(self):
         sm.current = "waiting"
     def get_status(self,token):
-        if database.child("StartGame"):
+        if database.child("StartGame").get().val():
             self.shift_to_waiting()
     def get_shift_on(self,token):
         self.mess = ""
@@ -228,7 +228,7 @@ class WaitingRoom(Screen):
         sm.current = "main_win"
 
     def get_status(self,token):
-        if database.child("PlayGame"):
+        if database.child("PlayGame").get().val():
             self.shift_to_game()
 
     def __init__(self,**kwargs):
@@ -236,7 +236,7 @@ class WaitingRoom(Screen):
         token = False
         self.name_display(token)
         Clock.schedule_interval(self.name_display, 0.1)
-        Clock.schedule_interval(self.get_status, 0.1)
+        Clock.schedule_interval(self.get_status, 1)
 
     def name_display(self,token):
         contacts = [database.child("rooms").child(ROOM_NAME).child("Player 1").child("Name").get().val(),
