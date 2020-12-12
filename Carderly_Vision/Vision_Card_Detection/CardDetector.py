@@ -66,6 +66,7 @@ while cam_quit == 0:
     x = 20
     y = 200
     mask[x:x + 50, y:y + 25] = box
+    cv2.imshow("Mask", mask)
     # Find and sort the contours of all cards in the image (query cards)
     cnts_sort, cnt_is_card = Cards.find_cards(mask)
 
