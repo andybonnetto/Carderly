@@ -6,7 +6,7 @@ class Servo360:
         self.PIN = pin
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.PIN, GPIO.OUT)
-        self.pwm = GPIO.PWM(self.PIN, FREQ) # GPIO 17 for PWM with 50Hz
+        self.pwm = GPIO.PWM(self.PIN, FREQ)
         self.pwm.start(0)
 
     def activate(self,period,dc):
