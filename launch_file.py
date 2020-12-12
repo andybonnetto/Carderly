@@ -3,6 +3,7 @@ from Carderly_Motor import call_motor
 import numpy as np
 import pyrebase
 import time
+import os
 
 # Firebase configuration
 config = {
@@ -30,8 +31,8 @@ database.child("Vision").set(0)
 ROOM_NAME = "Dani"
 
 # Path to files
-PathActivateVision1 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/ActivateVision1.py"
-PathActivateVision2 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/ActivateVision2.py"
+PathActivateVision1 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_Vision1.py"
+PathActivateVision2 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_Vision2.py"
 PathMain = "Carderly_Display/Kivy_Display/main.py"
 
 # Variable initialization
@@ -63,7 +64,8 @@ def vision():
 
         # ActivateVision2 when playing the game
         # while state_vision == 1:
-        exec(open(PathActivateVision2).read())
+        # exec(open(PathActivateVision2).read())
+        os.system("python " + PathActivateVision2 + " modeldir=../TFlite_models/32")
         time.sleep(2)
         start_game = database.child("StartGame").get()
         if start_game.val() == 0:
