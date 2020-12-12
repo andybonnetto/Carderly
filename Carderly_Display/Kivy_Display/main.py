@@ -234,11 +234,11 @@ class WaitingRoom(Screen):
         Clock.schedule_interval(self.name_display, 0.1)
 
     def name_display(self,token):
-        contacts = [room.child("Player 1").get(), room.child("Player 2").get(), room.child("Player 3").get(), room.child("Player 4").get()]
+        contacts = [room.child("Player 1"), room.child("Player 2"), room.child("Player 3"), room.child("Player 4")]
         i = 0
         contact_name = [0, 0, 0, 0]
         for contact in contacts:
-            contact_name[i] = contact.val()["Name"]
+            contact_name[i] = contact.child("Name").get().val()
             i += 1
         self.p1 = contact_name[1]
         self.p2 = contact_name[2]
@@ -291,12 +291,12 @@ class GameWindow(Screen):
 
 
     def name_display_game(self):
-        contacts = [room.child("Player 1").get(), room.child("Player 2").get(), room.child("Player 3").get(),
-                    room.child("Player 4").get()]
+        contacts = [room.child("Player 1"), room.child("Player 2"), room.child("Player 3"),
+                    room.child("Player 4")]
         i = 0
         contact_name = [0,0,0,0]
         for contact in contacts:
-            contact_name[i] = contact.val()["Name"]
+            contact_name[i] = contact.child("Name").get().val()
             i += 1
         self.p1 = contact_name[1]
         self.p2 = contact_name[2]
