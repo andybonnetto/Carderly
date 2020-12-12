@@ -61,9 +61,13 @@ while cam_quit == 0:
 
     # Pre-process camera image (gray, blur, and threshold it)
     pre_proc = Cards.preprocess_image(image)
-	
+    mask = np.empty_like(pre_proc)
+    box = np.array([255] * 50 * 25).reshape(50, 25)
+    x = 20
+    y = 200
+    mask[x:x + 50, y:y + 25] = box
     # Find and sort the contours of all cards in the image (query cards)
-    cnts_sort, cnt_is_card = Cards.find_cards(pre_proc)
+    cnts_sort, cnt_is_card = Cards.find_cards(mask)
 
     # If there are no contours, do nothing
     if len(cnts_sort) != 0:
@@ -76,7 +80,7 @@ while cam_quit == 0:
         # For each contour detected:
         for i in range(len(cnts_sort)):
             if (cnt_is_card[i] == 1):
-                print(cnts_sort[i], "next")
+                print(np.sum(cnt_is_card))
                 # Create a card object from the contour and append it to the list of cards.
                 # preprocess_card function takes the card contour and contour and
                 # determines the cards properties (corner points, etc). It generates a
