@@ -103,13 +103,13 @@ class MainWindow(Screen):
                     self.shift_to_main()
                     blue_button_state = True
                     return
-                elif sm.current == "game":
-                    db = database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val()
-                    if db:
-                        self.choose_atout()
-                        self.choose_atout.choose_spade()
-                        self.remove_button()
-                        blue_button_state = True
+                # elif sm.current == "game":
+                #     db = database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val()
+                #     if db:
+                #         self.choose_atout()
+                #         self.choose_atout.choose_spade()
+                #         self.remove_button()
+                #         blue_button_state = True
 
         else:
             if GPIO.input(PIN_BLUE) == GPIO.LOW:
