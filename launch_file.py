@@ -1,5 +1,6 @@
 import threading
 from Carderly_Motor import call_motor
+from call_motor import *
 import numpy as np
 import pyrebase
 import time
