@@ -15,6 +15,44 @@ import Cards
 import VideoStream
 import pyrebase
 
+def card_to_label(rank,suit):
+    if rank == "Ace":
+        r = "A"
+    elif rank == "Two":
+        r = "2"
+    elif rank == "Three":
+        r = "3"
+    elif rank == "Four":
+        r = "4"
+    elif rank == "Five":
+        r = "5"
+    elif rank == "Six":
+        r = "6"
+    elif rank == "Seven":
+        r = "7"
+    elif rank == "Eight":
+        r = "8"
+    elif rank == "Nine":
+        r = "9"
+    elif rank == "Ten":
+        r = "10"
+    elif rank == "Jack":
+        r = "J"
+    elif rank == "Queen":
+        r = "Q"
+    else:
+        r = "K"
+
+    if suit == "Spades":
+        s = "s"
+    elif suit == "Hearts":
+        s = "h"
+    elif suit == "Diamonds":
+        s = "d"
+    else:
+        s = "c"
+    label = r+s
+    return label
 
 def label_to_num(label):
     label_list = list(label)
@@ -145,7 +183,7 @@ while cam_quit == 0:
                 temp_cnts.append(cards[i].contour)
             # f.close()
             cv2.drawContours(image,temp_cnts, -1, (255,0,0), 2)
-            label = "{}{}".format(cards[0].best_rank_match,cards[0].best_suit_match)
+            label = card_to_label(cards[0].best_rank_match,cards[0].best_suit_match)
             cardseen = label_to_num(label)
             database.child("Vision").set(cardseen)
         
