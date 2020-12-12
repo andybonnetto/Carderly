@@ -13,6 +13,44 @@ import time
 import os
 import Cards
 import VideoStream
+import pyrebase
+
+
+def label_to_num(label):
+    label_list = list(label)
+    if label_list[-1] == "c":
+        first_num = 1
+    elif label_list[-1] == "s":
+        first_num = 2
+    elif label_list[-1] == "d":
+        first_num = 3
+    else:
+        first_num = 4
+
+    if label_list[0] == "1":
+        second_num = 10
+    elif label_list[0] == "J":
+        second_num = 11
+    elif label_list[0] == "Q":
+        second_num = 12
+    elif label_list[0] == "K":
+        second_num = 13
+    elif label_list[0] == "A":
+        second_num = 14
+    else:
+        second_num = int(label_list[0])
+    num = first_num*100+second_num
+    return num
+
+
+config = {
+    "apiKey": "",
+    "authDomain": "carderlydatabase.firebaseapp.com",
+    "databaseURL": "https://carderlydatabase.firebaseio.com/",
+    "storageBucket": "carderlydatabase.appspot.com"
+}
+firebase = pyrebase.initialize_app(config)
+database = firebase.database()
 
 
 ### ---- INITIALIZATION ---- ###
@@ -22,7 +60,8 @@ import VideoStream
 IM_WIDTH = 720
 IM_HEIGHT = 480
 FRAME_RATE = 25
-
+BOX_HEIGHT = 356
+BOX_WIDTH = 232
 ## Initialize calculated frame rate because it's calculated AFTER the first time it's displayed
 frame_rate_calc = 1
 freq = cv2.getTickFrequency()
@@ -62,13 +101,10 @@ while cam_quit == 0:
     # Pre-process camera image (gray, blur, and threshold it)
     pre_proc = Cards.preprocess_image(image)
     mask = np.empty_like(pre_proc)*0
-    BOX_HEIGHT = 356
-    BOX_WIDTH = 232
     box = np.array([255] * BOX_HEIGHT * BOX_WIDTH).reshape(BOX_HEIGHT, BOX_WIDTH)
     x = 100
     y = 250
     mask[x:x + BOX_HEIGHT, y:y + BOX_WIDTH] = box
-    cv2.imshow("Mask", mask)
     # Find and sort the contours of all cards in the image (query cards)
     cnts_sort, cnt_is_card = Cards.find_cards(mask)
 
@@ -83,9 +119,6 @@ while cam_quit == 0:
         # For each contour detected:
         for i in range(len(cnts_sort)):
             if (cnt_is_card[i] == 1):
-                t = time.localtime()
-                current_time = time.strftime("%H:%M:%S", t)
-                print(np.sum(cnt_is_card),current_time)
                 # Create a card object from the contour and append it to the list of cards.
                 # preprocess_card function takes the card contour and contour and
                 # determines the cards properties (corner points, etc). It generates a
@@ -105,33 +138,35 @@ while cam_quit == 0:
         if (len(cards) != 0):
             temp_cnts = []
             # Open File and write card value in it
-            f = open("CardValues.txt", "w")
+            # f = open("CardValues.txt", "w")
             for i in range(len(cards)):
-                if(cards[i].best_rank_match != "Unknown" and cards[i].best_suit_match != "Unknown"):
-                    f.write("{} {}".format(cards[i].best_rank_match,cards[i].best_suit_match))
+            #     if(cards[i].best_rank_match != "Unknown" and cards[i].best_suit_match != "Unknown"):
+            #         f.write("{} {}".format(cards[i].best_rank_match,cards[i].best_suit_match))
                 temp_cnts.append(cards[i].contour)
-            f.close()
+            # f.close()
             cv2.drawContours(image,temp_cnts, -1, (255,0,0), 2)
+            label = "{}{}".format(cards[0].best_rank_match,cards[0].best_suit_match)
+            cardseen = label_to_num(label)
+            database.child("Vision").set(cardseen)
         
         
     # Draw framerate in the corner of the image. Framerate is calculated at the end of the main loop,
     # so the first time this runs, framerate will be shown as 0.
-    cv2.putText(image,"FPS: "+str(int(frame_rate_calc)),(10,26),font,0.7,(255,0,255),2,cv2.LINE_AA)
+    # cv2.putText(image,"FPS: "+str(int(frame_rate_calc)),(10,26),font,0.7,(255,0,255),2,cv2.LINE_AA)
     # Finally, display the image with the identified cards!
     cv2.imshow("Card Detector",image)
 
     # Calculate framerate
-    t2 = cv2.getTickCount()
-    time1 = (t2-t1)/freq
-    frame_rate_calc = 1/time1
+    # t2 = cv2.getTickCount()
+    # time1 = (t2-t1)/freq
+    # frame_rate_calc = 1/time1
     
     # Poll the keyboard. If 'q' is pressed, exit the main loop.
     key = cv2.waitKey(1) & 0xFF
     if key == ord("q"):
         cam_quit = 1
-        
 
 # Close all windows and close the PiCamera video stream.
-cv2.destroyAllWindows()
+# cv2.destroyAllWindows()
 videostream.stop()
 
