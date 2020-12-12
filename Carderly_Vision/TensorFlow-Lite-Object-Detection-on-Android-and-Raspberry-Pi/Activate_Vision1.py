@@ -132,10 +132,10 @@ train_suits = Cards.load_suits( path + '/Card_Imgs/')
 # The main loop repeatedly grabs frames from the video stream
 # and processes them to find and identify playing cards.
 
-cam_quit = 0 # Loop control variable
+some_condition = False # Loop control variable
 
 # Begin capturing frames
-while cam_quit == 0:
+while not some_condition:
 
     # Grab frame from video stream
     image = videostream.read()
@@ -209,8 +209,9 @@ while cam_quit == 0:
     # Poll the keyboard. If 'q' is pressed, exit the main loop.
     key = cv2.waitKey(1) & 0xFF
     if key == ord("q"):
-        cam_quit = 1
+        some_condition = 1
 
+    some_condition = database.child("StartGame").get().val()
 # Close all windows and close the PiCamera video stream.
 # cv2.destroyAllWindows()
 videostream.stop()

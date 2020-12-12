@@ -211,9 +211,9 @@ freq = cv2.getTickFrequency()
 # Initialize video stream
 videostream = VideoStream(resolution=(imW, imH), framerate=30).start()
 time.sleep(1)
-some_condition=False
+some_condition= True
 # for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
-while not some_condition:
+while some_condition:
 
     # Start timer (for calculating frame rate)
     # t1 = cv2.getTickCount()
@@ -288,7 +288,8 @@ while not some_condition:
     # Press 'q' to quit
     # if cv2.waitKey(1) == ord('q'):
     #     break
-    if some_condition:
+    some_condition = database.child("StartGame").get().val()
+    if not some_condition:
         break
 
 # Clean up

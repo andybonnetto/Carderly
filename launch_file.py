@@ -26,6 +26,8 @@ database.child("CountPlayer").set(1)
 database.child("PlayedCard").set(1)
 database.child("Vision").set(0)
 
+#Constant variable
+ROOM_NAME = "Dani"
 
 # Path to files
 PathActivateVision1 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/ActivateVision1.py"
@@ -53,20 +55,20 @@ def vision():
         state_vision = 0
 
         # ActivateVision1 when putting cards into the wheel
-        while state_vision == 0:
-            exec(open(PathActivateVision1).read())
-            time.sleep(2)
-            start_game = database.child("StartGame").get()
-            if start_game.val() == 1: state_vision = 1
+        # while state_vision == 0:  #Pas besoin de while ici, ya déjà un while dans vision
+        exec(open(PathActivateVision1).read())
+        time.sleep(2)
+        start_game = database.child("StartGame").get()
+        if start_game.val() == 1: state_vision = 1
 
         # ActivateVision2 when playing the game
-        while state_vision == 1:
-            exec(open(PathActivateVision2).read())
-            time.sleep(2)            
-            start_game = database.child("StartGame").get()
-            if start_game.val() == 0:
-                state_vision = 0
-                break
+        # while state_vision == 1:
+        exec(open(PathActivateVision2).read())
+        time.sleep(2)
+        start_game = database.child("StartGame").get()
+        if start_game.val() == 0:
+            state_vision = 0
+            # break
 
 
 def wait_deck():
@@ -118,7 +120,7 @@ def GameFunc():
     # Get the old player's cards from the DB (A CHANGER SELON DB ORGANISATION)
     old_cards=np.array([])
     for j in range(8): 
-        temp_DB=database.child("Player 1").child("Card "+str(j+1)).get()
+        temp_DB=database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card "+str(j+1)).get()
         old_cards=np.append(old_cards, temp_DB.val())
     
     #print("old=" +str(old_cards))
@@ -157,13 +159,13 @@ def GameFunc():
         # other's turn 
         else: 
             # Check when new card played (JSP SI CONDITION OKKKK, sinon ajouter nparray des cartes jouées)
-            temp = database.child("PlayedCard").get()
+            temp = database.child("rooms").child(ROOM_NAME).child("PlayedCard").get()
             time.sleep(1) 
-            card_played_DB = database.child("PlayedCard").get()
+            card_played_DB = database.child("rooms").child(ROOM_NAME).child("PlayedCard").get()
             while(temp.val() == card_played_DB.val()):
-                temp = database.child("PlayedCard").get()
+                temp = database.child("rooms").child(ROOM_NAME).child("PlayedCard").get()
                 time.sleep(1)
-                card_played_DB = database.child("PlayedCard").get()
+                card_played_DB = database.child("rooms").child(ROOM_NAME).child("PlayedCard").get()
 
             # Get the position of the card
             res=np.where(cards==card_played_DB.val())
