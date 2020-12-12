@@ -203,7 +203,7 @@ class InsertDeck(Screen):
         super(InsertDeck,self).__init__(**kwargs)
         Clock.schedule_interval(self.get_shift_on, 3)
         Clock.schedule_interval(self.get_shift_off, 4)
-        Clock.schedule_interval(self.get_status, 1)
+        Clock.schedule_interval(self.get_status, 0.1)
 
     def shift_to_waiting(self):
         sm.current = "waiting"
@@ -239,7 +239,7 @@ class WaitingRoom(Screen):
         token = False
         self.name_display(token)
         Clock.schedule_interval(self.name_display, 0.1)
-        Clock.schedule_interval(self.get_status, 1)
+        Clock.schedule_interval(self.get_status, 0.1)
 
     def name_display(self,token):
         contacts = [database.child("rooms").child(ROOM_NAME).child("Player 1").child("Name").get().val(),
@@ -270,8 +270,8 @@ class GameWindow(Screen):
         super(GameWindow, self).__init__(**kwargs)
         self.name_display_game()
         self.choose_atout()
-        Clock.schedule_interval(self.highlight_turn, 1)
-        Clock.schedule_interval(self.show_atout,0.05)
+        Clock.schedule_interval(self.highlight_turn, 0.1)
+        Clock.schedule_interval(self.show_atout,0.01)
         Clock.schedule_interval(self.show_vis,0.05)
 
     def shift_to_waiting(self):

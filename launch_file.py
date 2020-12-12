@@ -1,5 +1,5 @@
 import threading
-import Motor_DC
+from Carderly_Motor import call_motor
 import numpy as np
 import pyrebase
 import time
@@ -104,9 +104,9 @@ def GameFunc():
         # Add it to the array
         cards = np.append(cards, card_detected_DB.val())
         # Put it into the wheel
-        Motor_DC.Servo_360("input")
+        call_motor.Servo_360("input")
         time.sleep(2)
-        Motor_DC.Shuffle()
+        call_motor.Shuffle()
         time.sleep(2) # Time to put the card into the wheel + time for the vision to detect new cards (ADD CONDITION CHGMT CARTE?)
    
     #print("cards = " + str(cards))
@@ -131,13 +131,13 @@ def GameFunc():
         res=np.where(cards==old_cards[k])
         position=res[0]
         # Take the card out 
-        Motor_DC.discard(position)
+        call_motor.discard(position)
         time.sleep(2)
-        Motor_DC.call_DC()
+        call_motor.call_DC()
         time.sleep(2)
-        Motor_DC.Servo_angle()
+        call_motor.Servo_angle()
         time.sleep(2)
-        Motor_DC.Servo_360("output")
+        call_motor.Servo_360("output")
         time.sleep(2) #TO BE ADJUSTED 
 
     # Start the game when card distributed, change variable in the DB for the APP
@@ -171,13 +171,13 @@ def GameFunc():
             res=np.where(cards==card_played_DB.val())
             position=res[0]
             # Take the card out 
-            Motor_DC.discard(position)
+            call_motor.discard(position)
             time.sleep(2)
-            Motor_DC.call_DC()
+            call_motor.call_DC()
             time.sleep(2)
-            Motor_DC.Servo_angle()
+            call_motor.Servo_angle()
             time.sleep(2)
-            Motor_DC.Servo_360("output")
+            call_motor.Servo_360("output")
             time.sleep(2) # A AJUSTEEEEER
         
         # End of game (CONDITION TO BE DETERMINED)
