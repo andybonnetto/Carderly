@@ -28,9 +28,9 @@ database.child("Vision").set(0)
 
 
 # Path to files
-PathActivateVision1 = "c:/Users/Carole/Documents/Cours/Product Design & System Engineering/launchfile/ActivateVision1.py"
-PathActivateVision2 = "c:/Users/Carole/Documents/Cours/Product Design & System Engineering/launchfile/ActivateVision2.py"
-PathMain = "c:/Users/Carole/Documents/Cours/Product Design & System Engineering/launchfile/main.py"
+PathActivateVision1 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/ActivateVision1.py"
+PathActivateVision2 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/ActivateVision2.py"
+PathMain = "Carderly_Display/Kivy_Display/main.py"
 
 # Variable initialization
 Game = 1 
@@ -50,22 +50,22 @@ def vision():
     while Game:
         
         # Initialize state to switch from ActivateVision1 to 2
-        state_vision=0 
+        state_vision = 0
 
         # ActivateVision1 when putting cards into the wheel
-        while state_vision==0:
+        while state_vision == 0:
             exec(open(PathActivateVision1).read())
             time.sleep(2)
             start_game = database.child("StartGame").get()
-            if start_game.val()==1: state_vision=1
+            if start_game.val() == 1: state_vision = 1
 
         # ActivateVision2 when playing the game
-        while state_vision==1:
+        while state_vision == 1:
             exec(open(PathActivateVision2).read())
             time.sleep(2)            
             start_game = database.child("StartGame").get()
-            if start_game.val()==0: 
-                state_vision=0
+            if start_game.val() == 0:
+                state_vision = 0
                 break
 
 
@@ -145,7 +145,7 @@ def GameFunc():
     EndOfGame = database.child("EndGame").get()
 
     # Game part 
-    while(not(EndOfGame.val())): 
+    while not EndOfGame.val():
 
         # Get whose turn it is 
         turn_DB=database.child("Current to play").get()
@@ -160,7 +160,7 @@ def GameFunc():
             temp = database.child("PlayedCard").get()
             time.sleep(1) 
             card_played_DB = database.child("PlayedCard").get()
-            while(temp.val()==card_played_DB.val()):
+            while(temp.val() == card_played_DB.val()):
                 temp = database.child("PlayedCard").get()
                 time.sleep(1)
                 card_played_DB = database.child("PlayedCard").get()

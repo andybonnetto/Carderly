@@ -33,8 +33,8 @@ config = {
 }
 firebase = pyrebase.initialize_app(config)
 database = firebase.database()
-ROOM_NAME = 'Faf'
-
+ROOM_NAME = 'Dani'
+room = database.child("rooms").child(ROOM_NAME).get()
 blue_button_state = False
 red_button_state = False
 green_button_state = False
@@ -104,13 +104,13 @@ class MainWindow(Screen):
                     self.shift_to_main()
                     blue_button_state = True
                     return
-                # elif sm.current == "game":
-                #     db = database.child("Choose Trump").get().val()
-                #     if db == 1:
-                #         self.choose_atout()
-                #         self.choose_atout.choose_spade()
-                #         self.remove_button()
-                #         blue_button_state = True
+                elif sm.current == "game":
+                    db = room.child("OldPersonTrump").get().val()
+                    if db:
+                        self.choose_atout()
+                        self.choose_atout.choose_spade()
+                        self.remove_button()
+                        blue_button_state = True
 
         else:
             if GPIO.input(PIN_BLUE) == GPIO.LOW:
@@ -222,35 +222,27 @@ class WaitingRoom(Screen):
     p3 = ObjectProperty(None)
 
     def shift_to_game(self):
-        # if self.full:
-        #     sm.current = "game"
-        # else:
-        #     sm.current = "waiting"
         sm.current = "game"
 
     def shift_to_main(self):
         sm.current = "main_win"
 
     def __init__(self,**kwargs):
-        self.full = False
         super(WaitingRoom,self).__init__(**kwargs)
         token = False
         self.name_display(token)
         Clock.schedule_interval(self.name_display, 0.1)
 
     def name_display(self,token):
-        contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
+        contacts = [room.child("Player 1").get(), room.child("Player 2").get(), room.child("Player 3").get(), room.child("Player 4").get()]
         i = 0
         contact_name = [0, 0, 0, 0]
-        for contact in contacts.each():
+        for contact in contacts:
             contact_name[i] = contact.val()["Name"]
             i += 1
         self.p1 = contact_name[1]
         self.p2 = contact_name[2]
         self.p3 = contact_name[3]
-
-        if i == 4:
-            self.full = True
 
 class GameWindow(Screen):
     atout_kv = ObjectProperty(None)
@@ -279,7 +271,7 @@ class GameWindow(Screen):
     def highlight_turn(self,token):
     #Draw green rectangle during player's turn or show "Your turn"
 
-        player_turn = database.child('Current to play').get().val()
+        player_turn = room.child('Current to play').get().val()
 
         self.r1 = 0
         self.r2 = 0
@@ -299,10 +291,11 @@ class GameWindow(Screen):
 
 
     def name_display_game(self):
-        contacts = database.child('rooms').child(ROOM_NAME).get()                 #TODO Enter the final name of the room
+        contacts = [room.child("Player 1").get(), room.child("Player 2").get(), room.child("Player 3").get(),
+                    room.child("Player 4").get()]
         i = 0
         contact_name = [0,0,0,0]
-        for contact in contacts.each():
+        for contact in contacts:
             contact_name[i] = contact.val()["Name"]
             i += 1
         self.p1 = contact_name[1]
@@ -311,25 +304,25 @@ class GameWindow(Screen):
 
     def choose_atout(self):
         def choose_spade(instance):
-            db_atout = database.child("Trump")
+            db_atout = room.child("Trump")
             print("you choose {}".format(instance.text))
             self.atout = "spade"
             self.remove_buttons()
             db_atout.set(1)
         def choose_heart(instance):
-            db_atout = database.child("Trump")
+            db_atout = room.child("Trump")
             print("you choose {}".format(instance.text))
             self.atout = "heart"
             self.remove_buttons()
             db_atout.set(4)
         def choose_diamond(instance):
-            db_atout = database.child("Trump")
+            db_atout = room.child("Trump")
             print("you choose {}".format(instance.text))
             self.atout = "diamond"
             self.remove_buttons()
             db_atout.set(3)
         def choose_clubs(instance):
-            db_atout = database.child("Trump")
+            db_atout = room.child("Trump")
             print("you choose {}".format(instance.text))
             self.atout = "clubs"
             self.remove_buttons()
@@ -354,8 +347,7 @@ class GameWindow(Screen):
         self.remove_widget(self.Diamond)
         self.remove_widget(self.Clubs)
     def show_atout(self,token):
-        db_atout = database.child("Trump")
-        atout = db_atout.get().val()
+        atout = room.child("Trump").get().val()
         trump = num_to_trump(atout)
         if atout:
             self.atout_kv = trump

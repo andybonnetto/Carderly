@@ -32,7 +32,7 @@ config = {
 }
 firebase = pyrebase.initialize_app(config)
 database = firebase.database()
-ROOM_NAME = "Faf"
+ROOM_NAME = "Dani"
 
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
@@ -105,8 +105,8 @@ def label_to_num(label):
 
 def compare_to_database(label):
     num = label_to_num(label)
-    # db_cards = database.child("rooms").child(ROOM_NAME).child("Player 1").get()
-    db_cards = database.child("Player 1").get()
+    db_cards = database.child("rooms").child(ROOM_NAME).child("Player 1").get()
+    # db_cards = database.child("Player 1").get()
     i = 0
     for card in db_cards.each():
         hand = card.val()
