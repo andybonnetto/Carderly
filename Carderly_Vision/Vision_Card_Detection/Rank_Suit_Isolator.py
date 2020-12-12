@@ -41,9 +41,9 @@ if PiOrUSB == 2:
 # Use counter variable to switch from isolating Rank to isolating Suit
 i = 1
 
-for Name in ['Ace','Two','Three','Four','Five','Six','Seven','Eight',
-             'Nine','Ten','Jack','Queen','King','Spades','Diamonds',
-             'Clubs','Hearts']:
+for Name in ['A','2','3','4','5','6','7','8',
+             '9','10','J','Q','K','s','d',
+             'c','h']:
 
     filename = Name + '.jpg'
 
