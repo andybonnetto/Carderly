@@ -209,7 +209,8 @@ class InsertDeck(Screen):
         sm.current = "waiting"
     def get_status(self,token):
         if database.child("StartGame").get().val():
-            self.shift_to_waiting()
+            if sm.current == "insert_deck":
+                self.shift_to_waiting()
     def get_shift_on(self,token):
         self.mess = ""
     def get_shift_off(self,token):
@@ -229,7 +230,8 @@ class WaitingRoom(Screen):
 
     def get_status(self,token):
         if database.child("PlayGame").get().val():
-            # self.shift_to_game()
+            if sm.current == "waiting":
+                self.shift_to_game()
             pass
 
     def __init__(self,**kwargs):
