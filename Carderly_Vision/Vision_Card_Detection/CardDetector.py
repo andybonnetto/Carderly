@@ -40,8 +40,10 @@ def card_to_label(rank,suit):
         r = "J"
     elif rank == "Queen":
         r = "Q"
-    else:
+    elif rank == "King":
         r = "K"
+    else:
+        r ="U"
 
     if suit == "Spades":
         s = "s"
@@ -49,8 +51,10 @@ def card_to_label(rank,suit):
         s = "h"
     elif suit == "Diamonds":
         s = "d"
-    else:
+    elif suit == "Clubs":
         s = "c"
+    else:
+        s = "U"
     label = r+s
     return label
 
@@ -62,10 +66,13 @@ def label_to_num(label):
         first_num = 2
     elif label_list[-1] == "d":
         first_num = 3
-    else:
+    elif label_list[-1] == "h":
         first_num = 4
-
-    if label_list[0] == "1":
+    else:
+        return 0
+    if label_list[0] == "U":
+        return 0
+    elif label_list[0] == "1":
         second_num = 10
     elif label_list[0] == "J":
         second_num = 11
