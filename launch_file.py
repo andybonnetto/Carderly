@@ -1,6 +1,6 @@
 import threading
 from Carderly_Motor import call_motor
-from call_motor import *
+from call_motor import
 import numpy as np
 import pyrebase
 import time
@@ -37,7 +37,7 @@ PathMain = "Carderly_Display/Kivy_Display/main.py"
 
 # Variable initialization
 Game = 1 
-
+step_motor = call_motor.define_step_motor()
 # CE QUI EST EN MAJ EST CE QUI DOIT ETRE AJUSTEEEE
 
 
@@ -105,9 +105,9 @@ def GameFunc():
         # Add it to the array
         cards = np.append(cards, card_detected_DB.val())
         # Put it into the wheel
-        call_motor.Servo_360("input")
+        call_motor.call_servo_360("input")
         time.sleep(2)
-        call_motor.Shuffle()
+        call_motor.shuffle(step_motor)
         time.sleep(2) # Time to put the card into the wheel + time for the vision to detect new cards (ADD CONDITION CHGMT CARTE?)
    
     #print("cards = " + str(cards))
@@ -132,13 +132,13 @@ def GameFunc():
         res=np.where(cards==old_cards[k])
         position=res[0]
         # Take the card out 
-        call_motor.discard(position)
+        call_motor.discard(step_motor,position)
         time.sleep(2)
-        call_motor.call_DC()
+        call_motor.call_dc()
         time.sleep(2)
-        call_motor.Servo_angle()
+        call_motor.call_servo_angle()
         time.sleep(2)
-        call_motor.Servo_360("output")
+        call_motor.call_servo_360("output")
         time.sleep(2) #TO BE ADJUSTED 
 
     # Start the game when card distributed, change variable in the DB for the APP
@@ -172,13 +172,13 @@ def GameFunc():
             res=np.where(cards==card_played_DB.val())
             position=res[0]
             # Take the card out 
-            call_motor.discard(position)
+            call_motor.discard(step_motor,position)
             time.sleep(2)
-            call_motor.call_DC()
+            call_motor.call_dc()
             time.sleep(2)
-            call_motor.Servo_angle()
+            call_motor.call_servo_angle()
             time.sleep(2)
-            call_motor.Servo_360("output")
+            call_motor.call_servo_360("output")
             time.sleep(2) # A AJUSTEEEEER
         
         # End of game (CONDITION TO BE DETERMINED)
