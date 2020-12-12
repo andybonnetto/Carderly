@@ -62,11 +62,11 @@ while cam_quit == 0:
     # Pre-process camera image (gray, blur, and threshold it)
     pre_proc = Cards.preprocess_image(image)
     mask = np.empty_like(pre_proc)
-    BOX_HEIGHT = 250
-    BOX_WIDTH = 125
+    BOX_HEIGHT = 350
+    BOX_WIDTH = 260
     box = np.array([255] * BOX_HEIGHT * BOX_WIDTH).reshape(BOX_HEIGHT, BOX_WIDTH)
-    x = 200
-    y = 200
+    x = 100
+    y = 300
     mask[x:x + BOX_HEIGHT, y:y + BOX_WIDTH] = box
     cv2.imshow("Mask", mask)
     # Find and sort the contours of all cards in the image (query cards)
