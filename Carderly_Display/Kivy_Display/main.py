@@ -297,13 +297,16 @@ class GameWindow(Screen):
         contacts = [room.child("Player 1"), room.child("Player 2"), room.child("Player 3"),
                     room.child("Player 4")]
         i = 0
-        contact_name = [0,0,0,0]
+        contact_name = ["0","0","0","0"]
         for contact in contacts:
             contact_name[i] = contact.child("Name").get().val()
             i += 1
-        self.p1 = contact_name[1]
-        self.p2 = contact_name[2]
-        self.p3 = contact_name[3]
+        if contact_name[1]:
+            self.p1 = contact_name[1]
+        if contact_name[2]:
+            self.p2 = contact_name[2]
+        if contact_name[3]:
+            self.p3 = contact_name[3]
 
     def choose_atout(self):
         def choose_spade(instance):
