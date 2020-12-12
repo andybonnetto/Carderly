@@ -61,7 +61,7 @@ while cam_quit == 0:
 
     # Pre-process camera image (gray, blur, and threshold it)
     pre_proc = Cards.preprocess_image(image)
-    mask = np.empty_like(pre_proc)
+    mask = np.empty_like(pre_proc)*0
     BOX_HEIGHT = 356
     BOX_WIDTH = 232
     box = np.array([255] * BOX_HEIGHT * BOX_WIDTH).reshape(BOX_HEIGHT, BOX_WIDTH)
@@ -83,7 +83,9 @@ while cam_quit == 0:
         # For each contour detected:
         for i in range(len(cnts_sort)):
             if (cnt_is_card[i] == 1):
-                print(np.sum(cnt_is_card))
+                t = time.localtime()
+                current_time = time.strftime("%H:%M:%S", t)
+                print(np.sum(cnt_is_card),current_time)
                 # Create a card object from the contour and append it to the list of cards.
                 # preprocess_card function takes the card contour and contour and
                 # determines the cards properties (corner points, etc). It generates a
