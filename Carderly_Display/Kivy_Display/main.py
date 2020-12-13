@@ -103,13 +103,13 @@ class MainWindow(Screen):
                     self.shift_to_main()
                     blue_button_state = True
                     return
-                # elif sm.current == "game":
-                #     db = database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val()
-                #     if db:
-                #         self.choose_atout()
-                #         self.choose_atout.choose_spade()
-                #         self.remove_button()
-                #         blue_button_state = True
+                elif sm.current == "game":
+                    db = database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val()
+                    if db:
+                        self.choose_atout()
+                        self.choose_atout.choose_spade()
+                        self.remove_button()
+                        blue_button_state = True
 
         else:
             if GPIO.input(PIN_BLUE) == GPIO.LOW:
@@ -355,12 +355,14 @@ class GameWindow(Screen):
         self.remove_widget(self.Heart)
         self.remove_widget(self.Diamond)
         self.remove_widget(self.Clubs)
+
     def show_atout(self,token):
         atout = database.child("rooms").child(ROOM_NAME).child("Trump").get().val()
         trump = num_to_trump(atout)
         if atout:
             self.atout_kv = trump
             self.im_atout_kv = "{}.png".format(trump)
+
     def show_vis(self,token):
         db_vision = database.child("Vision").get()
         card_seen = db_vision.val()
@@ -393,14 +395,10 @@ class ContactWindow(Screen):
             self.add_widget(Label(text = "{}\n".format(contact), font_size="30",pos=(0,50+space)))
             space += 30
 
+
 class WindowManager(ScreenManager):
     pass
 
-# def popup_change():
-#     pop = Popup(title='Change Account',
-#                   content=Label(text=''),
-#                   size_hint=(None, None), size=(400, 400))
-#     pop.open()
 
 sm = WindowManager()
 kv = Builder.load_file("my.kv")
