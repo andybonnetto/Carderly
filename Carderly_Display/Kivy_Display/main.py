@@ -310,6 +310,9 @@ class GameWindow(Screen):
                         self.choose_diamonds()
                         green_button_state = True
                         self.old_person_trump = 0
+                    elif database.child("rooms").child(ROOM_NAME).child("Current to play").get().val()==1:
+                        self.validate_card()
+
         else:
             if GPIO.input(PIN_GREEN) == GPIO.LOW:
                 green_button_state = False
@@ -333,6 +336,10 @@ class GameWindow(Screen):
             self.choose_atout()
             database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").set(0)
             self.old_person_trump = 1
+
+    def validate_card(self):
+        card = database.child("Vision").get().val()
+        database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card played").set(card)
 
     def shift_to_waiting(self):
         sm.current = "waiting"
