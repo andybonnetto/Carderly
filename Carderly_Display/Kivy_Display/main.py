@@ -339,7 +339,8 @@ class GameWindow(Screen):
 
     def validate_card(self):
         card = database.child("Vision").get().val()
-        database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card played").set(card)
+        if card:
+            database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card played").set(card)
 
     def shift_to_waiting(self):
         sm.current = "waiting"
