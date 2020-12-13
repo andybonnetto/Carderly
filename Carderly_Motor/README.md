@@ -6,7 +6,7 @@ Carderly uses 5 motors to work which are 2x 360servo motors for the casters, 1x 
 When the system breaks just discard all cards
 ## Motor launch
 All motors can be launch by using the functions python file "call_motor.py" (workin on it), it calls subfunctions with classes for each type of motors, parameters and pins must be entered according to the scheme in the bottom.
-At the end of every motor call, a *cleanup* function set in every class is necessary to disconnect motor from pins in order to let the energy for other motors. PINS refer to GPIO pins shown on scheme ([pin/GPIO relation](https://github.com/andybonnetto/Carderly/blob/main/Carderly_Motor/pins.PNG))
+At the end the whole code, a *cleanup* function set for every class is necessary to disconnect motors from pins. PINS refer to GPIO pins shown on scheme ([pin/GPIO relation](https://github.com/andybonnetto/Carderly/blob/main/Carderly_Motor/pins.PNG))
 In the launch file : you can use
 ```
 from call_motor import *
@@ -39,7 +39,7 @@ servo_motor.cleanup()
 ```
 
 ### Servo motor -360
-360 servo motors are used to turn the small casters in the input and output of the device. You must specify input or output in order to choose the pin to activate. For now the run at full speed during a constant period (magic number in call_motor). 
+360 servo motors are used to turn the small casters in the input and output of the device. You must specify input or output in order to choose the pin to activate. For now the run at high during a constant period (magic number in call_motor). The duty cycle's mean is at 50 and corresponds to the minimum speed in one direction. A duty cycle of 100 gives a speed of 0 while a duty cycle of 10 is quite fast.
 
 in call_motor : 
 ```
@@ -49,9 +49,9 @@ from Motor_servo_360 import Servo360
     motor_1 = Servo360(PIN1)
     motor_2 = Servp360(PIN2)
     if status == 'input':
-        servo_motor360.activate(period,dc=100)
+        servo_motor360.activate(period,dc=10)
     elif status == 'output':
-        servo_motor360.activate(period,dc=100)
+        servo_motor360.activate(period,dc=10)
     servo_motor360.cleanup()
 ```
 Max speed is already quite low (1 turn per second) so no need to regulate with PWM
