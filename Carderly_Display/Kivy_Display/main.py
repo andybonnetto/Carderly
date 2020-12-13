@@ -237,8 +237,8 @@ class WaitingRoom(Screen):
         super(WaitingRoom,self).__init__(**kwargs)
         token = False
         self.name_display(token)
-        Clock.schedule_interval(self.name_display, 0.1)
-        Clock.schedule_interval(self.get_status, 0.1)
+        Clock.schedule_interval(self.name_display, 0.01)
+        Clock.schedule_interval(self.get_status, 0.01)
 
     def name_display(self,token):
         contacts = [database.child("rooms").child(ROOM_NAME).child("Player 1").child("Name").get().val(),
@@ -275,6 +275,9 @@ class GameWindow(Screen):
         Clock.schedule_interval(self.show_atout,0.01)
         Clock.schedule_interval(self.show_vis,0.05)
         Clock.schedule_interval(self.blue_button_callback, 0.01)
+        Clock.schedule_interval(self.red_button_callback, 0.01)
+        Clock.schedule_interval(self.green_button_callback, 0.01)
+        Clock.schedule_interval(self.grey_button_callback, 0.01)
 
     def blue_button_callback(self, token):
         global blue_button_state
@@ -283,12 +286,54 @@ class GameWindow(Screen):
             if GPIO.input(PIN_BLUE) == GPIO.HIGH:
                 if sm.current == "game":
                     if self.old_person_trump:
-                        self.choose_spade()
+                        self.choose_clubs()
                         blue_button_state = True
                         self.old_person_trump = 0
         else:
             if GPIO.input(PIN_BLUE) == GPIO.LOW:
                 blue_button_state = False
+
+    def red_button_callback(self, token):
+        global red_button_state
+        if not red_button_state:
+            red_button_state = False
+            if GPIO.input(PIN_RED) == GPIO.HIGH:
+                if sm.current == "game":
+                    if self.old_person_trump:
+                        self.choose_hearts()
+                        red_button_state = True
+                        self.old_person_trump = 0
+        else:
+            if GPIO.input(PIN_RED) == GPIO.LOW:
+                red_button_state = False
+
+    def green_button_callback(self, token):
+        global green_button_state
+        if not green_button_state:
+            green_button_state = False
+            if GPIO.input(PIN_GREEN) == GPIO.HIGH:
+                if sm.current == "game":
+                    if self.old_person_trump:
+                        self.choose_diamond()
+                        green_button_state = True
+                        self.old_person_trump = 0
+        else:
+            if GPIO.input(PIN_GREEN) == GPIO.LOW:
+                green_button_state = False
+
+    def grey_button_callback(self, token):
+        global grey_button_state
+        if not grey_button_state:
+            grey_button_state = False
+            if GPIO.input(PIN_GREY) == GPIO.HIGH:
+                if sm.current == "game":
+                    if self.old_person_trump:
+                        self.choose_spade()
+                        grey_button_state = True
+                        self.old_person_trump = 0
+        else:
+            if GPIO.input(PIN_GREY) == GPIO.LOW:
+                grey_button_state = False
 
     def should_choose_atout(self, token):
         if database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val():
@@ -337,6 +382,27 @@ class GameWindow(Screen):
     def choose_spade(self):
         db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
         self.atout = "spade"
+        print("you choose {}".format(self.atout))
+        self.remove_buttons()
+        db_atout.set(1)
+
+    def choose_clubs(self):
+        db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
+        self.atout = "clubs"
+        print("you choose {}".format(self.atout))
+        self.remove_buttons()
+        db_atout.set(1)
+
+    def choose_diamonds(self):
+        db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
+        self.atout = "diamonds"
+        print("you choose {}".format(self.atout))
+        self.remove_buttons()
+        db_atout.set(1)
+
+    def choose_hearts(self):
+        db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
+        self.atout = "hearts"
         print("you choose {}".format(self.atout))
         self.remove_buttons()
         db_atout.set(1)
