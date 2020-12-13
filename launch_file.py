@@ -45,7 +45,8 @@ step_motor = call_motor.define_step_motor()
 def main():
     # Run the display continuously in background
     while Game:
-        exec(open(PathMain).read())
+        # exec(open(PathMain).read())
+        os.system("KIVY_BCM_DISPMANX_ID=1 python " + PathMain)
         time.sleep(2)
 
 def vision():
@@ -57,7 +58,8 @@ def vision():
 
         # ActivateVision1 when putting cards into the wheel
         # while state_vision == 0:  #Pas besoin de while ici, ya déjà un while dans vision
-        exec(open(PathActivateVision1).read())
+        # exec(open(PathActivateVision1).read())
+        os.system("python " + PathActivateVision1)
         time.sleep(2)
         start_game = database.child("StartGame").get()
         if start_game.val() == 1: state_vision = 1
