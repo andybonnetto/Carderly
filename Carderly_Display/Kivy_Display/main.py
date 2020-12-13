@@ -249,7 +249,7 @@ class WaitingRoom(Screen):
         i = 2
         for field in fields.each():
             if field.key() == "Player " + str(i):
-                contacts[i-2] = database.child("rooms").child(ROOM_NAME).child(field).child("Name").get().val()
+                contacts[i-2] = database.child("rooms").child(ROOM_NAME).child(field.key()).child("Name").get().val()
                 i += 1
         self.p1 = contacts[0]
         self.p2 = contacts[1]
