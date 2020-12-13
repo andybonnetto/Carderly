@@ -282,7 +282,6 @@ class GameWindow(Screen):
                 if sm.current == "game":
                     db = database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val()
                     if db:
-                        self.choose_atout()
                         self.choose_spade()
                         self.remove_button()
                         blue_button_state = True
@@ -327,6 +326,13 @@ class GameWindow(Screen):
             self.p2 = contacts[2]
         if contacts[3]:
             self.p3 = contacts[3]
+
+    def choose_spade(self):
+        db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
+        self.atout = "spade"
+        print("you choose {}".format(self.atout))
+        self.remove_buttons()
+        db_atout.set(1)
 
     def choose_atout(self):
         def choose_spade(instance):
