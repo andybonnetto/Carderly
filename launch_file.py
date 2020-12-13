@@ -34,10 +34,10 @@ ROOM_NAME = "Dani"
 PathActivateVision1 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_Vision1.py"
 PathActivateVision2 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_Vision2.py"
 PathMain = "Carderly_Display/Kivy_Display/main.py"
+PathModel = "Cardely_Vision/TFlite_models/32"
 
 # Variable initialization
-Game = 1 
-step_motor = call_motor.define_step_motor()
+Game = 1
 # CE QUI EST EN MAJ EST CE QUI DOIT ETRE AJUSTEEEE
 
 
@@ -67,7 +67,7 @@ def vision():
         # ActivateVision2 when playing the game
         # while state_vision == 1:
         # exec(open(PathActivateVision2).read())
-        os.system("python3 " + PathActivateVision2 + " modeldir=../TFlite_models/32")
+        os.system("python3 " + PathActivateVision2 + " --modeldir=" + PathModel)
         time.sleep(2)
         start_game = database.child("StartGame").get()
         if start_game.val() == 0:
@@ -96,7 +96,9 @@ def wait_player():
 
 
 def GameFunc():
-
+    #Initialize step motor
+    step_motor = call_motor.define_step_motor()
+    
     # Wait for deck to be inserted
     wait_deck()    
 
