@@ -267,6 +267,7 @@ class GameWindow(Screen):
 
     def __init__(self,**kwargs):
         super(GameWindow, self).__init__(**kwargs)
+        self.old_person_trump = 0
         self.name_display_game()
         # self.choose_atout()
         Clock.schedule_interval(self.should_choose_atout, 0.01)
@@ -281,13 +282,10 @@ class GameWindow(Screen):
             blue_button_state = False
             if GPIO.input(PIN_BLUE) == GPIO.HIGH:
                 if sm.current == "game":
-                    db = database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val()
-                    if db:
-                        database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").set(0)
-                        while database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val():
-                            pass
+                    if self.old_person_trump:
                         self.choose_spade()
                         blue_button_state = True
+                        self.old_person_trump = 0
         else:
             if GPIO.input(PIN_BLUE) == GPIO.LOW:
                 blue_button_state = False
@@ -295,6 +293,8 @@ class GameWindow(Screen):
     def should_choose_atout(self, token):
         if database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val():
             self.choose_atout()
+            database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").set(0)
+            self.old_person_trump = 1
 
     def shift_to_waiting(self):
         sm.current = "waiting"
