@@ -103,13 +103,6 @@ class MainWindow(Screen):
                     self.shift_to_main()
                     blue_button_state = True
                     return
-                # elif sm.current == "game":
-                #     db = database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val()
-                #     if db:
-                #         self.choose_atout()
-                #         self.choose_atout.choose_spade()
-                #         self.remove_button()
-                #         blue_button_state = True
 
         else:
             if GPIO.input(PIN_BLUE) == GPIO.LOW:
@@ -391,21 +384,21 @@ class GameWindow(Screen):
         self.atout = "clubs"
         print("you choose {}".format(self.atout))
         self.remove_buttons()
-        db_atout.set(1)
+        db_atout.set(2)
 
     def choose_diamonds(self):
         db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
         self.atout = "diamonds"
         print("you choose {}".format(self.atout))
         self.remove_buttons()
-        db_atout.set(1)
+        db_atout.set(3)
 
     def choose_hearts(self):
         db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
         self.atout = "hearts"
         print("you choose {}".format(self.atout))
         self.remove_buttons()
-        db_atout.set(1)
+        db_atout.set(4)
 
     def choose_atout(self):
         def choose_spade(instance):
