@@ -33,7 +33,7 @@ ROOM_NAME = "Dani"
 # Path to files
 PathActivateVision1 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_Vision1.py"
 PathActivateVision2 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_Vision2.py"
-PathMain = "Carderly_Display/Kivy_Display/main.py"
+    PathMain = "Carderly_Display/Kivy_Display/main.py"
 
 # Variable initialization
 Game = 1 
@@ -46,7 +46,7 @@ def main():
     # Run the display continuously in background
     while Game:
         # exec(open(PathMain).read())
-        os.system("KIVY_BCM_DISPMANX_ID=1 python " + PathMain)
+        os.system("KIVY_BCM_DISPMANX_ID=1 python3 " + PathMain)
         time.sleep(2)
 
 def vision():
@@ -59,7 +59,7 @@ def vision():
         # ActivateVision1 when putting cards into the wheel
         # while state_vision == 0:  #Pas besoin de while ici, ya déjà un while dans vision
         # exec(open(PathActivateVision1).read())
-        os.system("python " + PathActivateVision1)
+        os.system("python3 " + PathActivateVision1)
         time.sleep(2)
         start_game = database.child("StartGame").get()
         if start_game.val() == 1: state_vision = 1
@@ -67,7 +67,7 @@ def vision():
         # ActivateVision2 when playing the game
         # while state_vision == 1:
         # exec(open(PathActivateVision2).read())
-        os.system("python " + PathActivateVision2 + " modeldir=../TFlite_models/32")
+        os.system("python3 " + PathActivateVision2 + " modeldir=../TFlite_models/32")
         time.sleep(2)
         start_game = database.child("StartGame").get()
         if start_game.val() == 0:
