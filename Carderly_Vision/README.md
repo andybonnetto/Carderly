@@ -11,7 +11,7 @@ Solution : external condition in the database when all players are here and dist
 I don't quite understand in which position the cameras are saved everytime I turn off and on the raspi, this needs to be setted in *Activate_vision.py; cv2.VideoCapture(cam_num)*~ </br>
 Solution: You need to plug the USB after the raspberry pi starts to get the picamer to auto-config correctly, *Activate_vision1* starts the pi-camera and *Activate_vision2* starts the vision with the webcam.
 * ~<b>Training for ditribution</b> (Andy) </br> 
-New training needs to be done for the distribution with one of the cameras, which means they are not gonna be launched with the same tflite model. ~
+New training needs to be done for the distribution with one of the cameras, which means they are not gonna be launched with the same tflite model.~
 Solution : Everyrthing works with opencv, need to calibrate the mask position when the camera is fixed
 
 ## Object detection with API
