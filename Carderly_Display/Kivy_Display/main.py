@@ -208,7 +208,7 @@ class InsertDeck(Screen):
     def shift_to_waiting(self):
         sm.current = "waiting"
     def get_status(self,token):
-        if database.child("StartGame").get().val():
+        if database.child("DeckInserted").get().val():
             if sm.current == "insert_deck":
                 self.shift_to_waiting()
     def get_shift_on(self,token):

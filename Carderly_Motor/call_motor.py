@@ -9,7 +9,7 @@ from Carderly_Motor.Motor_DC import DCMotor
 def call_servo_angle():
     servo_motor = ServoAngle(5,4)
     servo_motor.activate(4)
-    
+
 def call_stepper():
     StepPins = [17, 4, 23, 24]
     step_motor = StepMotor(StepPins)

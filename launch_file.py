@@ -26,6 +26,7 @@ database.child("PlayGame").set(0)
 database.child("CountPlayer").set(1)
 database.child("PlayedCard").set(1)
 database.child("Vision").set(0)
+database.child("DeckInserted").set(0)
 
 #Constant variable
 ROOM_NAME = "Dani"
@@ -34,7 +35,7 @@ ROOM_NAME = "Dani"
 PathActivateVision1 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_Vision1.py"
 PathActivateVision2 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_Vision2.py"
 PathMain = "Carderly_Display/Kivy_Display/main.py"
-PathModel = "Cardely_Vision/TFlite_models/32"
+PathModel = "Carderly_Vision/TFlite_models/32"
 
 # Variable initialization
 Game = 1
@@ -67,12 +68,13 @@ def vision():
         # ActivateVision2 when playing the game
         # while state_vision == 1:
         # exec(open(PathActivateVision2).read())
-        os.system("python3 " + PathActivateVision2 + " --modeldir=" + PathModel)
-        time.sleep(2)
-        start_game = database.child("StartGame").get()
-        if start_game.val() == 0:
-            state_vision = 0
-            # break
+        if state_vision == 1:
+            os.system("python3 " + PathActivateVision2 + " --modeldir=" + PathModel)
+            time.sleep(2)
+            start_game = database.child("StartGame").get()
+            if start_game.val() == 0:
+                state_vision = 0
+                # break
 
 
 def wait_deck():
@@ -114,8 +116,11 @@ def GameFunc():
         time.sleep(2)
         call_motor.shuffle(step_motor)
         time.sleep(2) # Time to put the card into the wheel + time for the vision to detect new cards (ADD CONDITION CHGMT CARTE?)
-   
-    #print("cards = " + str(cards))
+
+    # print("cards = " + str(cards))
+
+    #Deck is inserted, shift display to waiting room
+    database.child("DeckInserted").set(1)
 
     # Wait for 4 players
     wait_player()
