@@ -76,8 +76,6 @@ class MainWindow(Screen):
 
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
-        if sm.current == "game":
-            self.choose_atout()
         Clock.schedule_interval(self.blue_button_callback, 0.1)
         Clock.schedule_interval(self.green_button_callback, 0.1)
         Clock.schedule_interval(self.red_button_callback, 0.1)
@@ -105,13 +103,13 @@ class MainWindow(Screen):
                     self.shift_to_main()
                     blue_button_state = True
                     return
-                elif sm.current == "game":
-                    db = database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val()
-                    if db:
-                        self.choose_atout()
-                        self.choose_atout.choose_spade()
-                        self.remove_button()
-                        blue_button_state = True
+                # elif sm.current == "game":
+                #     db = database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val()
+                #     if db:
+                #         self.choose_atout()
+                #         self.choose_atout.choose_spade()
+                #         self.remove_button()
+                #         blue_button_state = True
 
         else:
             if GPIO.input(PIN_BLUE) == GPIO.LOW:
@@ -198,51 +196,6 @@ class MainWindow(Screen):
     def shift_to_waiting(self):
         sm.current = "waiting"
 
-    def choose_atout(self):
-        def choose_spade(instance):
-            db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
-            print("you choose {}".format(instance.text))
-            self.atout = "spade"
-            self.remove_buttons()
-            db_atout.set(1)
-        def choose_heart(instance):
-            db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
-            print("you choose {}".format(instance.text))
-            self.atout = "heart"
-            self.remove_buttons()
-            db_atout.set(4)
-        def choose_diamond(instance):
-            db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
-            print("you choose {}".format(instance.text))
-            self.atout = "diamond"
-            self.remove_buttons()
-            db_atout.set(3)
-        def choose_clubs(instance):
-            db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
-            print("you choose {}".format(instance.text))
-            self.atout = "clubs"
-            self.remove_buttons()
-            db_atout.set(2)
-
-        self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(280,200), font_size=(self.width + self.height)/5,background_color=(1,1,0))
-        self.Spade.bind(on_press=choose_spade)
-        self.Heart = Button(text="heart", size_hint=(0.3,0.1), pos=(100,280), font_size=(self.width + self.height)/5,background_color=(1,0,0))
-        self.Heart.bind(on_press=choose_heart)
-        self.Diamond = Button(text="diamond", size_hint=(0.3,0.1), pos=(300,380), font_size=(self.width + self.height)/5,background_color=(0,1,0))
-        self.Diamond.bind(on_press=choose_diamond)
-        self.Clubs = Button(text="clubs", size_hint=(0.3,0.1), pos=(500,280), font_size=(self.width + self.height)/5,background_color=(0,0,1))
-        self.Clubs.bind(on_press=choose_clubs)
-        self.add_widget(self.Spade)
-        self.add_widget(self.Heart)
-        self.add_widget(self.Diamond)
-        self.add_widget(self.Clubs)
-
-    def remove_buttons(self):
-        self.remove_widget(self.Spade)
-        self.remove_widget(self.Heart)
-        self.remove_widget(self.Diamond)
-        self.remove_widget(self.Clubs)
-
 class InsertDeck(Screen):
     mess = ObjectProperty(None)
 
@@ -315,10 +268,27 @@ class GameWindow(Screen):
     def __init__(self,**kwargs):
         super(GameWindow, self).__init__(**kwargs)
         self.name_display_game()
-        # self.choose_atout()
+        self.choose_atout()
         Clock.schedule_interval(self.highlight_turn, 0.1)
         Clock.schedule_interval(self.show_atout,0.01)
         Clock.schedule_interval(self.show_vis,0.05)
+        Clock.schedule_interval(self.blue_button_callback, 0.1)
+
+    def blue_button_callback(self):
+        global blue_button_state
+        if not blue_button_state:
+            blue_button_state = False
+            if GPIO.input(PIN_BLUE) == GPIO.HIGH:
+                if sm.current == "game":
+                    db = database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val()
+                    if db:
+                        self.choose_atout()
+                        self.choose_atout.choose_spade()
+                        self.remove_button()
+                        blue_button_state = True
+        else:
+            if GPIO.input(PIN_BLUE) == GPIO.LOW:
+                blue_button_state = False
 
     def shift_to_waiting(self):
         sm.current = "waiting"
@@ -358,7 +328,50 @@ class GameWindow(Screen):
         if contacts[3]:
             self.p3 = contacts[3]
 
+    def choose_atout(self):
+        def choose_spade(instance):
+            db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
+            print("you choose {}".format(instance.text))
+            self.atout = "spade"
+            self.remove_buttons()
+            db_atout.set(1)
+        def choose_heart(instance):
+            db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
+            print("you choose {}".format(instance.text))
+            self.atout = "heart"
+            self.remove_buttons()
+            db_atout.set(4)
+        def choose_diamond(instance):
+            db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
+            print("you choose {}".format(instance.text))
+            self.atout = "diamond"
+            self.remove_buttons()
+            db_atout.set(3)
+        def choose_clubs(instance):
+            db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
+            print("you choose {}".format(instance.text))
+            self.atout = "clubs"
+            self.remove_buttons()
+            db_atout.set(2)
 
+        self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(280,200), font_size=(self.width + self.height)/5,background_color=(1,1,0))
+        self.Spade.bind(on_press=choose_spade)
+        self.Heart = Button(text="heart", size_hint=(0.3,0.1), pos=(100,280), font_size=(self.width + self.height)/5,background_color=(1,0,0))
+        self.Heart.bind(on_press=choose_heart)
+        self.Diamond = Button(text="diamond", size_hint=(0.3,0.1), pos=(300,380), font_size=(self.width + self.height)/5,background_color=(0,1,0))
+        self.Diamond.bind(on_press=choose_diamond)
+        self.Clubs = Button(text="clubs", size_hint=(0.3,0.1), pos=(500,280), font_size=(self.width + self.height)/5,background_color=(0,0,1))
+        self.Clubs.bind(on_press=choose_clubs)
+        self.add_widget(self.Spade)
+        self.add_widget(self.Heart)
+        self.add_widget(self.Diamond)
+        self.add_widget(self.Clubs)
+
+    def remove_buttons(self):
+        self.remove_widget(self.Spade)
+        self.remove_widget(self.Heart)
+        self.remove_widget(self.Diamond)
+        self.remove_widget(self.Clubs)
 
     def show_atout(self,token):
         atout = database.child("rooms").child(ROOM_NAME).child("Trump").get().val()
