@@ -33,7 +33,7 @@ ROOM_NAME = "Dani"
 # Path to files
 PathActivateVision1 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_Vision1.py"
 PathActivateVision2 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_Vision2.py"
-    PathMain = "Carderly_Display/Kivy_Display/main.py"
+PathMain = "Carderly_Display/Kivy_Display/main.py"
 
 # Variable initialization
 Game = 1 
