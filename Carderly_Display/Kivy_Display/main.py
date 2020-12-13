@@ -283,7 +283,7 @@ class GameWindow(Screen):
                     db = database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val()
                     if db:
                         self.choose_atout()
-                        self.choose_atout.choose_spade()
+                        self.choose_spade()
                         self.remove_button()
                         blue_button_state = True
         else:
