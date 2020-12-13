@@ -274,7 +274,7 @@ class GameWindow(Screen):
         Clock.schedule_interval(self.show_vis,0.05)
         Clock.schedule_interval(self.blue_button_callback, 0.1)
 
-    def blue_button_callback(self):
+    def blue_button_callback(self, token):
         global blue_button_state
         if not blue_button_state:
             blue_button_state = False
