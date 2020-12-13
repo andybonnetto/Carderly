@@ -234,16 +234,26 @@ class WaitingRoom(Screen):
         Clock.schedule_interval(self.get_status, 0.01)
 
     def name_display(self,token):
-        contacts = [database.child("rooms").child(ROOM_NAME).child("Player 1").child("Name").get().val(),
-                    database.child("rooms").child(ROOM_NAME).child("Player 2").child("Name").get().val(),
-                    database.child("rooms").child(ROOM_NAME).child("Player 3").child("Name").get().val(),
-                    database.child("rooms").child(ROOM_NAME).child("Player 4").child("Name").get().val()]
-        if contacts[1]:
-            self.p1 = contacts[1]
-        if contacts[2]:
-            self.p2 = contacts[2]
-        if contacts[3]:
-            self.p3 = contacts[3]
+        # contacts = [database.child("rooms").child(ROOM_NAME).child("Player 1").child("Name").get().val(),
+        #             database.child("rooms").child(ROOM_NAME).child("Player 2").child("Name").get().val(),
+        #             database.child("rooms").child(ROOM_NAME).child("Player 3").child("Name").get().val(),
+        #             database.child("rooms").child(ROOM_NAME).child("Player 4").child("Name").get().val()]
+        # if contacts[1]:
+        #     self.p1 = contacts[1]
+        # if contacts[2]:
+        #     self.p2 = contacts[2]
+        # if contacts[3]:
+        #     self.p3 = contacts[3]
+        fields = database.child("rooms").child(ROOM_NAME).get()
+        contacts = ["","",""]
+        i = 2
+        for field in fields.each():
+            if field.key == "Player " + str(i):
+                contacts[i-2] = database.child("rooms").child(ROOM_NAME).child(field).child("Name").get().val()
+                i += 1
+        self.p1 = contacts[0]
+        self.p2 = contacts[1]
+        self.p3 = contacts[2]
 
 class GameWindow(Screen):
     atout_kv = ObjectProperty(None)
