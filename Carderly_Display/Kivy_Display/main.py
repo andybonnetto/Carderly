@@ -315,7 +315,7 @@ class GameWindow(Screen):
     def __init__(self,**kwargs):
         super(GameWindow, self).__init__(**kwargs)
         self.name_display_game()
-        self.choose_atout()
+        # self.choose_atout()
         Clock.schedule_interval(self.highlight_turn, 0.1)
         Clock.schedule_interval(self.show_atout,0.01)
         Clock.schedule_interval(self.show_vis,0.05)
