@@ -201,8 +201,6 @@ class InsertDeck(Screen):
 
     def __init__(self,**kwargs):
         super(InsertDeck,self).__init__(**kwargs)
-        Clock.schedule_interval(self.get_shift_on, 3)
-        Clock.schedule_interval(self.get_shift_off, 4)
         Clock.schedule_interval(self.get_status, 0.1)
 
     def shift_to_waiting(self):
@@ -211,10 +209,11 @@ class InsertDeck(Screen):
         if database.child("DeckInserted").get().val():
             if sm.current == "insert_deck":
                 self.shift_to_waiting()
-    def get_shift_on(self,token):
-        self.mess = ""
-    def get_shift_off(self,token):
-        self.mess = "Card treatment, please wait..."
+        if database.child("DeckPresent").get().val():
+            if sm.current == "insert_deck":
+                self.mess = "Card treatment, please wait..."
+        else:
+            self.mess = ""
 
 class WaitingRoom(Screen):
 

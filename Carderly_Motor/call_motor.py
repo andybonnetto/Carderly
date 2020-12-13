@@ -1,4 +1,3 @@
-import RPi.GPIO as GPIO
 import time
 from Carderly_Motor.Motor_servo_angle import ServoAngle
 from Carderly_Motor.Motor_servo_360 import Servo360
@@ -9,14 +8,6 @@ from Carderly_Motor.Motor_DC import DCMotor
 def call_servo_angle():
     servo_motor = ServoAngle(5,4)
     servo_motor.activate(4)
-
-def call_stepper():
-    StepPins = [17, 4, 23, 24]
-    step_motor = StepMotor(StepPins)
-    nbStepsPerRev = 100
-    step_motor.define_sequence('half')
-    step_motor.run_arm(nbStepsPerRev)
-    pass
 
 def call_servo_360(status = 'input'):
     servo_motor360_in = Servo360(18)

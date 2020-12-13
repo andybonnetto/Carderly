@@ -27,6 +27,7 @@ database.child("CountPlayer").set(1)
 database.child("PlayedCard").set(1)
 database.child("Vision").set(0)
 database.child("DeckInserted").set(0)
+database.child("DeckPresent").set(0)
 
 #Constant variable
 ROOM_NAME = "Dani"
@@ -103,7 +104,7 @@ def GameFunc():
 
     # Wait for deck to be inserted
     wait_deck()    
-
+    database.child("DeckPresent").set(1)
     # Put the cards into the wheel when deck inserted, putting them into array to know their positions
     cards=np.array([])
     for i in range(31):
