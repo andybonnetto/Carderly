@@ -98,7 +98,7 @@ def wait_player():
 def GameFunc():
     #Initialize step motor
     step_motor = call_motor.define_step_motor()
-    
+
     # Wait for deck to be inserted
     wait_deck()    
 

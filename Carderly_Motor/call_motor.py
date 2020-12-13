@@ -9,7 +9,6 @@ from Carderly_Motor.Motor_DC import DCMotor
 def call_servo_angle():
     servo_motor = ServoAngle(5,4)
     servo_motor.activate(4)
-    servo_motor.cleanup()
     
 def call_stepper():
     StepPins = [17, 4, 23, 24]
@@ -24,10 +23,8 @@ def call_servo_360(status = 'input'):
     servo_motor360_out = Servo360(27)
     if status == 'input':
         servo_motor360_in.activate(5,dc=10) #period and dc
-        servo_motor360_in.cleanup()
     elif status == 'output':
         servo_motor360_out.activate(5,dc=100)
-        servo_motor360_out.cleanup()
 
 
 def shuffle(step_motor):
