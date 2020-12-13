@@ -284,6 +284,8 @@ class GameWindow(Screen):
                     db = database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val()
                     if db:
                         database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").set(0)
+                        while database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").get().val():
+                            pass
                         self.choose_spade()
                         blue_button_state = True
         else:
@@ -365,13 +367,13 @@ class GameWindow(Screen):
             self.remove_buttons()
             db_atout.set(2)
 
-        self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(280,200), font_size=25,background_color=(1,1,0))
+        self.Spade = Button(text="spade", size_hint=(0.3,0.1), pos=(280,200), font_size=30,background_color=(1,1,0))
         self.Spade.bind(on_press=choose_spade)
-        self.Heart = Button(text="heart", size_hint=(0.3,0.1), pos=(100,280), font_size=25,background_color=(1,0,0))
+        self.Heart = Button(text="heart", size_hint=(0.3,0.1), pos=(100,280), font_size=30,background_color=(1,0,0))
         self.Heart.bind(on_press=choose_heart)
-        self.Diamond = Button(text="diamond", size_hint=(0.3,0.1), pos=(300,380), font_size=25,background_color=(0,1,0))
+        self.Diamond = Button(text="diamond", size_hint=(0.3,0.1), pos=(300,380), font_size=30,background_color=(0,1,0))
         self.Diamond.bind(on_press=choose_diamond)
-        self.Clubs = Button(text="clubs", size_hint=(0.3,0.1), pos=(500,280), font_size=25,background_color=(0,0,1))
+        self.Clubs = Button(text="clubs", size_hint=(0.3,0.1), pos=(500,280), font_size=30,background_color=(0,0,1))
         self.Clubs.bind(on_press=choose_clubs)
         self.add_widget(self.Spade)
         self.add_widget(self.Heart)
