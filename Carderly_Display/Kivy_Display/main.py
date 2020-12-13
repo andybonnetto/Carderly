@@ -7,10 +7,10 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from database import Database
 from kivy.clock import Clock
-from functools import partial
 from kivy.graphics import *
 import RPi.GPIO as GPIO
 
+#Set PIN for buttons
 PIN_BLUE = 40
 PIN_GREEN = 38
 PIN_RED = 32
@@ -23,6 +23,7 @@ GPIO.setup(PIN_BLUE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(PIN_GREY, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(PIN_RED, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
+# Database config
 import pyrebase
 
 config = {
@@ -34,12 +35,15 @@ config = {
 firebase = pyrebase.initialize_app(config)
 database = firebase.database()
 ROOM_NAME = 'Dani'
+
+# Initialize button state
 blue_button_state = False
 red_button_state = False
 green_button_state = False
 grey_button_state = False
 
 def num_to_label(num):
+    # Utils functions for format conversions
     color_num = int(num/100)
     if color_num == 1:
         color = "Clubs"
@@ -64,6 +68,7 @@ def num_to_label(num):
     return label
 
 def num_to_trump(atout):
+    # Utils functions for format conversions
     if atout == 1:
         return "spade"
     elif atout == 2:
@@ -73,7 +78,7 @@ def num_to_trump(atout):
     else:
         return "heart"
 class MainWindow(Screen):
-
+    #Main screen, also contain most of the buttons functions for all the screens
     def __init__(self,**kwargs):
         super(MainWindow,self).__init__(**kwargs)
         Clock.schedule_interval(self.blue_button_callback, 0.01)
@@ -234,16 +239,7 @@ class WaitingRoom(Screen):
         Clock.schedule_interval(self.get_status, 0.01)
 
     def name_display(self,token):
-        # contacts = [database.child("rooms").child(ROOM_NAME).child("Player 1").child("Name").get().val(),
-        #             database.child("rooms").child(ROOM_NAME).child("Player 2").child("Name").get().val(),
-        #             database.child("rooms").child(ROOM_NAME).child("Player 3").child("Name").get().val(),
-        #             database.child("rooms").child(ROOM_NAME).child("Player 4").child("Name").get().val()]
-        # if contacts[1]:
-        #     self.p1 = contacts[1]
-        # if contacts[2]:
-        #     self.p2 = contacts[2]
-        # if contacts[3]:
-        #     self.p3 = contacts[3]
+
         fields = database.child("rooms").child(ROOM_NAME).get()
         contacts = ["","",""]
         i = 2
@@ -378,17 +374,16 @@ class GameWindow(Screen):
 
 
     def name_display_game(self):
-        contacts = [database.child("rooms").child(ROOM_NAME).child("Player 1").child("Name").get().val(),
-                    database.child("rooms").child(ROOM_NAME).child("Player 2").child("Name").get().val(),
-                    database.child("rooms").child(ROOM_NAME).child("Player 3").child("Name").get().val(),
-                    database.child("rooms").child(ROOM_NAME).child("Player 4").child("Name").get().val()]
-
-        if contacts[1]:
-            self.p1 = contacts[1]
-        if contacts[2]:
-            self.p2 = contacts[2]
-        if contacts[3]:
-            self.p3 = contacts[3]
+        fields = database.child("rooms").child(ROOM_NAME).get()
+        contacts = ["", "", ""]
+        i = 2
+        for field in fields.each():
+            if field.key() == "Player " + str(i):
+                contacts[i - 2] = database.child("rooms").child(ROOM_NAME).child(field.key()).child("Name").get().val()
+                i += 1
+        self.p1 = contacts[0]
+        self.p2 = contacts[1]
+        self.p3 = contacts[2]
 
     def choose_spade(self):
         db_atout = database.child("rooms").child(ROOM_NAME).child("Trump")
