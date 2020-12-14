@@ -160,14 +160,14 @@ def GameFunc():
 
     # Get the old player's cards from the DB (A CHANGER SELON DB ORGANISATION)
     old_cards = np.array([])
-    for j in range(8): 
+    for j in range(7):
         temp_DB=database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card "+str(j+1)).get()
         old_cards=np.append(old_cards, temp_DB.val())
     
     #print("old=" +str(old_cards))
 
     # Distribute the cards of the old player's 
-    for k in range(8):
+    for k in range(7):
         # Search position of the old player's card in the DB 
         res = np.where(cards==old_cards[k])
         position=int(res[0])
