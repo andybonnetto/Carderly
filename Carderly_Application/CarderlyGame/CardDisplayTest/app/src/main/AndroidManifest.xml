@@ -11,7 +11,9 @@
         android:theme="@style/Theme.CardDisplayTest">
         <activity android:name=".WaitingRoom"></activity>
         <activity android:name=".EditProfileActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="landscape"/>
         <activity android:name=".RoomChoice" />
         <activity android:name=".Login">
             <intent-filter>

@@ -42,7 +42,9 @@ public class WaitingRoom extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference roomRef;
-    int counter = 0;
+    private ValueEventListener Listener;
+    int counter_nb_players = 0;
+    boolean cards_shuffled = false;
 
 
     @Override
@@ -65,28 +67,30 @@ public class WaitingRoom extends AppCompatActivity {
         textView.setText("Room name :" + roomName);
 
         newPlayersEventListener();
-<<<<<<< HEAD
+    }
 
-
-
-=======
->>>>>>> 4def93449aef1c0da89f80484cfdd4f2e420cb7d
+    // Needed to remove the listener (otherwise it interferes with the game). onDestroy is called by the line finish()
+    public void onDestroy() {
+        super.onDestroy();
+        roomRef.removeEventListener(Listener);
     }
 
     private void newPlayersEventListener() {
         roomRef = database.getReference("rooms/" + roomName);
-        roomRef.addValueEventListener(new ValueEventListener() {
+        Listener = roomRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 playersList.clear();
                 for (DataSnapshot childrenSnapshot: dataSnapshot.getChildren()) {
-                    playersList.add(childrenSnapshot.child("Name").getValue(String.class));
+                    String children_name = childrenSnapshot.getKey();
+                    if((children_name.equals("Player 1")) || (children_name.equals("Player 2")) || (children_name.equals("Player 3")) || (children_name.equals("Player 4")))
+                        playersList.add(childrenSnapshot.child("Name").getValue(String.class));
                 }
-                //System.out.println(Arrays.toString(playersList.toArray()));
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(WaitingRoom.this, R.layout.waiting_room_players_listview, playersList);
                 listView.setAdapter(adapter);
-                counter = playersList.size();
-                if(counter == 1){
+                counter_nb_players = playersList.size();
+                writeIntDB(counter_nb_players,"rooms/" + roomName + "/CountPlayer");
+                if((counter_nb_players == 1) && (cards_shuffled == false)){ // Only player 1 shuffles the cards and just once
                     cards = new ArrayList<>();
                     // All cards are stored in an array, and each card has an ID number of 3 digits:
                     // 1st one for the colour, and the 2 others for the value
@@ -124,13 +128,16 @@ public class WaitingRoom extends AppCompatActivity {
                     cards.add(413); // king of hearts
                     cards.add(414); // ace of hearts
                     Collections.shuffle(cards); // Cards are shuffled before being uploaded on the database
-                    writeListDB(cards,"Cards");
+                    writeListDB(cards,"rooms/" + roomName + "/Cards");
+                    cards_shuffled = true;
                 }
-                if (counter == 4){
+                if (counter_nb_players == 4){
                     Intent intent = new Intent(WaitingRoom.this, MainActivity.class);
                     intent.putExtra("listofPlayers",playersList);
                     intent.putExtra("playerID",player_ID);
+                    intent.putExtra("roomName",roomName);
                     startActivity(intent);
+                    finish();
                 }
             }
 
@@ -147,6 +154,19 @@ public class WaitingRoom extends AppCompatActivity {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference mDbRef = mDatabase.getReference(location);
         mDbRef.setValue(cards).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) { // Error msg in Logcat in case the writing procedure fails
+                Log.d(TAG, e.getLocalizedMessage());
+            }
+        });
+    }
+
+    // Write to the database
+    public void writeIntDB(int id, String location) {
+        // Write to the database
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference mDbRef = mDatabase.getReference(location);
+        mDbRef.setValue(id).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) { // Error msg in Logcat in case the writing procedure fails
                 Log.d(TAG, e.getLocalizedMessage());

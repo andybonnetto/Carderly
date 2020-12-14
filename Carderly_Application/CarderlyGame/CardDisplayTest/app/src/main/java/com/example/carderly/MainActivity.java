@@ -42,16 +42,15 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> strings_DB;
     int player_id = 1;
     int end_turn = 0; // Incremented each time a card is played
+    int game_end = 0;
     int trump = 0;
     int suit = 0;
     int[] first_digit = {0,0,0,0};
     int[] last_two_digits = {0,0,0,0};
     int[] player_cards_id = {0,0,0,0,0,0,0,0}; // ID of the cards in hand of the player 1
     private final String TAG = this.getClass().getName();
+    String room_name;
     ArrayList<String> players_name;
-
-    FirebaseDatabase database;
-    DatabaseReference Ref;
 
     // Variables related to the popup window for the trump selection
     private AlertDialog.Builder dialogBuilder;
@@ -66,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         // Get info from the intent of the waiting room
         player_id = (int) getIntent().getSerializableExtra("playerID");
         players_name = (ArrayList<String>) getIntent().getSerializableExtra("listofPlayers");
+        room_name = (String) getIntent().getSerializableExtra("roomName");
 
         // Link the variables modified in the java file to the Views in the UI
         game_button = (Button) findViewById(R.id.game_button);
@@ -92,8 +92,17 @@ public class MainActivity extends AppCompatActivity {
         Random rand = new Random();
         //int first_player = rand.nextInt(4) + 1;
         //writeIntDB(first_player,"First turn");
-        writeIntDB(1,"First turn");
-        writeIntDB(1,"Current to play");
+        // Initialize all fields of the database
+        writeIntDB(game_end,"rooms/" + room_name + "/GameEnd");
+        writeIntDB(1,"rooms/" + room_name + "/First turn");
+        writeIntDB(1,"rooms/" + room_name + "/Current to play");
+        writeIntDB(0,"rooms/" + room_name + "/Turn end");
+        writeIntDB(0,"rooms/" + room_name + "/Trump");
+        // Played cards are set to 0 at the start
+        writeIntDB(0,"rooms/" + room_name + "/Player 1/Card played");
+        writeIntDB(0,"rooms/" + room_name + "/Player 2/Card played");
+        writeIntDB(0,"rooms/" + room_name + "/Player 3/Card played");
+        writeIntDB(0,"rooms/" + room_name + "/Player 4/Card played");
 
         // Get the all the cards in the array "cards" from the DB
         cards = new ArrayList<Integer>();
@@ -102,72 +111,72 @@ public class MainActivity extends AppCompatActivity {
         strings_DB = new ArrayList<>();
         switch(player_id) { // Locations where the values will be stored in the database
             case 1:
-                strings_DB.add("Player 1/Card 1");
-                strings_DB.add("Player 1/Card 2");
-                strings_DB.add("Player 1/Card 3");
-                strings_DB.add("Player 1/Card 4");
-                strings_DB.add("Player 1/Card 5");
-                strings_DB.add("Player 1/Card 6");
-                strings_DB.add("Player 1/Card 7");
-                strings_DB.add("Player 1/Card 8");
-                strings_DB.add("Player 1/Card played");
-                strings_DB.add("Player 3/Card played");
-                strings_DB.add("Player 2/Card played");
-                strings_DB.add("Player 4/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 1/Card 1");
+                strings_DB.add("rooms/" + room_name + "/Player 1/Card 2");
+                strings_DB.add("rooms/" + room_name + "/Player 1/Card 3");
+                strings_DB.add("rooms/" + room_name + "/Player 1/Card 4");
+                strings_DB.add("rooms/" + room_name + "/Player 1/Card 5");
+                strings_DB.add("rooms/" + room_name + "/Player 1/Card 6");
+                strings_DB.add("rooms/" + room_name + "/Player 1/Card 7");
+                strings_DB.add("rooms/" + room_name + "/Player 1/Card 8");
+                strings_DB.add("rooms/" + room_name + "/Player 1/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 3/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 2/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 4/Card played");
                 name_player.setText(players_name.get(0));
                 name_opponent_left.setText(players_name.get(2));
                 name_ally.setText(players_name.get(1));
                 name_opponent_right.setText(players_name.get(3));
                 break;
             case 2:
-                strings_DB.add("Player 2/Card 1");
-                strings_DB.add("Player 2/Card 2");
-                strings_DB.add("Player 2/Card 3");
-                strings_DB.add("Player 2/Card 4");
-                strings_DB.add("Player 2/Card 5");
-                strings_DB.add("Player 2/Card 6");
-                strings_DB.add("Player 2/Card 7");
-                strings_DB.add("Player 2/Card 8");
-                strings_DB.add("Player 2/Card played");
-                strings_DB.add("Player 4/Card played");
-                strings_DB.add("Player 1/Card played");
-                strings_DB.add("Player 3/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 2/Card 1");
+                strings_DB.add("rooms/" + room_name + "/Player 2/Card 2");
+                strings_DB.add("rooms/" + room_name + "/Player 2/Card 3");
+                strings_DB.add("rooms/" + room_name + "/Player 2/Card 4");
+                strings_DB.add("rooms/" + room_name + "/Player 2/Card 5");
+                strings_DB.add("rooms/" + room_name + "/Player 2/Card 6");
+                strings_DB.add("rooms/" + room_name + "/Player 2/Card 7");
+                strings_DB.add("rooms/" + room_name + "/Player 2/Card 8");
+                strings_DB.add("rooms/" + room_name + "/Player 2/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 4/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 1/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 3/Card played");
                 name_player.setText(players_name.get(1));
                 name_opponent_left.setText(players_name.get(3));
                 name_ally.setText(players_name.get(0));
                 name_opponent_right.setText(players_name.get(2));
                 break;
             case 3:
-                strings_DB.add("Player 3/Card 1");
-                strings_DB.add("Player 3/Card 2");
-                strings_DB.add("Player 3/Card 3");
-                strings_DB.add("Player 3/Card 4");
-                strings_DB.add("Player 3/Card 5");
-                strings_DB.add("Player 3/Card 6");
-                strings_DB.add("Player 3/Card 7");
-                strings_DB.add("Player 3/Card 8");
-                strings_DB.add("Player 3/Card played");
-                strings_DB.add("Player 2/Card played");
-                strings_DB.add("Player 4/Card played");
-                strings_DB.add("Player 1/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 3/Card 1");
+                strings_DB.add("rooms/" + room_name + "/Player 3/Card 2");
+                strings_DB.add("rooms/" + room_name + "/Player 3/Card 3");
+                strings_DB.add("rooms/" + room_name + "/Player 3/Card 4");
+                strings_DB.add("rooms/" + room_name + "/Player 3/Card 5");
+                strings_DB.add("rooms/" + room_name + "/Player 3/Card 6");
+                strings_DB.add("rooms/" + room_name + "/Player 3/Card 7");
+                strings_DB.add("rooms/" + room_name + "/Player 3/Card 8");
+                strings_DB.add("rooms/" + room_name + "/Player 3/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 2/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 4/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 1/Card played");
                 name_player.setText(players_name.get(2));
                 name_opponent_left.setText(players_name.get(1));
                 name_ally.setText(players_name.get(3));
                 name_opponent_right.setText(players_name.get(0));
                 break;
             case 4:
-                strings_DB.add("Player 4/Card 1");
-                strings_DB.add("Player 4/Card 2");
-                strings_DB.add("Player 4/Card 3");
-                strings_DB.add("Player 4/Card 4");
-                strings_DB.add("Player 4/Card 5");
-                strings_DB.add("Player 4/Card 6");
-                strings_DB.add("Player 4/Card 7");
-                strings_DB.add("Player 4/Card 8");
-                strings_DB.add("Player 4/Card played");
-                strings_DB.add("Player 1/Card played");
-                strings_DB.add("Player 3/Card played");
-                strings_DB.add("Player 2/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 4/Card 1");
+                strings_DB.add("rooms/" + room_name + "/Player 4/Card 2");
+                strings_DB.add("rooms/" + room_name + "/Player 4/Card 3");
+                strings_DB.add("rooms/" + room_name + "/Player 4/Card 4");
+                strings_DB.add("rooms/" + room_name + "/Player 4/Card 5");
+                strings_DB.add("rooms/" + room_name + "/Player 4/Card 6");
+                strings_DB.add("rooms/" + room_name + "/Player 4/Card 7");
+                strings_DB.add("rooms/" + room_name + "/Player 4/Card 8");
+                strings_DB.add("rooms/" + room_name + "/Player 4/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 1/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 3/Card played");
+                strings_DB.add("rooms/" + room_name + "/Player 2/Card played");
                 name_player.setText(players_name.get(3));
                 name_opponent_left.setText(players_name.get(0));
                 name_ally.setText(players_name.get(2));
@@ -190,10 +199,13 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             }
                         }
-                        if((player_id == first_turn) && (game_start == true)) // Only select trump for the first player and at the start of the game
+                        if((player_id == first_turn) && (game_start == true)) { // Only select trump for the first player and at the start of the game
+                            if (player_id == 1)
+                                writeIntDB(1, "rooms/" + room_name + "/OldPersonTrump");
                             trumpSelectionDialog();
+                        }
                     }
-                },"First turn");
+                },"rooms/" + room_name + "/First turn");
                 // Listener for the trump (for players who do not select it)
                 getCardValueDB(new CardValueCallback() {
                     @Override
@@ -211,24 +223,39 @@ public class MainActivity extends AppCompatActivity {
                         } else if(trump == 4) {
                             trump_view.setImageResource(R.drawable.hearts);
                             trump_view.setBackgroundResource(R.drawable.trump_button_border);
+                        } else {
+                            trump_view.setImageResource(0);
+                            trump_view.setBackgroundResource(0);
                         }
                     }
-                },"Trump");
+                },"rooms/" + room_name + "/Trump");
                 // Make the names visible
                 name_player.setVisibility(View.VISIBLE);
                 name_opponent_left.setVisibility(View.VISIBLE);
                 name_opponent_right.setVisibility(View.VISIBLE);
                 name_ally.setVisibility(View.VISIBLE);
 
-                // Make the cards clickable again in case the game has been restarted by clicking the game button
-                card1.setClickable(true);
-                card2.setClickable(true);
-                card3.setClickable(true);
-                card4.setClickable(true);
-                card5.setClickable(true);
-                card6.setClickable(true);
-                card7.setClickable(true);
-                card8.setClickable(true);
+                // Make the cards clickable for the first player for the very first turn of the game
+                if(player_id == 1) {
+                    card1.setClickable(true);
+                    card2.setClickable(true);
+                    card3.setClickable(true);
+                    card4.setClickable(true);
+                    card5.setClickable(true);
+                    card6.setClickable(true);
+                    card7.setClickable(true);
+                    card8.setClickable(true);
+                } else {
+                    card1.setClickable(false);
+                    card2.setClickable(false);
+                    card3.setClickable(false);
+                    card4.setClickable(false);
+                    card5.setClickable(false);
+                    card6.setClickable(false);
+                    card7.setClickable(false);
+                    card8.setClickable(false);
+                }
+
 
                 // Card distribution : player 1 gets the first 8 cards, player 2 the next 8, etc.
                 if(player_id == 1) {
@@ -266,11 +293,6 @@ public class MainActivity extends AppCompatActivity {
                 writeIntDB(player_cards_id[6],strings_DB.get(6));
                 assignCard(player_cards_id[7],card8);
                 writeIntDB(player_cards_id[7],strings_DB.get(7));
-                // Played cards are set to 0 when there are none
-                writeIntDB(0,strings_DB.get(8));
-                writeIntDB(0,strings_DB.get(9));
-                writeIntDB(0,strings_DB.get(10));
-                writeIntDB(0,strings_DB.get(11));
 
                 // Make cards of the 3 other players appear
                 opponent_left.setImageResource(R.drawable.back_cards);
@@ -289,9 +311,62 @@ public class MainActivity extends AppCompatActivity {
                         if(card_value != 0) { // card_value = 0 means the played card has been taken off the board, so no particular action to do in that case
                             if (player_id == 1) {
                                 getDigits(card_value, 1);
-                                writeIntDB(3, "Current to play");
+                                card1.setClickable(false);
+                                card2.setClickable(false);
+                                card3.setClickable(false);
+                                card4.setClickable(false);
+                                card5.setClickable(false);
+                                card6.setClickable(false);
+                                card7.setClickable(false);
+                                card8.setClickable(false);
+                                name_player.setTextColor(Color.WHITE);
+                                name_opponent_left.setTextColor(Color.RED);
+                                writeIntDB(3, "rooms/" + room_name + "/Current to play");
+                            }
+                            if (player_id == 2) {
+                                getDigits(card_value, 2);
+                                card1.setClickable(false);
+                                card2.setClickable(false);
+                                card3.setClickable(false);
+                                card4.setClickable(false);
+                                card5.setClickable(false);
+                                card6.setClickable(false);
+                                card7.setClickable(false);
+                                card8.setClickable(false);
+                                name_player.setTextColor(Color.WHITE);
+                                name_opponent_left.setTextColor(Color.RED);
+                                writeIntDB(4,"rooms/" + room_name + "/Current to play");
+                            }
+                            if (player_id == 3) {
+                                getDigits(card_value,3);
+                                card1.setClickable(false);
+                                card2.setClickable(false);
+                                card3.setClickable(false);
+                                card4.setClickable(false);
+                                card5.setClickable(false);
+                                card6.setClickable(false);
+                                card7.setClickable(false);
+                                card8.setClickable(false);
+                                name_player.setTextColor(Color.WHITE);
+                                name_opponent_left.setTextColor(Color.RED);
+                                writeIntDB(2,"rooms/" + room_name + "/Current to play");
+                            }
+                            if (player_id == 4) {
+                                getDigits(card_value, 4);
+                                card1.setClickable(false);
+                                card2.setClickable(false);
+                                card3.setClickable(false);
+                                card4.setClickable(false);
+                                card5.setClickable(false);
+                                card6.setClickable(false);
+                                card7.setClickable(false);
+                                card8.setClickable(false);
+                                name_player.setTextColor(Color.WHITE);
+                                name_opponent_left.setTextColor(Color.RED);
+                                writeIntDB(1,"rooms/" + room_name + "/Current to play");
                             }
                             end_turn++;
+                            System.out.println(end_turn);
                             if (end_turn == 1) { // 1st player of the turn defines the suit
                                 String number = String.valueOf(card_value);
                                 suit = Character.digit(number.charAt(0), 10); // 1st digit of card value
@@ -309,9 +384,30 @@ public class MainActivity extends AppCompatActivity {
                         if(card_value != 0) { // card_value = 0 means the played card has been taken off the board, so no particular action to do in that case
                             if (player_id == 1) {
                                 getDigits(card_value, 3);
-                                writeIntDB(2, "Current to play");
+                                name_opponent_left.setTextColor(Color.WHITE);
+                                name_ally.setTextColor(Color.RED);
+                                writeIntDB(2, "rooms/" + room_name + "/Current to play");
+                            }
+                            if (player_id == 2) {
+                                getDigits(card_value, 4);
+                                name_opponent_left.setTextColor(Color.WHITE);
+                                name_ally.setTextColor(Color.RED);
+                                writeIntDB(1,"rooms/" + room_name + "/Current to play");
+                            }
+                            if (player_id == 3) {
+                                getDigits(card_value,2);
+                                name_opponent_left.setTextColor(Color.WHITE);
+                                name_ally.setTextColor(Color.RED);
+                                writeIntDB(4,"rooms/" + room_name + "/Current to play");
+                            }
+                            if (player_id == 4) {
+                                getDigits(card_value, 1);
+                                name_opponent_left.setTextColor(Color.WHITE);
+                                name_ally.setTextColor(Color.RED);
+                                writeIntDB(3,"rooms/" + room_name + "/Current to play");
                             }
                             end_turn++;
+                            System.out.println(end_turn);
                             if (end_turn == 1) { // 1st player of the turn defines the suit
                                 String number = String.valueOf(card_value);
                                 suit = Character.digit(number.charAt(0), 10); // 1st digit of card value
@@ -329,9 +425,30 @@ public class MainActivity extends AppCompatActivity {
                         if(card_value != 0) { // card_value = 0 means the played card has been taken off the board, so no particular action to do in that case
                             if (player_id == 1) {
                                 getDigits(card_value, 2);
-                                writeIntDB(4, "Current to play");
+                                name_ally.setTextColor(Color.WHITE);
+                                name_opponent_right.setTextColor(Color.RED);
+                                writeIntDB(4, "rooms/" + room_name + "/Current to play");
+                            }
+                            if (player_id == 2) {
+                                getDigits(card_value, 1);
+                                name_ally.setTextColor(Color.WHITE);
+                                name_opponent_right.setTextColor(Color.RED);
+                                writeIntDB(3,"rooms/" + room_name + "/Current to play");
+                            }
+                            if (player_id == 3) {
+                                getDigits(card_value,4);
+                                name_ally.setTextColor(Color.WHITE);
+                                name_opponent_right.setTextColor(Color.RED);
+                                writeIntDB(1,"rooms/" + room_name + "/Current to play");
+                            }
+                            if (player_id == 4) {
+                                getDigits(card_value, 3);
+                                name_ally.setTextColor(Color.WHITE);
+                                name_opponent_right.setTextColor(Color.RED);
+                                writeIntDB(2,"rooms/" + room_name + "/Current to play");
                             }
                             end_turn++;
+                            System.out.println(end_turn);
                             if (end_turn == 1) { // 1st player of the turn defines the suit
                                 String number = String.valueOf(card_value);
                                 suit = Character.digit(number.charAt(0), 10); // 1st digit of card value
@@ -349,9 +466,94 @@ public class MainActivity extends AppCompatActivity {
                         if(card_value != 0) { // card_value = 0 means the played card has been taken off the board, so no particular action to do in that case
                             if (player_id == 1) {
                                 getDigits(card_value, 4);
-                                writeIntDB(1, "Current to play");
+                                if(player_cards_id[0] != 0)
+                                    card1.setClickable(true);
+                                if(player_cards_id[1] != 0)
+                                    card2.setClickable(true);
+                                if(player_cards_id[2] != 0)
+                                    card3.setClickable(true);
+                                if(player_cards_id[3] != 0)
+                                    card4.setClickable(true);
+                                if(player_cards_id[4] != 0)
+                                    card5.setClickable(true);
+                                if(player_cards_id[5] != 0)
+                                    card6.setClickable(true);
+                                if(player_cards_id[6] != 0)
+                                    card7.setClickable(true);
+                                if(player_cards_id[7] != 0)
+                                    card8.setClickable(true);
+                                name_opponent_right.setTextColor(Color.WHITE);
+                                name_player.setTextColor(Color.RED);
+                                writeIntDB(1, "rooms/" + room_name + "/Current to play");
+                            }
+                            if (player_id == 2) {
+                                getDigits(card_value, 3);
+                                if(player_cards_id[0] != 0)
+                                    card1.setClickable(true);
+                                if(player_cards_id[1] != 0)
+                                    card2.setClickable(true);
+                                if(player_cards_id[2] != 0)
+                                    card3.setClickable(true);
+                                if(player_cards_id[3] != 0)
+                                    card4.setClickable(true);
+                                if(player_cards_id[4] != 0)
+                                    card5.setClickable(true);
+                                if(player_cards_id[5] != 0)
+                                    card6.setClickable(true);
+                                if(player_cards_id[6] != 0)
+                                    card7.setClickable(true);
+                                if(player_cards_id[7] != 0)
+                                    card8.setClickable(true);
+                                name_opponent_right.setTextColor(Color.WHITE);
+                                name_player.setTextColor(Color.RED);
+                                writeIntDB(2,"rooms/" + room_name + "/Current to play");
+                            }
+                            if (player_id == 3) {
+                                getDigits(card_value,1);
+                                if(player_cards_id[0] != 0)
+                                    card1.setClickable(true);
+                                if(player_cards_id[1] != 0)
+                                    card2.setClickable(true);
+                                if(player_cards_id[2] != 0)
+                                    card3.setClickable(true);
+                                if(player_cards_id[3] != 0)
+                                    card4.setClickable(true);
+                                if(player_cards_id[4] != 0)
+                                    card5.setClickable(true);
+                                if(player_cards_id[5] != 0)
+                                    card6.setClickable(true);
+                                if(player_cards_id[6] != 0)
+                                    card7.setClickable(true);
+                                if(player_cards_id[7] != 0)
+                                    card8.setClickable(true);
+                                name_opponent_right.setTextColor(Color.WHITE);
+                                name_player.setTextColor(Color.RED);
+                                writeIntDB(3,"rooms/" + room_name + "/Current to play");
+                            }
+                            if (player_id == 4) {
+                                getDigits(card_value, 2);
+                                if(player_cards_id[0] != 0)
+                                    card1.setClickable(true);
+                                if(player_cards_id[1] != 0)
+                                    card2.setClickable(true);
+                                if(player_cards_id[2] != 0)
+                                    card3.setClickable(true);
+                                if(player_cards_id[3] != 0)
+                                    card4.setClickable(true);
+                                if(player_cards_id[4] != 0)
+                                    card5.setClickable(true);
+                                if(player_cards_id[5] != 0)
+                                    card6.setClickable(true);
+                                if(player_cards_id[6] != 0)
+                                    card7.setClickable(true);
+                                if(player_cards_id[7] != 0)
+                                    card8.setClickable(true);
+                                name_opponent_right.setTextColor(Color.WHITE);
+                                name_player.setTextColor(Color.RED);
+                                writeIntDB(4,"rooms/" + room_name + "/Current to play");
                             }
                             end_turn++;
+                            System.out.println(end_turn);
                             if (end_turn == 1) { // 1st player of the turn defines the suit
                                 String number = String.valueOf(card_value);
                                 suit = Character.digit(number.charAt(0), 10); // 1st digit of card value
@@ -371,17 +573,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 getCardValueDB(new CardValueCallback() {
                     @Override
-                    public void onCallback(int first_turn) {
+                    public void onCallback(int current_to_play) {
                         // A player knows it is his turn when he either begins the turn, or the player to his right has played, otherwise he can't interact with his cards
-                        if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                        if(current_to_play == player_id){
                             writeIntDB(player_cards_id[0],strings_DB.get(8));
+                            writeIntDB(player_cards_id[0],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(0));
                             card1.setImageResource(0);
                             player_cards_id[0] = 0;
-                            card1.setClickable(false); // Once the card is dealt, it is no more clickable
+                            card1.setClickable(false);
                         }
                     }
-                },"First turn");
+                },"rooms/" + room_name + "/Current to play");
             }
         });
         card2.setOnClickListener(new View.OnClickListener() {
@@ -389,16 +593,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 getCardValueDB(new CardValueCallback() {
                     @Override
-                    public void onCallback(int first_turn) {
-                        if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                    public void onCallback(int current_to_play) {
+                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                        if(current_to_play == player_id){
                             writeIntDB(player_cards_id[1],strings_DB.get(8));
+                            writeIntDB(player_cards_id[1],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(1));
                             card2.setImageResource(0);
                             player_cards_id[1] = 0;
                             card2.setClickable(false);
                         }
                     }
-                },"First turn");
+                },"rooms/" + room_name + "/Current to play");
             }
         });
         card3.setOnClickListener(new View.OnClickListener() {
@@ -406,17 +612,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 getCardValueDB(new CardValueCallback() {
                     @Override
-                    public void onCallback(int first_turn) {
-                        if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                    public void onCallback(int current_to_play) {
+                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                        if(current_to_play == player_id){
                             writeIntDB(player_cards_id[2],strings_DB.get(8));
-                            //System.out.println("Card3 Click callback");
+                            writeIntDB(player_cards_id[2],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(2));
                             card3.setImageResource(0);
                             player_cards_id[2] = 0;
                             card3.setClickable(false);
                         }
                     }
-                },"First turn");
+                },"rooms/" + room_name + "/Current to play");
             }
         });
         card4.setOnClickListener(new View.OnClickListener() {
@@ -424,16 +631,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 getCardValueDB(new CardValueCallback() {
                     @Override
-                    public void onCallback(int first_turn) {
-                        if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                    public void onCallback(int current_to_play) {
+                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                        if(current_to_play == player_id){
                             writeIntDB(player_cards_id[3],strings_DB.get(8));
+                            writeIntDB(player_cards_id[3],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(3));
                             card4.setImageResource(0);
                             player_cards_id[3] = 0;
                             card4.setClickable(false);
                         }
                     }
-                },"First turn");
+                },"rooms/" + room_name + "/Current to play");
             }
         });
         card5.setOnClickListener(new View.OnClickListener() {
@@ -441,16 +650,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 getCardValueDB(new CardValueCallback() {
                     @Override
-                    public void onCallback(int first_turn) {
-                        if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                    public void onCallback(int current_to_play) {
+                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                        if(current_to_play == player_id){
                             writeIntDB(player_cards_id[4],strings_DB.get(8));
+                            writeIntDB(player_cards_id[4],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(4));
                             card5.setImageResource(0);
                             player_cards_id[4] = 0;
                             card5.setClickable(false);
                         }
                     }
-                },"First turn");
+                },"rooms/" + room_name + "/Current to play");
             }
         });
         card6.setOnClickListener(new View.OnClickListener() {
@@ -458,16 +669,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 getCardValueDB(new CardValueCallback() {
                     @Override
-                    public void onCallback(int first_turn) {
-                        if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                    public void onCallback(int current_to_play) {
+                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                        if(current_to_play == player_id){
                             writeIntDB(player_cards_id[5],strings_DB.get(8));
+                            writeIntDB(player_cards_id[5],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(5));
                             card6.setImageResource(0);
                             player_cards_id[5] = 0;
                             card6.setClickable(false);
                         }
                     }
-                },"First turn");
+                },"rooms/" + room_name + "/Current to play");
             }
         });
         card7.setOnClickListener(new View.OnClickListener() {
@@ -475,16 +688,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 getCardValueDB(new CardValueCallback() {
                     @Override
-                    public void onCallback(int first_turn) {
-                        if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                    public void onCallback(int current_to_play) {
+                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                        if(current_to_play == player_id){
                             writeIntDB(player_cards_id[6],strings_DB.get(8));
+                            writeIntDB(player_cards_id[6],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(6));
                             card7.setImageResource(0);
                             player_cards_id[6] = 0;
                             card7.setClickable(false);
                         }
                     }
-                },"First turn");
+                },"rooms/" + room_name + "/Current to play");
             }
         });
         card8.setOnClickListener(new View.OnClickListener() {
@@ -492,16 +707,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 getCardValueDB(new CardValueCallback() {
                     @Override
-                    public void onCallback(int first_turn) {
-                        if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                    public void onCallback(int current_to_play) {
+                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
+                        if(current_to_play == player_id){
                             writeIntDB(player_cards_id[7],strings_DB.get(8));
+                            writeIntDB(player_cards_id[7],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(7));
                             card8.setImageResource(0);
                             player_cards_id[7] = 0;
                             card8.setClickable(false);
                         }
                     }
-                },"First turn");
+                },"rooms/" + room_name + "/Current to play");
             }
         });
     }
@@ -519,7 +736,7 @@ public class MainActivity extends AppCompatActivity {
     // Get list of cards from the database
     public void getCardListDB() {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference mDbRef = mDatabase.getReference("Cards");
+        DatabaseReference mDbRef = mDatabase.getReference("rooms/" + room_name + "/Cards");
         mDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -622,7 +839,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 trump = 1;
-                writeIntDB(trump,"Trump");
+                writeIntDB(trump,"rooms/" + room_name + "/Trump");
                 //trump_view.setImageResource(R.drawable.clubs); // Display the trump on the top right corner of the screen
                 //trump_view.setBackgroundResource(R.drawable.trump_button_border);
                 dialog.dismiss();
@@ -632,7 +849,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 trump = 2;
-                writeIntDB(trump,"Trump");
+                writeIntDB(trump,"rooms/" + room_name + "/Trump");
                 //trump_view.setImageResource(R.drawable.spades);
                 //trump_view.setBackgroundResource(R.drawable.trump_button_border);
                 dialog.dismiss();
@@ -642,7 +859,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 trump = 3;
-                writeIntDB(trump,"Trump");
+                writeIntDB(trump,"rooms/" + room_name + "/Trump");
                 //trump_view.setImageResource(R.drawable.diamonds);
                 //trump_view.setBackgroundResource(R.drawable.trump_button_border);
                 dialog.dismiss();
@@ -652,7 +869,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 trump = 4;
-                writeIntDB(trump,"Trump");
+                writeIntDB(trump,"rooms/" + room_name + "/Trump");
                 //trump_view.setImageResource(R.drawable.hearts);
                 //trump_view.setBackgroundResource(R.drawable.trump_button_border);
                 dialog.dismiss();
@@ -671,44 +888,76 @@ public class MainActivity extends AppCompatActivity {
     public void setColorWinningCard(int round_winner, int color_intensity) {
         switch(player_id) {
             case 1:
-                if(round_winner == 1)
+                if(round_winner == 1) {
                     played_card.setColorFilter(color_intensity);
-                else if(round_winner == 2)
+                    name_player.setTextColor(Color.RED);
+                }
+                else if(round_winner == 2) {
                     ally_played_card.setColorFilter(color_intensity);
-                else if(round_winner == 3)
+                    name_ally.setTextColor(Color.RED);
+                }
+                else if(round_winner == 3) {
                     opponent_left_played_card.setColorFilter(color_intensity);
-                else if(round_winner == 4)
+                    name_opponent_left.setTextColor(Color.RED);
+                }
+                else if(round_winner == 4) {
                     opponent_right_played_card.setColorFilter(color_intensity);
+                    name_opponent_right.setTextColor(Color.RED);
+                }
                 break;
             case 2:
-                if(round_winner == 1)
+                if(round_winner == 1) {
                     ally_played_card.setColorFilter(color_intensity);
-                else if(round_winner == 2)
+                    name_ally.setTextColor(Color.RED);
+                }
+                else if(round_winner == 2) {
                     played_card.setColorFilter(color_intensity);
-                else if(round_winner == 3)
+                    name_player.setTextColor(Color.RED);
+                }
+                else if(round_winner == 3) {
                     opponent_right_played_card.setColorFilter(color_intensity);
-                else if(round_winner == 4)
+                    name_opponent_right.setTextColor(Color.RED);
+                }
+                else if(round_winner == 4) {
                     opponent_left_played_card.setColorFilter(color_intensity);
+                    name_opponent_left.setTextColor(Color.RED);
+                }
                 break;
             case 3:
-                if(round_winner == 1)
+                if(round_winner == 1) {
                     opponent_right_played_card.setColorFilter(color_intensity);
-                else if(round_winner == 2)
+                    name_opponent_right.setTextColor(Color.RED);
+                }
+                else if(round_winner == 2) {
                     opponent_left_played_card.setColorFilter(color_intensity);
-                else if(round_winner == 3)
+                    name_opponent_left.setTextColor(Color.RED);
+                }
+                else if(round_winner == 3) {
                     played_card.setColorFilter(color_intensity);
-                else if(round_winner == 4)
+                    name_player.setTextColor(Color.RED);
+                }
+                else if(round_winner == 4) {
                     ally_played_card.setColorFilter(color_intensity);
+                    name_ally.setTextColor(Color.RED);
+                }
                 break;
             case 4:
-                if(round_winner == 1)
+                if(round_winner == 1) {
                     opponent_left_played_card.setColorFilter(color_intensity);
-                else if(round_winner == 2)
+                    name_opponent_left.setTextColor(Color.RED);
+                }
+                else if(round_winner == 2) {
                     opponent_right_played_card.setColorFilter(color_intensity);
-                else if(round_winner == 3)
+                    name_opponent_right.setTextColor(Color.RED);
+                }
+                else if(round_winner == 3) {
                     ally_played_card.setColorFilter(color_intensity);
-                else if(round_winner == 4)
+                    name_ally.setTextColor(Color.RED);
+                }
+                else if(round_winner == 4) {
                     played_card.setColorFilter(color_intensity);
+                    name_player.setTextColor(Color.RED);
+                }
                 break;
         }
     }
@@ -723,6 +972,10 @@ public class MainActivity extends AppCompatActivity {
         card6.setClickable(false);
         card7.setClickable(false);
         card8.setClickable(false);
+        name_player.setTextColor(Color.WHITE);
+        name_ally.setTextColor(Color.WHITE);
+        name_opponent_left.setTextColor(Color.WHITE);
+        name_opponent_right.setTextColor(Color.WHITE);
         int round_winner = 0;
         int best_card = 0;
         boolean best_card_is_trump = false;
@@ -730,7 +983,6 @@ public class MainActivity extends AppCompatActivity {
             if(first_digit[i] == trump){
                 if(last_two_digits[i] == 11) { // Strongest card of the game => Automatic win of the turn
                     round_winner = i+1;
-                    writeIntDB(round_winner, "First turn");
                     break;
                 }
                 else if(last_two_digits[i] == 9) {
@@ -753,54 +1005,67 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        /*System.out.println("Trump: " + trump);
+        System.out.println("Trump: " + trump);
         System.out.println("Suit: " + suit);
         System.out.println("Player cards ID: " + Arrays.toString(player_cards_id));
         System.out.println("Round winner: " + round_winner);
         System.out.println("First digit: " + Arrays.toString(first_digit));
-        System.out.println("Last two digits: " + Arrays.toString(last_two_digits));*/
+        System.out.println("Last two digits: " + Arrays.toString(last_two_digits));
         setColorWinningCard(round_winner,Color.argb(100, 0, 200, 0));
 
         // Click anywhere on the screen to finish the turn and begin the next one
         ConstraintLayout clayout = (ConstraintLayout) findViewById(R.id.constraintlayout);
+        clayout.setClickable(true);
         int finalRound_winner = round_winner;
         clayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                card1.setClickable(true);
-                card2.setClickable(true);
-                card3.setClickable(true);
-                card4.setClickable(true);
-                card5.setClickable(true);
-                card6.setClickable(true);
-                card7.setClickable(true);
-                card8.setClickable(true);
-                /*played_card.setImageResource(0);
-                opponent_left_played_card.setImageResource(0);
-                opponent_right_played_card.setImageResource(0);
-                ally_played_card.setImageResource(0);*/
-                writeIntDB(0,strings_DB.get(8));
-                writeIntDB(0,strings_DB.get(9));
-                writeIntDB(0,strings_DB.get(10));
-                writeIntDB(0,strings_DB.get(11));
-                setColorWinningCard(finalRound_winner,0);
-                writeIntDB(finalRound_winner,"First turn");
-                writeIntDB(finalRound_winner,"Current to play");
-                end_turn = 0;
-                suit = 0;
-                // Check if the game is finished
-                boolean game_end = true;
-                for (int i = 0; i < player_cards_id.length; i++) {
-                    if(player_cards_id[i] != 0){ // If all cards have been played => End of the game
-                        game_end = false;
-                        break;
-                    }
-                }
-                if(game_end == true) {
-                    game_button.performClick();
-                }
+                writeIntDB(1,"rooms/" + room_name + "/Turn end");
+                clayout.setClickable(false);
             }
         });
+        getCardValueDB(new CardValueCallback() {
+            @Override
+            public void onCallback(int turn_end) {
+                if(turn_end == 1) {
+                    card1.setClickable(true);
+                    card2.setClickable(true);
+                    card3.setClickable(true);
+                    card4.setClickable(true);
+                    card5.setClickable(true);
+                    card6.setClickable(true);
+                    card7.setClickable(true);
+                    card8.setClickable(true);
+                    writeIntDB(0, strings_DB.get(8));
+                    writeIntDB(0, strings_DB.get(9));
+                    writeIntDB(0, strings_DB.get(10));
+                    writeIntDB(0, strings_DB.get(11));
+                    setColorWinningCard(finalRound_winner, 0);
+                    writeIntDB(finalRound_winner, "rooms/" + room_name + "/First turn");
+                    writeIntDB(finalRound_winner, "rooms/" + room_name + "/Current to play");
+                    end_turn = 0;
+                    suit = 0;
+                    for(int i = 0; i < 3; i++){
+                        first_digit[i] = 0;
+                        last_two_digits[i] = 0;
+                    }
+
+                    // Check if the game is finished
+                    game_end = 1;
+                    for (int i = 0; i < player_cards_id.length; i++) {
+                        if (player_cards_id[i] != 0) { // If all cards have been played => End of the game
+                            game_end = 0;
+                            break;
+                        }
+                    }
+                    if (game_end == 1) {
+                        game_button.performClick();
+                        writeIntDB(game_end, "rooms/" + room_name + "/GameEnd");
+                    }
+                    writeIntDB(0,"rooms/" + room_name + "/Turn end");
+                }
+            }
+        },"rooms/" + room_name + "/Turn end");
     }
 
     // Huge switch case to make the card whose ID is given in parameter appear on the ImageView
