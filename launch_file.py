@@ -144,7 +144,7 @@ def GameFunc():
     #automatic card generation
     for i in range(3):
         for j in range (13):
-            count = (i++1)*100 + (j+1)
+            count = (i++1)*100 + (j+8)
             cards = np.append(cards, count)
 
     print("cards = " + str(cards))
