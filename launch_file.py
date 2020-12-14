@@ -214,7 +214,7 @@ def GameFunc():
 
             # Get the position of the card
             res=np.where(cards==card_played_DB.val())
-            position=res[0]
+            position= int(res[0])
             # Take the card out 
             call_motor.discard(step_motor,position)
             time.sleep(2)
