@@ -1,7 +1,7 @@
 import time
 from Carderly_Motor.Motor_servo_angle import ServoAngle
 from Carderly_Motor.Motor_servo_360 import Servo360
-from Cardely_Motor.Motor_step import StepMotor
+from Carderly_Motor.Motor_step import StepMotor
 from Carderly_Motor.Motor_DC import DCMotor
 
 
