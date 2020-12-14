@@ -1,8 +1,8 @@
 import time
-from Carderly_Motor.Motor_servo_angle import ServoAngle
-from Carderly_Motor.Motor_servo_360 import Servo360
-from Carderly_Motor.Motor_step import StepMotor
-from Carderly_Motor.Motor_DC import DCMotor
+from Motor_servo_angle import ServoAngle
+from Motor_servo_360 import Servo360
+from Motor_step import StepMotor
+from Motor_DC import DCMotor
 
 
 def call_servo_angle():
@@ -13,7 +13,7 @@ def call_servo_360(status = 'input'):
     servo_motor360_in = Servo360(18)
     servo_motor360_out = Servo360(27)
     if status == 'input':
-        servo_motor360_in.activate(5,dc=10) #period and dc
+        servo_motor360_in.activate(5,dc=1) #period and dc
     elif status == 'output':
         servo_motor360_out.activate(5,dc=100)
 
@@ -43,7 +43,7 @@ def define_step_motor():
 
 if __name__ == "__main__":
     #call_dc()
-    call_servo_angle()
+    #call_servo_angle()
     call_servo_360()
     #step_motor = define_step_motor()
     #shuffle(step_motor)
