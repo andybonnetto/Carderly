@@ -97,6 +97,14 @@ def wait_player():
         time.sleep(2)
         print("Wait for player") 
 
+def discard_all():
+    for i in range(31):
+        call_motor.discard(step_motor, i)
+        time.sleep(2)
+        call_motor.call_dc()
+        time.sleep(2)
+        call_motor.call_servo_360("output")
+        time.sleep(2)
 
 def GameFunc():
     #Initialize step motor
@@ -110,8 +118,20 @@ def GameFunc():
     for i in range(31):
         # Get the card detected on the DB
         card_detected_DB = database.child("Vision").get()
-        # Add it to the array
-        cards = np.append(cards, card_detected_DB.val())
+        if card_detected_DB != 0:
+            # Check if card detected the same as before and wait for new card
+            if card_detected_DB in cards:
+                print("card already inserted")
+                discard_all()
+            else:
+                # Add it to the array
+                cards = np.append(cards, card_detected_DB.val())
+        else:
+            # Wait for the deck to be reposition if card not seen
+            print("reposition the deck")
+            wait_deck()
+            # Add card to array
+            cards = np.append(cards, card_detected_DB.val())
         # Put it into the wheel
         call_motor.call_servo_360("input")
         time.sleep(2)
@@ -130,7 +150,7 @@ def GameFunc():
     database.child("StartGame").set(1)
 
     # Get the old player's cards from the DB (A CHANGER SELON DB ORGANISATION)
-    old_cards=np.array([])
+    old_cards = np.array([])
     for j in range(8): 
         temp_DB=database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card "+str(j+1)).get()
         old_cards=np.append(old_cards, temp_DB.val())
@@ -140,7 +160,7 @@ def GameFunc():
     # Distribute the cards of the old player's 
     for k in range(8):
         # Search position of the old player's card in the DB 
-        res=np.where(cards==old_cards[k])
+        res = np.where(cards==old_cards[k])
         position=res[0]
         # Take the card out 
         call_motor.discard(step_motor,position)
