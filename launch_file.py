@@ -97,7 +97,7 @@ def wait_player():
         time.sleep(2)
         print("Wait for player") 
 
-def discard_all():
+def discard_all(step_motor):
     for i in range(31):
         call_motor.discard(step_motor, i)
         time.sleep(2)
@@ -122,7 +122,7 @@ def GameFunc():
             # Check if card detected the same as before and wait for new card
             if card_detected_DB.val() in cards:
                 print("card already inserted")
-                discard_all()
+                discard_all(step_motor)
             else:
                 # Add it to the array
                 cards = np.append(cards, card_detected_DB.val())
