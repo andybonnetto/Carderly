@@ -105,8 +105,8 @@ database = firebase.database()
 IM_WIDTH = 720
 IM_HEIGHT = 480
 FRAME_RATE = 25
-BOX_HEIGHT = 356
-BOX_WIDTH = 232
+BOX_HEIGHT = 359
+BOX_WIDTH = 235
 ## Initialize calculated frame rate because it's calculated AFTER the first time it's displayed
 frame_rate_calc = 1
 freq = cv2.getTickFrequency()
@@ -147,8 +147,8 @@ while not some_condition:
     pre_proc = Cards.preprocess_image(image)
     mask = np.empty_like(pre_proc)*0
     box = np.array([255] * BOX_HEIGHT * BOX_WIDTH).reshape(BOX_HEIGHT, BOX_WIDTH)
-    x = 100
-    y = 250
+    x = 120
+    y = 270
     mask[x:x + BOX_HEIGHT, y:y + BOX_WIDTH] = box
     # Find and sort the contours of all cards in the image (query cards)
     cnts_sort, cnt_is_card = Cards.find_cards(mask)
