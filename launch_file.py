@@ -118,9 +118,9 @@ def GameFunc():
     for i in range(31):
         # Get the card detected on the DB
         card_detected_DB = database.child("Vision").get()
-        if card_detected_DB != 0:
+        if card_detected_DB.val() != 0:
             # Check if card detected the same as before and wait for new card
-            if card_detected_DB in cards:
+            if card_detected_DB.val() in cards:
                 print("card already inserted")
                 discard_all()
             else:
