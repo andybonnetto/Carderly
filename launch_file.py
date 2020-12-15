@@ -23,7 +23,6 @@ global deck_insert
 #reset variables into DB
 database.child("StartGame").set(0)
 database.child("PlayGame").set(0)
-database.child("CountPlayer").set(1)
 database.child("PlayedCard").set(1)
 database.child("Vision").set(0)
 database.child("DeckInserted").set(0)
@@ -217,13 +216,13 @@ def GameFunc():
             position= int(res[0])
             # Take the card out 
             call_motor.discard(step_motor,position)
-            time.sleep(2)
+            # time.sleep(2)
             call_motor.call_dc()
-            time.sleep(2)
+            # time.sleep(2)
             call_motor.call_servo_angle()
-            time.sleep(2)
+            # time.sleep(2)
             call_motor.call_servo_360("output")
-            time.sleep(2) # A AJUSTEEEEER
+            # time.sleep(2) # A AJUSTEEEEER
         
         # End of game (CONDITION TO BE DETERMINED)
         EndOfGame = database.child("EndGame").get()
