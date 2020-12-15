@@ -121,8 +121,7 @@ def save_database():
     db_cards = database.child("rooms").child(ROOM_NAME).child("Player 1").get()
     hand = np.array([])
     for card in db_cards.each():
-        temp = list(card.val())
-        hand = np.append(hand,int(temp[0]))
+        hand = np.append(hand,card.val())
     return hand
 
 
@@ -280,7 +279,7 @@ while some_condition:
             # print(hand)
             if card_seen:
                 for card in hand:
-                    if card == card_seen:
+                    if card == str(card_seen):
                         database.child("rooms").child(ROOM_NAME).child("Vision").set(card_seen)
 
 
