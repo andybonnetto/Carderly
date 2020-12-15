@@ -280,11 +280,11 @@ while some_condition:
             if card_seen:
                 for card in hand:
                     if card == card_seen:
-                        database.child("Vision").set(card_seen)
+                        database.child("rooms").child(ROOM_NAME).child("Vision").set(card_seen)
 
 
     if not card_seen:
-        database.child("Vision").set(0)
+        database.child("rooms").child(ROOM_NAME).child("Vision").set(0)
 
 
 

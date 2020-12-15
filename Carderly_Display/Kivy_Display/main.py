@@ -346,7 +346,7 @@ class GameWindow(Screen):
             self.old_person_trump = 1
 
     def validate_card(self):
-        card = database.child("Vision").get().val()
+        card = database.child("rooms").child(ROOM_NAME).child("Vision").get().val()
         if card:
             database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card played").set(card)
             for j in range(7):
@@ -476,7 +476,7 @@ class GameWindow(Screen):
             self.im_atout_kv = "no_trump.png"
 
     def show_vis(self,token):
-        db_vision = database.child("Vision").get()
+        db_vision = database.child("rooms").child(ROOM_NAME).child("Vision").get()
         card_seen = db_vision.val()
         if card_seen:
             label = num_to_label(card_seen)
