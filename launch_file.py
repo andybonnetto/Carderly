@@ -20,16 +20,17 @@ global Game
 global nb_player
 global deck_insert
 
-#reset variables into DB
-database.child("StartGame").set(0)
-database.child("PlayGame").set(0)
-database.child("PlayedCard").set(1)
-database.child("Vision").set(0)
-database.child("DeckInserted").set(0)
-database.child("DeckPresent").set(0)
-
 #Constant variable
 ROOM_NAME = "Dani"
+
+#reset variables into DB
+database.child(ROOM_NAME).child("StartGame").set(0)
+database.child(ROOM_NAME).child("PlayGame").set(0)
+database.child(ROOM_NAME).child("PlayedCard").set(1)
+database.child(ROOM_NAME).child("Vision").set(0)
+database.child(ROOM_NAME).child("DeckInserted").set(0)
+database.child(ROOM_NAME).child("DeckPresent").set(0)
+
 
 # Path to files
 PathActivateVision1 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_Vision1.py"
@@ -62,7 +63,7 @@ def vision():
         # exec(open(PathActivateVision1).read())
         os.system("python3 " + PathActivateVision1)
         time.sleep(2)
-        start_game = database.child("StartGame").get()
+        start_game = database.child(ROOM_NAME).child("StartGame").get()
         if start_game.val() == 1: state_vision = 1
 
         # ActivateVision2 when playing the game
@@ -71,7 +72,7 @@ def vision():
         if state_vision == 1:
             os.system("python3 " + PathActivateVision2 + " --modeldir=" + PathModel)
             time.sleep(2)
-            start_game = database.child("StartGame").get()
+            start_game = database.child(ROOM_NAME).child("StartGame").get()
             if start_game.val() == 0:
                 state_vision = 0
                 # break
@@ -81,7 +82,7 @@ def wait_deck():
     # Checking when the deck has been inserted when vision detects a card
     deck_insert = 0
     while deck_insert==0:
-        card = database.child("Vision").get()
+        card = database.child(ROOM_NAME).child("Vision").get()
         if card.val()!=0: deck_insert=1
         time.sleep(2)
         print("Wait for deck")        
@@ -91,7 +92,7 @@ def wait_player():
     # Counting the number of player until it reaches 4
     nb_player=1
     while nb_player<4:
-        player_DB = database.child("CountPlayer").get()
+        player_DB = database.child(ROOM_NAME).child("CountPlayer").get()
         nb_player = player_DB.val()
         time.sleep(2)
         print("Wait for player") 
@@ -111,14 +112,14 @@ def GameFunc():
 
     # Wait for deck to be inserted
     wait_deck()    
-    database.child("DeckPresent").set(1)
+    database.child(ROOM_NAME).child("DeckPresent").set(1)
     # Put the cards into the wheel when deck inserted, putting them into array to know their positions
     cards=np.array([])
 
     #----------------------
     # for i in range(31):
     #     # Get the card detected on the DB
-    #     card_detected_DB = database.child("Vision").get()
+    #     card_detected_DB = database.child(ROOM_NAME).child("Vision").get()
     #     if card_detected_DB.val() != 0:
     #         # Check if card detected the same as before and wait for new card
     #         if card_detected_DB.val() in cards:
@@ -131,6 +132,7 @@ def GameFunc():
     #         # Wait for the deck to be reposition if card not seen
     #         print("reposition the deck")
     #         wait_deck()
+    #         card_detected_DB = database.child(ROOM_NAME).child("Vision").get()
     #         # Add card to array
     #         cards = np.append(cards, card_detected_DB.val())
     #     # Put it into the wheel
