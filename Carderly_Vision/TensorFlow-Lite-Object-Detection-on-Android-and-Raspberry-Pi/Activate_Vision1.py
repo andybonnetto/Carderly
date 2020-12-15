@@ -150,7 +150,7 @@ while not some_condition:
         mask = np.empty_like(pre_proc)*0
         box = np.array([255] * BOX_HEIGHT * BOX_WIDTH).reshape(BOX_HEIGHT, BOX_WIDTH)
         x = 140
-        y = 270 + (j-1)*10
+        y = 270 + (j-1)*20
         mask[x:x + BOX_HEIGHT, y:y + BOX_WIDTH] = box
         # Find and sort the contours of all cards in the image (query cards)
         cnts_sort, cnt_is_card = Cards.find_cards(mask)
@@ -191,7 +191,7 @@ while not some_condition:
                 #         f.write("{} {}".format(cards[i].best_rank_match,cards[i].best_suit_match))
                     temp_cnts.append(cards[i].contour)
                 # f.close()
-                cv2.drawContours(image,temp_cnts, -1, (255,0,0), 2)
+                cv2.drawContours(image,temp_cnts, -1, (255,j*40,0), 2)
                 label = card_to_label(cards[0].best_rank_match,cards[0].best_suit_match)
 
                 num = label_to_num(label)
