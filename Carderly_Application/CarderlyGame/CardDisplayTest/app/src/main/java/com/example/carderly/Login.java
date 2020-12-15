@@ -35,6 +35,9 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Prepares the room "Andy"
+        databaseSetup("/Andy");
+
         //REGISTER CALLBACK (to editProfileActivity)
         Button rButton = findViewById(R.id.RegisterButton);
         rButton.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +111,63 @@ public class Login extends AppCompatActivity {
                 password.setText(userProfile.password);
             }
         }
+    }
+
+    public void databaseSetup(String room_name) {
+        // Delete from the database
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference count_players = mDatabase.getReference("rooms/" + room_name + "/CountPlayer");
+        count_players.setValue(1);
+        DatabaseReference childRef1 = mDatabase.getReference("rooms/" + room_name + "/Cards");
+        DatabaseReference childRef2 = mDatabase.getReference("rooms/" + room_name + "/Current to play");
+        DatabaseReference childRef3 = mDatabase.getReference("rooms/" + room_name + "/First turn");
+        DatabaseReference childRef4 = mDatabase.getReference("rooms/" + room_name + "/GameEnd");
+        DatabaseReference childRef5 = mDatabase.getReference("rooms/" + room_name + "/OldPersonTrump");
+        DatabaseReference childRef6 = mDatabase.getReference("rooms/" + room_name + "/PlayedCard");
+        DatabaseReference childRef7 = mDatabase.getReference("rooms/" + room_name + "/Player 2");
+        DatabaseReference childRef8 = mDatabase.getReference("rooms/" + room_name + "/Player 3");
+        DatabaseReference childRef9 = mDatabase.getReference("rooms/" + room_name + "/Player 4");
+        DatabaseReference childRef10 = mDatabase.getReference("rooms/" + room_name + "/Trump");
+        DatabaseReference childRef11 = mDatabase.getReference("rooms/" + room_name + "/Turn end");
+        DatabaseReference childRef12 = mDatabase.getReference("rooms/" + room_name + "/Player 1" + "/Card 1");
+        childRef12.setValue(0);
+        DatabaseReference childRef13 = mDatabase.getReference("rooms/" + room_name + "/Player 1" + "/Card 2");
+        childRef13.setValue(0);
+        DatabaseReference childRef14 = mDatabase.getReference("rooms/" + room_name + "/Player 1" + "/Card 3");
+        childRef14.setValue(0);
+        DatabaseReference childRef15 = mDatabase.getReference("rooms/" + room_name + "/Player 1" + "/Card 4");
+        childRef15.setValue(0);
+        DatabaseReference childRef16 = mDatabase.getReference("rooms/" + room_name + "/Player 1" + "/Card 5");
+        childRef16.setValue(0);
+        DatabaseReference childRef17 = mDatabase.getReference("rooms/" + room_name + "/Player 1" + "/Card 6");
+        childRef17.setValue(0);
+        DatabaseReference childRef18 = mDatabase.getReference("rooms/" + room_name + "/Player 1" + "/Card 7");
+        childRef18.setValue(0);
+        DatabaseReference childRef19 = mDatabase.getReference("rooms/" + room_name + "/Player 1" + "/Card 8");
+        childRef19.setValue(0);
+        DatabaseReference childRef20 = mDatabase.getReference("rooms/" + room_name + "/Player 1" + "/Card played");
+        childRef20.setValue(0);
+
+        childRef1.removeValue();
+        childRef2.removeValue();
+        childRef3.removeValue();
+        childRef4.removeValue();
+        childRef5.removeValue();
+        childRef6.removeValue();
+        childRef7.removeValue();
+        childRef8.removeValue();
+        childRef9.removeValue();
+        childRef10.removeValue();
+        childRef11.removeValue();
+        childRef12.removeValue();
+        childRef13.removeValue();
+        childRef14.removeValue();
+        childRef15.removeValue();
+        childRef16.removeValue();
+        childRef17.removeValue();
+        childRef18.removeValue();
+        childRef19.removeValue();
+        childRef20.removeValue();
     }
 
 }

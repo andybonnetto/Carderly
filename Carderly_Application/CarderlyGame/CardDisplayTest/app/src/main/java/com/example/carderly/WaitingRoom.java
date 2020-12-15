@@ -90,7 +90,7 @@ public class WaitingRoom extends AppCompatActivity {
                 listView.setAdapter(adapter);
                 counter_nb_players = playersList.size();
                 writeIntDB(counter_nb_players,"rooms/" + roomName + "/CountPlayer");
-                if((counter_nb_players == 1) && (cards_shuffled == false)){ // Only player 1 shuffles the cards and just once
+                if((counter_nb_players == 2) && (cards_shuffled == false)){ // Only player 1 shuffles the cards and just once
                     cards = new ArrayList<>();
                     // All cards are stored in an array, and each card has an ID number of 3 digits:
                     // 1st one for the colour, and the 2 others for the value
@@ -130,6 +130,14 @@ public class WaitingRoom extends AppCompatActivity {
                     Collections.shuffle(cards); // Cards are shuffled before being uploaded on the database
                     writeListDB(cards,"rooms/" + roomName + "/Cards");
                     cards_shuffled = true;
+                    writeIntDB(cards.get(0),"rooms/" + roomName + "/Player 1/Card 1");
+                    writeIntDB(cards.get(1),"rooms/" + roomName + "/Player 1/Card 2");
+                    writeIntDB(cards.get(2),"rooms/" + roomName + "/Player 1/Card 3");
+                    writeIntDB(cards.get(3),"rooms/" + roomName + "/Player 1/Card 4");
+                    writeIntDB(cards.get(4),"rooms/" + roomName + "/Player 1/Card 5");
+                    writeIntDB(cards.get(5),"rooms/" + roomName + "/Player 1/Card 6");
+                    writeIntDB(cards.get(6),"rooms/" + roomName + "/Player 1/Card 7");
+                    writeIntDB(cards.get(7),"rooms/" + roomName + "/Player 1/Card 8");
                 }
                 if (counter_nb_players == 4){
                     Intent intent = new Intent(WaitingRoom.this, MainActivity.class);

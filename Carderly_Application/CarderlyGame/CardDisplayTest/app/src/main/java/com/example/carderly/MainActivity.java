@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     int game_end = 0;
     int trump = 0;
     int suit = 0;
+    int current_to_play = 0;
     int[] first_digit = {0,0,0,0};
     int[] last_two_digits = {0,0,0,0};
     int[] player_cards_id = {0,0,0,0,0,0,0,0}; // ID of the cards in hand of the player 1
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         writeIntDB(game_end,"rooms/" + room_name + "/GameEnd");
         writeIntDB(1,"rooms/" + room_name + "/First turn");
         writeIntDB(1,"rooms/" + room_name + "/Current to play");
+        current_to_play = 1;
         writeIntDB(0,"rooms/" + room_name + "/Turn end");
         writeIntDB(0,"rooms/" + room_name + "/Trump");
         // Played cards are set to 0 at the start
@@ -322,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
                                 name_player.setTextColor(Color.WHITE);
                                 name_opponent_left.setTextColor(Color.RED);
                                 writeIntDB(3, "rooms/" + room_name + "/Current to play");
+                                current_to_play = 3;
                             }
                             if (player_id == 2) {
                                 getDigits(card_value, 2);
@@ -336,6 +339,7 @@ public class MainActivity extends AppCompatActivity {
                                 name_player.setTextColor(Color.WHITE);
                                 name_opponent_left.setTextColor(Color.RED);
                                 writeIntDB(4,"rooms/" + room_name + "/Current to play");
+                                current_to_play = 4;
                             }
                             if (player_id == 3) {
                                 getDigits(card_value,3);
@@ -350,6 +354,7 @@ public class MainActivity extends AppCompatActivity {
                                 name_player.setTextColor(Color.WHITE);
                                 name_opponent_left.setTextColor(Color.RED);
                                 writeIntDB(2,"rooms/" + room_name + "/Current to play");
+                                current_to_play = 2;
                             }
                             if (player_id == 4) {
                                 getDigits(card_value, 4);
@@ -364,6 +369,7 @@ public class MainActivity extends AppCompatActivity {
                                 name_player.setTextColor(Color.WHITE);
                                 name_opponent_left.setTextColor(Color.RED);
                                 writeIntDB(1,"rooms/" + room_name + "/Current to play");
+                                current_to_play = 1;
                             }
                             end_turn++;
                             System.out.println(end_turn);
@@ -387,24 +393,28 @@ public class MainActivity extends AppCompatActivity {
                                 name_opponent_left.setTextColor(Color.WHITE);
                                 name_ally.setTextColor(Color.RED);
                                 writeIntDB(2, "rooms/" + room_name + "/Current to play");
+                                current_to_play = 2;
                             }
                             if (player_id == 2) {
                                 getDigits(card_value, 4);
                                 name_opponent_left.setTextColor(Color.WHITE);
                                 name_ally.setTextColor(Color.RED);
                                 writeIntDB(1,"rooms/" + room_name + "/Current to play");
+                                current_to_play = 1;
                             }
                             if (player_id == 3) {
                                 getDigits(card_value,2);
                                 name_opponent_left.setTextColor(Color.WHITE);
                                 name_ally.setTextColor(Color.RED);
                                 writeIntDB(4,"rooms/" + room_name + "/Current to play");
+                                current_to_play = 4;
                             }
                             if (player_id == 4) {
                                 getDigits(card_value, 1);
                                 name_opponent_left.setTextColor(Color.WHITE);
                                 name_ally.setTextColor(Color.RED);
                                 writeIntDB(3,"rooms/" + room_name + "/Current to play");
+                                current_to_play = 3;
                             }
                             end_turn++;
                             System.out.println(end_turn);
@@ -428,24 +438,28 @@ public class MainActivity extends AppCompatActivity {
                                 name_ally.setTextColor(Color.WHITE);
                                 name_opponent_right.setTextColor(Color.RED);
                                 writeIntDB(4, "rooms/" + room_name + "/Current to play");
+                                current_to_play = 4;
                             }
                             if (player_id == 2) {
                                 getDigits(card_value, 1);
                                 name_ally.setTextColor(Color.WHITE);
                                 name_opponent_right.setTextColor(Color.RED);
                                 writeIntDB(3,"rooms/" + room_name + "/Current to play");
+                                current_to_play = 3;
                             }
                             if (player_id == 3) {
                                 getDigits(card_value,4);
                                 name_ally.setTextColor(Color.WHITE);
                                 name_opponent_right.setTextColor(Color.RED);
                                 writeIntDB(1,"rooms/" + room_name + "/Current to play");
+                                current_to_play = 1;
                             }
                             if (player_id == 4) {
                                 getDigits(card_value, 3);
                                 name_ally.setTextColor(Color.WHITE);
                                 name_opponent_right.setTextColor(Color.RED);
                                 writeIntDB(2,"rooms/" + room_name + "/Current to play");
+                                current_to_play = 2;
                             }
                             end_turn++;
                             System.out.println(end_turn);
@@ -485,6 +499,7 @@ public class MainActivity extends AppCompatActivity {
                                 name_opponent_right.setTextColor(Color.WHITE);
                                 name_player.setTextColor(Color.RED);
                                 writeIntDB(1, "rooms/" + room_name + "/Current to play");
+                                current_to_play = 1;
                             }
                             if (player_id == 2) {
                                 getDigits(card_value, 3);
@@ -507,6 +522,7 @@ public class MainActivity extends AppCompatActivity {
                                 name_opponent_right.setTextColor(Color.WHITE);
                                 name_player.setTextColor(Color.RED);
                                 writeIntDB(2,"rooms/" + room_name + "/Current to play");
+                                current_to_play = 2;
                             }
                             if (player_id == 3) {
                                 getDigits(card_value,1);
@@ -529,6 +545,7 @@ public class MainActivity extends AppCompatActivity {
                                 name_opponent_right.setTextColor(Color.WHITE);
                                 name_player.setTextColor(Color.RED);
                                 writeIntDB(3,"rooms/" + room_name + "/Current to play");
+                                current_to_play = 3;
                             }
                             if (player_id == 4) {
                                 getDigits(card_value, 2);
@@ -551,6 +568,7 @@ public class MainActivity extends AppCompatActivity {
                                 name_opponent_right.setTextColor(Color.WHITE);
                                 name_player.setTextColor(Color.RED);
                                 writeIntDB(4,"rooms/" + room_name + "/Current to play");
+                                current_to_play = 4;
                             }
                             end_turn++;
                             System.out.println(end_turn);
@@ -571,12 +589,13 @@ public class MainActivity extends AppCompatActivity {
         card1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getCardValueDB(new CardValueCallback() {
+                /*getCardValueDB(new CardValueCallback() {
                     @Override
                     public void onCallback(int current_to_play) {
                         // A player knows it is his turn when he either begins the turn, or the player to his right has played, otherwise he can't interact with his cards
                         //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
                         if(current_to_play == player_id){
+                            System.out.println("Card1");
                             writeIntDB(player_cards_id[0],strings_DB.get(8));
                             writeIntDB(player_cards_id[0],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(0));
@@ -585,17 +604,27 @@ public class MainActivity extends AppCompatActivity {
                             card1.setClickable(false);
                         }
                     }
-                },"rooms/" + room_name + "/Current to play");
+                },"rooms/" + room_name + "/Current to play");*/
+                if(current_to_play == player_id){
+                    System.out.println("Card1");
+                    writeIntDB(player_cards_id[0],strings_DB.get(8));
+                    writeIntDB(player_cards_id[0],"rooms/" + room_name + "/PlayedCard");
+                    writeIntDB(0,strings_DB.get(0));
+                    card1.setImageResource(0);
+                    player_cards_id[0] = 0;
+                    card1.setClickable(false);
+                }
             }
         });
         card2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getCardValueDB(new CardValueCallback() {
+                /*getCardValueDB(new CardValueCallback() {
                     @Override
                     public void onCallback(int current_to_play) {
                         //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
                         if(current_to_play == player_id){
+                            System.out.println("Card2");
                             writeIntDB(player_cards_id[1],strings_DB.get(8));
                             writeIntDB(player_cards_id[1],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(1));
@@ -604,17 +633,27 @@ public class MainActivity extends AppCompatActivity {
                             card2.setClickable(false);
                         }
                     }
-                },"rooms/" + room_name + "/Current to play");
+                },"rooms/" + room_name + "/Current to play");*/
+                if(current_to_play == player_id){
+                    System.out.println("Card2");
+                    writeIntDB(player_cards_id[1],strings_DB.get(8));
+                    writeIntDB(player_cards_id[1],"rooms/" + room_name + "/PlayedCard");
+                    writeIntDB(0,strings_DB.get(1));
+                    card2.setImageResource(0);
+                    player_cards_id[1] = 0;
+                    card2.setClickable(false);
+                }
             }
         });
         card3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getCardValueDB(new CardValueCallback() {
+                /*getCardValueDB(new CardValueCallback() {
                     @Override
                     public void onCallback(int current_to_play) {
                         //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
                         if(current_to_play == player_id){
+                            System.out.println("Card3");
                             writeIntDB(player_cards_id[2],strings_DB.get(8));
                             writeIntDB(player_cards_id[2],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(2));
@@ -623,17 +662,27 @@ public class MainActivity extends AppCompatActivity {
                             card3.setClickable(false);
                         }
                     }
-                },"rooms/" + room_name + "/Current to play");
+                },"rooms/" + room_name + "/Current to play");*/
+                if(current_to_play == player_id){
+                    System.out.println("Card3");
+                    writeIntDB(player_cards_id[2],strings_DB.get(8));
+                    writeIntDB(player_cards_id[2],"rooms/" + room_name + "/PlayedCard");
+                    writeIntDB(0,strings_DB.get(2));
+                    card3.setImageResource(0);
+                    player_cards_id[2] = 0;
+                    card3.setClickable(false);
+                }
             }
         });
         card4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getCardValueDB(new CardValueCallback() {
+                /*getCardValueDB(new CardValueCallback() {
                     @Override
                     public void onCallback(int current_to_play) {
                         //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
                         if(current_to_play == player_id){
+                            System.out.println("Card4");
                             writeIntDB(player_cards_id[3],strings_DB.get(8));
                             writeIntDB(player_cards_id[3],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(3));
@@ -642,17 +691,27 @@ public class MainActivity extends AppCompatActivity {
                             card4.setClickable(false);
                         }
                     }
-                },"rooms/" + room_name + "/Current to play");
+                },"rooms/" + room_name + "/Current to play");*/
+                if(current_to_play == player_id){
+                    System.out.println("Card4");
+                    writeIntDB(player_cards_id[3],strings_DB.get(8));
+                    writeIntDB(player_cards_id[3],"rooms/" + room_name + "/PlayedCard");
+                    writeIntDB(0,strings_DB.get(3));
+                    card4.setImageResource(0);
+                    player_cards_id[3] = 0;
+                    card4.setClickable(false);
+                }
             }
         });
         card5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getCardValueDB(new CardValueCallback() {
+                /*getCardValueDB(new CardValueCallback() {
                     @Override
                     public void onCallback(int current_to_play) {
                         //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
                         if(current_to_play == player_id){
+                            System.out.println("Card5");
                             writeIntDB(player_cards_id[4],strings_DB.get(8));
                             writeIntDB(player_cards_id[4],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(4));
@@ -661,17 +720,27 @@ public class MainActivity extends AppCompatActivity {
                             card5.setClickable(false);
                         }
                     }
-                },"rooms/" + room_name + "/Current to play");
+                },"rooms/" + room_name + "/Current to play");*/
+                if(current_to_play == player_id){
+                    System.out.println("Card5");
+                    writeIntDB(player_cards_id[4],strings_DB.get(8));
+                    writeIntDB(player_cards_id[4],"rooms/" + room_name + "/PlayedCard");
+                    writeIntDB(0,strings_DB.get(4));
+                    card5.setImageResource(0);
+                    player_cards_id[4] = 0;
+                    card5.setClickable(false);
+                }
             }
         });
         card6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getCardValueDB(new CardValueCallback() {
+                /*getCardValueDB(new CardValueCallback() {
                     @Override
                     public void onCallback(int current_to_play) {
                         //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
                         if(current_to_play == player_id){
+                            System.out.println("Card6");
                             writeIntDB(player_cards_id[5],strings_DB.get(8));
                             writeIntDB(player_cards_id[5],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(5));
@@ -680,17 +749,27 @@ public class MainActivity extends AppCompatActivity {
                             card6.setClickable(false);
                         }
                     }
-                },"rooms/" + room_name + "/Current to play");
+                },"rooms/" + room_name + "/Current to play");*/
+                if(current_to_play == player_id){
+                    System.out.println("Card6");
+                    writeIntDB(player_cards_id[5],strings_DB.get(8));
+                    writeIntDB(player_cards_id[5],"rooms/" + room_name + "/PlayedCard");
+                    writeIntDB(0,strings_DB.get(5));
+                    card6.setImageResource(0);
+                    player_cards_id[5] = 0;
+                    card6.setClickable(false);
+                }
             }
         });
         card7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getCardValueDB(new CardValueCallback() {
+                /*getCardValueDB(new CardValueCallback() {
                     @Override
                     public void onCallback(int current_to_play) {
                         //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
                         if(current_to_play == player_id){
+                            System.out.println("Card7");
                             writeIntDB(player_cards_id[6],strings_DB.get(8));
                             writeIntDB(player_cards_id[6],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(6));
@@ -699,17 +778,27 @@ public class MainActivity extends AppCompatActivity {
                             card7.setClickable(false);
                         }
                     }
-                },"rooms/" + room_name + "/Current to play");
+                },"rooms/" + room_name + "/Current to play");*/
+                if(current_to_play == player_id){
+                    System.out.println("Card7");
+                    writeIntDB(player_cards_id[6],strings_DB.get(8));
+                    writeIntDB(player_cards_id[6],"rooms/" + room_name + "/PlayedCard");
+                    writeIntDB(0,strings_DB.get(6));
+                    card7.setImageResource(0);
+                    player_cards_id[6] = 0;
+                    card7.setClickable(false);
+                }
             }
         });
         card8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getCardValueDB(new CardValueCallback() {
+                /*getCardValueDB(new CardValueCallback() {
                     @Override
                     public void onCallback(int current_to_play) {
                         //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
                         if(current_to_play == player_id){
+                            System.out.println("Card8");
                             writeIntDB(player_cards_id[7],strings_DB.get(8));
                             writeIntDB(player_cards_id[7],"rooms/" + room_name + "/PlayedCard");
                             writeIntDB(0,strings_DB.get(7));
@@ -718,7 +807,16 @@ public class MainActivity extends AppCompatActivity {
                             card8.setClickable(false);
                         }
                     }
-                },"rooms/" + room_name + "/Current to play");
+                },"rooms/" + room_name + "/Current to play");*/
+                if(current_to_play == player_id){
+                    System.out.println("Card8");
+                    writeIntDB(player_cards_id[7],strings_DB.get(8));
+                    writeIntDB(player_cards_id[7],"rooms/" + room_name + "/PlayedCard");
+                    writeIntDB(0,strings_DB.get(7));
+                    card8.setImageResource(0);
+                    player_cards_id[7] = 0;
+                    card8.setClickable(false);
+                }
             }
         });
     }
@@ -1005,12 +1103,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        System.out.println("Trump: " + trump);
+        /*System.out.println("Trump: " + trump);
         System.out.println("Suit: " + suit);
         System.out.println("Player cards ID: " + Arrays.toString(player_cards_id));
         System.out.println("Round winner: " + round_winner);
         System.out.println("First digit: " + Arrays.toString(first_digit));
-        System.out.println("Last two digits: " + Arrays.toString(last_two_digits));
+        System.out.println("Last two digits: " + Arrays.toString(last_two_digits));*/
         setColorWinningCard(round_winner,Color.argb(100, 0, 200, 0));
 
         // Click anywhere on the screen to finish the turn and begin the next one
@@ -1043,6 +1141,7 @@ public class MainActivity extends AppCompatActivity {
                     setColorWinningCard(finalRound_winner, 0);
                     writeIntDB(finalRound_winner, "rooms/" + room_name + "/First turn");
                     writeIntDB(finalRound_winner, "rooms/" + room_name + "/Current to play");
+                    current_to_play = finalRound_winner;
                     end_turn = 0;
                     suit = 0;
                     for(int i = 0; i < 3; i++){
