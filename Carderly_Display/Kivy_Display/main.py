@@ -70,9 +70,9 @@ def num_to_label(num):
 def num_to_trump(atout):
     # Utils functions for format conversions
     if atout == 1:
-        return "spade"
-    elif atout == 2:
         return "clubs"
+    elif atout == 2:
+        return "spade"
     elif atout == 3:
         return "diamond"
     else:
