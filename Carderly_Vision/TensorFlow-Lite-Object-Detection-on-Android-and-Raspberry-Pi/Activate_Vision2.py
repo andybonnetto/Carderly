@@ -276,10 +276,10 @@ while some_condition:
             # card_seen = compare_to_database(object_name) #return card_seen in numbers
             card_seen = label_to_num(object_name)
             hand = save_database()
-            print(hand)
+            # print(hand)
             if card_seen:
                 for card in hand:
-                    if card == card_seen:
+                    if int(card) == card_seen:
                         database.child("rooms").child(ROOM_NAME).child("Vision").set(card_seen)
 
 
