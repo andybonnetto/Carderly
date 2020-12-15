@@ -24,12 +24,13 @@ global deck_insert
 ROOM_NAME = "Dani"
 
 #reset variables into DB
-database.child(ROOM_NAME).child("StartGame").set(0)
-database.child(ROOM_NAME).child("PlayGame").set(0)
-database.child(ROOM_NAME).child("PlayedCard").set(1)
-database.child(ROOM_NAME).child("Vision").set(0)
-database.child(ROOM_NAME).child("DeckInserted").set(0)
-database.child(ROOM_NAME).child("DeckPresent").set(0)
+database.child("rooms").child(ROOM_NAME).child("StartGame").set(0)
+database.child("rooms").child(ROOM_NAME).child("PlayGame").set(0)
+database.child("rooms").child(ROOM_NAME).child("PlayedCard").set(1)
+database.child("rooms").child(ROOM_NAME).child("Vision").set(0)
+database.child("rooms").child(ROOM_NAME).child("DeckInserted").set(0)
+database.child("rooms").child(ROOM_NAME).child("DeckPresent").set(0)
+database.child("rooms").child(ROOM_NAME).child("CardOut").set(0)
 
 
 # Path to files
@@ -63,7 +64,7 @@ def vision():
         # exec(open(PathActivateVision1).read())
         os.system("python3 " + PathActivateVision1)
         time.sleep(2)
-        start_game = database.child(ROOM_NAME).child("StartGame").get()
+        start_game = database.child("rooms").child(ROOM_NAME).child("StartGame").get()
         if start_game.val() == 1: state_vision = 1
 
         # ActivateVision2 when playing the game
@@ -72,7 +73,7 @@ def vision():
         if state_vision == 1:
             os.system("python3 " + PathActivateVision2 + " --modeldir=" + PathModel)
             time.sleep(2)
-            start_game = database.child(ROOM_NAME).child("StartGame").get()
+            start_game = database.child("rooms").child(ROOM_NAME).child("StartGame").get()
             if start_game.val() == 0:
                 state_vision = 0
                 # break
@@ -82,7 +83,7 @@ def wait_deck():
     # Checking when the deck has been inserted when vision detects a card
     deck_insert = 0
     while deck_insert==0:
-        card = database.child(ROOM_NAME).child("Vision").get()
+        card = database.child("rooms").child(ROOM_NAME).child("Vision").get()
         if card.val()!=0: deck_insert=1
         time.sleep(2)
         print("Wait for deck")        
@@ -92,7 +93,7 @@ def wait_player():
     # Counting the number of player until it reaches 4
     nb_player=1
     while nb_player<4:
-        player_DB = database.child(ROOM_NAME).child("CountPlayer").get()
+        player_DB = database.child("rooms").child(ROOM_NAME).child("CountPlayer").get()
         nb_player = player_DB.val()
         time.sleep(2)
         print("Wait for player") 
@@ -112,14 +113,14 @@ def GameFunc():
 
     # Wait for deck to be inserted
     wait_deck()    
-    database.child(ROOM_NAME).child("DeckPresent").set(1)
+    database.child("rooms").child(ROOM_NAME).child("DeckPresent").set(1)
     # Put the cards into the wheel when deck inserted, putting them into array to know their positions
     cards=np.array([])
 
     #----------------------
     # for i in range(31):
     #     # Get the card detected on the DB
-    #     card_detected_DB = database.child(ROOM_NAME).child("Vision").get()
+    #     card_detected_DB = database.child("rooms").child(ROOM_NAME).child("Vision").get()
     #     if card_detected_DB.val() != 0:
     #         # Check if card detected the same as before and wait for new card
     #         if card_detected_DB.val() in cards:
@@ -132,7 +133,7 @@ def GameFunc():
     #         # Wait for the deck to be reposition if card not seen
     #         print("reposition the deck")
     #         wait_deck()
-    #         card_detected_DB = database.child(ROOM_NAME).child("Vision").get()
+    #         card_detected_DB = database.child("rooms").child(ROOM_NAME).child("Vision").get()
     #         # Add card to array
     #         cards = np.append(cards, card_detected_DB.val())
     #     # Put it into the wheel
@@ -151,13 +152,13 @@ def GameFunc():
     print("cards = " + str(cards))
 
     #Deck is inserted, shift display to waiting room
-    database.child("DeckInserted").set(1)
+    database.child("rooms").child(ROOM_NAME).child("DeckInserted").set(1)
 
     # Wait for 4 players
     wait_player()
 
     # Start the distribution when 4 players connected, switch variable on DB for the APP and display
-    database.child("StartGame").set(1)
+    database.child("rooms").child(ROOM_NAME).child("StartGame").set(1)
 
     # Get the old player's cards from the DB (A CHANGER SELON DB ORGANISATION)
     old_cards = np.array([])
@@ -187,16 +188,17 @@ def GameFunc():
             print("Fail to recognize card in hand")
 
     # Start the game when card distributed, change variable in the DB for the APP
-    database.child("PlayGame").set(1)
+    database.child("rooms").child(ROOM_NAME).child("PlayGame").set(1)
 
     # Get the end of game variable from the DB 
-    EndOfGame = database.child("EndGame").get()
+    EndOfGame = database.child("rooms").child(ROOM_NAME).child("EndGame").get()
 
     # Game part 
     while not EndOfGame.val():
 
         # Get whose turn it is 
-        turn_DB=database.child("Current to play").get()
+        turn_DB=database.child("rooms").child(ROOM_NAME).child("Current to play").get()
+        database.child("rooms").child(ROOM_NAME).child("CardOut").set(0)
 
         # old player's turn 
         if turn_DB.val()==1: 
@@ -225,9 +227,10 @@ def GameFunc():
             # time.sleep(2)
             call_motor.call_servo_360("output")
             # time.sleep(2) # A AJUSTEEEEER
+            database.child("rooms").child(ROOM_NAME).child("CardOut").set(1)
         
         # End of game (CONDITION TO BE DETERMINED)
-        EndOfGame = database.child("EndGame").get()
+        EndOfGame = database.child("rooms").child(ROOM_NAME).child("EndGame").get()
 
     print("reste")
 
