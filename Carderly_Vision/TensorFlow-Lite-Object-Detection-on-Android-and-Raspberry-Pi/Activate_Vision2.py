@@ -281,7 +281,7 @@ while some_condition:
                 print("card_seen", card_seen)
                 for card in hand:
                     print("card =",card)
-                    if card == str(card_seen):
+                    if card == str(card_seen) + ".0":
                         database.child("rooms").child(ROOM_NAME).child("Vision").set(card_seen)
 
 
