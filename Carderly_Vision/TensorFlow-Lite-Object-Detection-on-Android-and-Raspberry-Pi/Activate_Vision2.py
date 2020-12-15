@@ -281,7 +281,6 @@ while some_condition:
                 for card in hand:
                     if card == card_seen:
                         database.child("Vision").set(card_seen)
-                        break
 
 
     if not card_seen:
