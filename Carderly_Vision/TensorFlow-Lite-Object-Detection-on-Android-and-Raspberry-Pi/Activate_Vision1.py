@@ -193,9 +193,10 @@ while not some_condition:
                 cv2.drawContours(image,temp_cnts, -1, (255,0,0), 2)
                 label = card_to_label(cards[0].best_rank_match,cards[0].best_suit_match)
 
-
-                cardseen = label_to_num(label)
-
+                num = label_to_num(label)
+                if num:
+                    cardseen = num
+                    
         database.child("Vision").set(cardseen)
         
         
