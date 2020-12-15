@@ -303,7 +303,7 @@ while some_condition:
     # Press 'q' to quit
     # if cv2.waitKey(1) == ord('q'):
     #     break
-    some_condition = database.child("StartGame").get().val()
+    some_condition = database.child("room").child(ROOM_NAME).child("StartGame").get().val()
     if not some_condition:
         break
 
