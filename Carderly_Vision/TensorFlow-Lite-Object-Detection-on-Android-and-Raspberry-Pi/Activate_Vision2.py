@@ -276,7 +276,7 @@ while some_condition:
             # card_seen = compare_to_database(object_name) #return card_seen in numbers
             card_seen = label_to_num(object_name)
             hand = save_database()
-
+            print(hand)
             if card_seen:
                 for card in hand:
                     if card == card_seen:
