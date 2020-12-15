@@ -103,17 +103,26 @@ def label_to_num(label):
     num = first_num*100+second_num
     return num
 
-def compare_to_database(label):
-    num = label_to_num(label)
+# def compare_to_database(label,hand):
+
+    # num = label_to_num(label)
+    # db_cards = database.child("rooms").child(ROOM_NAME).child("Player 1").get()
+    # # db_cards = database.child("Player 1").get()
+    # i = 0
+    # for card in db_cards.each():
+    #     hand = card.val()
+    #     if hand == num:
+    #         return num
+    #     i += 1
+    # return None
+
+def save_database():
+
     db_cards = database.child("rooms").child(ROOM_NAME).child("Player 1").get()
-    # db_cards = database.child("Player 1").get()
-    i = 0
+    hand = np.array([])
     for card in db_cards.each():
-        hand = card.val()
-        if hand == num:
-            return num
-        i += 1
-    return None
+        hand = np.append(hand,card.val())
+    return hand
 
 
 # Define and parse input arguments
@@ -264,9 +273,16 @@ while some_condition:
             # cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
             #             2)  # Draw label text
             print(object_name)
-            card_seen = compare_to_database(object_name) #return card_seen in numbers
+            # card_seen = compare_to_database(object_name) #return card_seen in numbers
+            card_seen = label_to_num(object_name)
+            hand = save_database()
+
             if card_seen:
-                database.child("Vision").set(card_seen)
+                for card in hand:
+                    if card == card_seen:
+                        database.child("Vision").set(card_seen)
+                        break
+
 
     if not card_seen:
         database.child("Vision").set(0)

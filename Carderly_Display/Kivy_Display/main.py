@@ -204,12 +204,14 @@ class InsertDeck(Screen):
     def shift_to_waiting(self):
         sm.current = "waiting"
     def get_status(self,token):
-        if database.child("DeckInserted").get().val():
+        if database.child("rooms").child(ROOM_NAME).child("DeckInserted").get().val():
             if sm.current == "insert_deck":
                 self.shift_to_waiting()
-        if database.child("DeckPresent").get().val():
+        if database.child("rooms").child(ROOM_NAME).child("DeckPresent").get().val():
             if sm.current == "insert_deck":
                 self.mess = "Card treatment, please wait..."
+            else:
+                self.mess = ""
         else:
             self.mess = ""
 
@@ -226,7 +228,7 @@ class WaitingRoom(Screen):
         sm.current = "main_win"
 
     def get_status(self,token):
-        if database.child("PlayGame").get().val():
+        if database.child("rooms").child(ROOM_NAME).child("PlayGame").get().val():
             if sm.current == "waiting":
                 self.shift_to_game()
             pass
@@ -347,6 +349,11 @@ class GameWindow(Screen):
         card = database.child("Vision").get().val()
         if card:
             database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card played").set(card)
+            for j in range(7):
+                temp_DB = database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card " + str(j + 1)).get()
+                if temp_DB.val() == card:
+                    temp_DB.set(0)
+                    break
 
     def shift_to_waiting(self):
         sm.current = "waiting"
@@ -464,6 +471,9 @@ class GameWindow(Screen):
         if atout:
             self.atout_kv = trump
             self.im_atout_kv = "{}.png".format(trump)
+        else:
+            self.atout_kv = ""
+            self.im_atout_kv = "no_trump.png"
 
     def show_vis(self,token):
         db_vision = database.child("Vision").get()
