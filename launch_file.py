@@ -115,30 +115,39 @@ def GameFunc():
     database.child("DeckPresent").set(1)
     # Put the cards into the wheel when deck inserted, putting them into array to know their positions
     cards=np.array([])
-    for i in range(31):
-        # Get the card detected on the DB
-        card_detected_DB = database.child("Vision").get()
-        if card_detected_DB.val() != 0:
-            # Check if card detected the same as before and wait for new card
-            if card_detected_DB.val() in cards:
-                print("card already inserted")
-                discard_all(step_motor)
-            else:
-                # Add it to the array
-                cards = np.append(cards, card_detected_DB.val())
-        else:
-            # Wait for the deck to be reposition if card not seen
-            print("reposition the deck")
-            wait_deck()
-            # Add card to array
-            cards = np.append(cards, card_detected_DB.val())
-        # Put it into the wheel
-        call_motor.call_servo_360("input")
-        time.sleep(2)
-        call_motor.shuffle(step_motor)
-        time.sleep(2) # Time to put the card into the wheel + time for the vision to detect new cards (ADD CONDITION CHGMT CARTE?)
 
-    # print("cards = " + str(cards))
+    #----------------------
+    # for i in range(31):
+    #     # Get the card detected on the DB
+    #     card_detected_DB = database.child("Vision").get()
+    #     if card_detected_DB.val() != 0:
+    #         # Check if card detected the same as before and wait for new card
+    #         if card_detected_DB.val() in cards:
+    #             print("card already inserted")
+    #             discard_all(step_motor)
+    #         else:
+    #             # Add it to the array
+    #             cards = np.append(cards, card_detected_DB.val())
+    #     else:
+    #         # Wait for the deck to be reposition if card not seen
+    #         print("reposition the deck")
+    #         wait_deck()
+    #         # Add card to array
+    #         cards = np.append(cards, card_detected_DB.val())
+    #     # Put it into the wheel
+    #     call_motor.call_servo_360("input")
+    #     time.sleep(2)
+    #     call_motor.shuffle(step_motor)
+    #     time.sleep(2) # Time to put the card into the wheel + time for the vision to detect new cards (ADD CONDITION CHGMT CARTE?)
+    #----------------------
+
+    #automatic card generation
+    for i in range(4):
+        for j in range(8):
+            count = (i+1)*100 + (j+7)
+            cards = np.append(cards, count)
+
+    print("cards = " + str(cards))
 
     #Deck is inserted, shift display to waiting room
     database.child("DeckInserted").set(1)
@@ -151,26 +160,30 @@ def GameFunc():
 
     # Get the old player's cards from the DB (A CHANGER SELON DB ORGANISATION)
     old_cards = np.array([])
-    for j in range(8): 
+    for j in range(7):
         temp_DB=database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card "+str(j+1)).get()
         old_cards=np.append(old_cards, temp_DB.val())
     
     #print("old=" +str(old_cards))
 
     # Distribute the cards of the old player's 
-    for k in range(8):
+    for k in range(7):
         # Search position of the old player's card in the DB 
         res = np.where(cards==old_cards[k])
-        position=res[0]
-        # Take the card out 
-        call_motor.discard(step_motor,position)
-        time.sleep(2)
-        call_motor.call_dc()
-        time.sleep(2)
-        call_motor.call_servo_angle()
-        time.sleep(2)
-        call_motor.call_servo_360("output")
-        time.sleep(2) #TO BE ADJUSTED 
+        position=int(res[0])
+        print("position =", position)
+        # Take the card out
+        if res[0]:
+            call_motor.discard(step_motor,position)
+            time.sleep(2)
+            call_motor.call_dc()
+            time.sleep(2)
+            call_motor.call_servo_angle()
+            time.sleep(2)
+            call_motor.call_servo_360("output")
+            time.sleep(2) #TO BE ADJUSTED
+        else:
+            print("Fail to recognize card in hand")
 
     # Start the game when card distributed, change variable in the DB for the APP
     database.child("PlayGame").set(1)
@@ -201,7 +214,7 @@ def GameFunc():
 
             # Get the position of the card
             res=np.where(cards==card_played_DB.val())
-            position=res[0]
+            position= int(res[0])
             # Take the card out 
             call_motor.discard(step_motor,position)
             time.sleep(2)
