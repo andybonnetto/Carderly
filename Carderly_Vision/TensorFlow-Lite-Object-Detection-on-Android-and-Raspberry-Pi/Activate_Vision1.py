@@ -119,7 +119,7 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 # See VideoStream.py for VideoStream class definition
 ## IF USING USB CAMERA INSTEAD OF PICAMERA,
 ## CHANGE THE THIRD ARGUMENT FROM 1 TO 2 IN THE FOLLOWING LINE:
-videostream = VideoStream.VideoStream((IM_WIDTH,IM_HEIGHT),FRAME_RATE,1,0).start()
+videostream = VideoStream.VideoStream((IM_WIDTH,IM_HEIGHT),FRAME_RATE,2,0).start()
 time.sleep(1) # Give the camera time to warm up
 
 # Load the train rank and suit images
@@ -142,57 +142,61 @@ while not some_condition:
 
     # Start timer (for calculating frame rate)
     t1 = cv2.getTickCount()
+    cardseen = 0
+    for j in range(2):
+        # Pre-process camera image (gray, blur, and threshold it)
+        pre_proc = Cards.preprocess_image(image)
+        mask = np.empty_like(pre_proc)*0
+        box = np.array([255] * BOX_HEIGHT * BOX_WIDTH).reshape(BOX_HEIGHT, BOX_WIDTH)
+        x = 140
+        y = 270 + (j-1)*10
+        mask[x:x + BOX_HEIGHT, y:y + BOX_WIDTH] = box
+        # Find and sort the contours of all cards in the image (query cards)
+        cnts_sort, cnt_is_card = Cards.find_cards(mask)
 
-    # Pre-process camera image (gray, blur, and threshold it)
-    pre_proc = Cards.preprocess_image(image)
-    mask = np.empty_like(pre_proc)*0
-    box = np.array([255] * BOX_HEIGHT * BOX_WIDTH).reshape(BOX_HEIGHT, BOX_WIDTH)
-    x = 140
-    y = 270
-    mask[x:x + BOX_HEIGHT, y:y + BOX_WIDTH] = box
-    # Find and sort the contours of all cards in the image (query cards)
-    cnts_sort, cnt_is_card = Cards.find_cards(mask)
+        # If there are no contours, do nothing
+        if len(cnts_sort) != 0:
 
-    # If there are no contours, do nothing
-    if len(cnts_sort) != 0:
+            # Initialize a new "cards" list to assign the card objects.
+            # k indexes the newly made array of cards.
+            cards = []
+            k = 0
 
-        # Initialize a new "cards" list to assign the card objects.
-        # k indexes the newly made array of cards.
-        cards = []
-        k = 0
+            # For each contour detected:
+            for i in range(len(cnts_sort)):
+                if (cnt_is_card[i] == 1):
+                    # Create a card object from the contour and append it to the list of cards.
+                    # preprocess_card function takes the card contour and contour and
+                    # determines the cards properties (corner points, etc). It generates a
+                    # flattened 200x300 image of the card, and isolates the card's
+                    # suit and rank from the image.
+                    cards.append(Cards.preprocess_card(cnts_sort[i],image))
 
-        # For each contour detected:
-        for i in range(len(cnts_sort)):
-            if (cnt_is_card[i] == 1):
-                # Create a card object from the contour and append it to the list of cards.
-                # preprocess_card function takes the card contour and contour and
-                # determines the cards properties (corner points, etc). It generates a
-                # flattened 200x300 image of the card, and isolates the card's
-                # suit and rank from the image.
-                cards.append(Cards.preprocess_card(cnts_sort[i],image))
+                    # Find the best rank and suit match for the card.
+                    cards[k].best_rank_match,cards[k].best_suit_match,cards[k].rank_diff,cards[k].suit_diff = Cards.match_card(cards[k],train_ranks,train_suits)
 
-                # Find the best rank and suit match for the card.
-                cards[k].best_rank_match,cards[k].best_suit_match,cards[k].rank_diff,cards[k].suit_diff = Cards.match_card(cards[k],train_ranks,train_suits)
+                    # Draw center point and match result on the image.
+                    image = Cards.draw_results(image, cards[k])
+                    k = k + 1
 
-                # Draw center point and match result on the image.
-                image = Cards.draw_results(image, cards[k])
-                k = k + 1
-	    
-        # Draw card contours on image (have to do contours all at once or
-        # they do not show up properly for some reason)
-        if (len(cards) != 0):
-            temp_cnts = []
-            # Open File and write card value in it
-            # f = open("CardValues.txt", "w")
-            for i in range(len(cards)):
-            #     if(cards[i].best_rank_match != "Unknown" and cards[i].best_suit_match != "Unknown"):
-            #         f.write("{} {}".format(cards[i].best_rank_match,cards[i].best_suit_match))
-                temp_cnts.append(cards[i].contour)
-            # f.close()
-            cv2.drawContours(image,temp_cnts, -1, (255,0,0), 2)
-            label = card_to_label(cards[0].best_rank_match,cards[0].best_suit_match)
-            cardseen = label_to_num(label)
-            database.child("Vision").set(cardseen)
+            # Draw card contours on image (have to do contours all at once or
+            # they do not show up properly for some reason)
+            if (len(cards) != 0):
+                temp_cnts = []
+                # Open File and write card value in it
+                # f = open("CardValues.txt", "w")
+                for i in range(len(cards)):
+                #     if(cards[i].best_rank_match != "Unknown" and cards[i].best_suit_match != "Unknown"):
+                #         f.write("{} {}".format(cards[i].best_rank_match,cards[i].best_suit_match))
+                    temp_cnts.append(cards[i].contour)
+                # f.close()
+                cv2.drawContours(image,temp_cnts, -1, (255,0,0), 2)
+                label = card_to_label(cards[0].best_rank_match,cards[0].best_suit_match)
+
+
+                cardseen = label_to_num(label)
+
+        database.child("Vision").set(cardseen)
         
         
     # Draw framerate in the corner of the image. Framerate is calculated at the end of the main loop,
