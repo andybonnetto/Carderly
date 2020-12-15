@@ -103,18 +103,18 @@ def label_to_num(label):
     num = first_num*100+second_num
     return num
 
-# def compare_to_database(label,hand):
+def compare_to_database(label,hand):
 
-    # num = label_to_num(label)
-    # db_cards = database.child("rooms").child(ROOM_NAME).child("Player 1").get()
-    # # db_cards = database.child("Player 1").get()
-    # i = 0
-    # for card in db_cards.each():
-    #     hand = card.val()
-    #     if hand == num:
-    #         return num
-    #     i += 1
-    # return None
+    num = label_to_num(label)
+    db_cards = database.child("rooms").child(ROOM_NAME).child("Player 1").get()
+    # db_cards = database.child("Player 1").get()
+    i = 0
+    for card in db_cards.each():
+        hand = card.val()
+        if hand == num:
+            return num
+        i += 1
+    return None
 
 def save_database():
 
@@ -273,14 +273,14 @@ while some_condition:
             # cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
             #             2)  # Draw label text
             print(object_name)
-            # card_seen = compare_to_database(object_name) #return card_seen in numbers
-            card_seen = label_to_num(object_name)
-            hand = save_database()
+            card_seen = compare_to_database(object_name) #return card_seen in numbers
+            # card_seen = label_to_num(object_name)
+            # hand = save_database()
 
             if card_seen:
-                for card in hand:
-                    if card == card_seen:
-                        database.child("rooms").child(ROOM_NAME).child("Vision").set(card_seen)
+                # for card in hand:
+                #     if card == card_seen:
+                database.child("rooms").child(ROOM_NAME).child("Vision").set(card_seen)
 
 
     if not card_seen:
@@ -303,7 +303,7 @@ while some_condition:
     # Press 'q' to quit
     # if cv2.waitKey(1) == ord('q'):
     #     break
-    some_condition = database.child("room").child(ROOM_NAME).child("StartGame").get().val()
+    some_condition = database.child("rooms").child(ROOM_NAME).child("StartGame").get().val()
     if not some_condition:
         break
 
