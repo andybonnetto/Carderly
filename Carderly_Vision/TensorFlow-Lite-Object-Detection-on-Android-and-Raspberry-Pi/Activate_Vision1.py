@@ -14,6 +14,7 @@ import os
 import Cards
 import VideoStream
 import pyrebase
+ROOM_NAME = "Dani"
 
 def card_to_label(rank,suit):
     if rank == "Ace":
@@ -196,8 +197,8 @@ while not some_condition:
                 num = label_to_num(label)
                 if num:
                     cardseen = num
-                    
-        database.child("Vision").set(cardseen)
+
+        database.child("rooms").child(ROOM_NAME).child("Vision").set(cardseen)
         
         
     # Draw framerate in the corner of the image. Framerate is calculated at the end of the main loop,
