@@ -140,7 +140,7 @@ parser.add_argument('--resolution',
                     default='1280x720')
 parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
                     action='store_true')
-parser.add_argument('room_name', help='give the name of the room', default="Dani")
+parser.add_argument('--room_name', help='give the name of the room', default="Dani")
 
 args = parser.parse_args()
 
