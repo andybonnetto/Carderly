@@ -224,6 +224,7 @@ videostream = VideoStream(resolution=(imW, imH), framerate=30).start()
 time.sleep(1)
 some_condition= True
 # for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
+print("Activate Vision 2")
 while some_condition:
 
     # Start timer (for calculating frame rate)
@@ -278,11 +279,8 @@ while some_condition:
             # card_seen = compare_to_database(object_name) #return card_seen in numbers
             card_seen = label_to_num(object_name)
             hand = save_database()
-            print("hand", hand)
             if card_seen:
-                print("card_seen", card_seen)
                 for card in hand:
-                    print("card =",card)
                     if card == str(card_seen) + ".0":
                         database.child("rooms").child(ROOM_NAME).child("Vision").set(card_seen)
 

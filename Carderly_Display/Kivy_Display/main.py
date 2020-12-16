@@ -9,6 +9,7 @@ from database import Database
 from kivy.clock import Clock
 from kivy.graphics import *
 import RPi.GPIO as GPIO
+import argparse
 
 #Set PIN for buttons
 PIN_BLUE = 40
@@ -34,7 +35,11 @@ config = {
 }
 firebase = pyrebase.initialize_app(config)
 database = firebase.database()
-ROOM_NAME = 'Dani'
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--room_name', help='give the name of the room', default="Dani")
+args = parser.parse_args()
+ROOM_NAME = args.room_name
 
 # Initialize button state
 blue_button_state = False

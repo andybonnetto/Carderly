@@ -14,7 +14,12 @@ import os
 import Cards
 import VideoStream
 import pyrebase
-ROOM_NAME = "Dani"
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--room_name', help='give the name of the room', default="Dani")
+args = parser.parse_args()
+ROOM_NAME = args.room_name
 
 def card_to_label(rank,suit):
     if rank == "Ace":

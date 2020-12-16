@@ -4,6 +4,7 @@ import numpy as np
 import pyrebase
 import time
 import os
+import argparse
 
 # Firebase configuration
 config = {
@@ -21,7 +22,10 @@ global nb_player
 global deck_insert
 
 #Constant variable
-ROOM_NAME = "Dani"
+parser = argparse.ArgumentParser()
+parser.add_argument('--room_name', help='give the name of the room', default="Dani")
+args = parser.parse_args()
+ROOM_NAME = args.room_name
 
 #reset variables into DB
 database.child("rooms").child(ROOM_NAME).child("StartGame").set(0)
@@ -49,7 +53,7 @@ def main():
     # Run the display continuously in background
     while Game:
         # exec(open(PathMain).read())
-        os.system("KIVY_BCM_DISPMANX_ID=1 python3 " + PathMain)
+        os.system("KIVY_BCM_DISPMANX_ID=1 python3 " + PathMain + " --room_name=" + ROOM_NAME)
         time.sleep(2)
 
 def vision():
@@ -62,7 +66,7 @@ def vision():
         # ActivateVision1 when putting cards into the wheel
         # while state_vision == 0:  #Pas besoin de while ici, ya déjà un while dans vision
         # exec(open(PathActivateVision1).read())
-        os.system("python3 " + PathActivateVision1)
+        os.system("python3 " + PathActivateVision1 + " --room_name=" + ROOM_NAME)
         time.sleep(2)
         start_game = database.child("rooms").child(ROOM_NAME).child("StartGame").get()
         if start_game.val() == 1: state_vision = 1
@@ -71,7 +75,7 @@ def vision():
         # while state_vision == 1:
         # exec(open(PathActivateVision2).read())
         if state_vision == 1:
-            os.system("python3 " + PathActivateVision2 + " --modeldir=" + PathModel)
+            os.system("python3 " + PathActivateVision2 + " --modeldir=" + PathModel + " --room_name=" + ROOM_NAME)
             time.sleep(2)
             start_game = database.child("rooms").child(ROOM_NAME).child("StartGame").get()
             if start_game.val() == 0:
