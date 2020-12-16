@@ -50,7 +50,7 @@ class StepMotor:
             sign = -1
         else:
             sign = 1
-        nb = sign * nb  *3  # times 2 because half-step
+        nb = sign * nb  # times 2 because half-step
         print("nbsteps {} and sign {}".format(nb, sign))
         for i in range(nb):
             for pin in range(len(self.StepPins)):
@@ -69,22 +69,10 @@ class StepMotor:
                 # Wait before moving on
             time.sleep(WAIT_TIME)
 
-    def run_arm(self,nb):
-        hasRun = False
-        while not hasRun:
-            self.steps(nb)  # parcourt un tour dans le sens horaire
-            time.sleep(0.1)
-            # self.steps(-nb)  # parcourt un tour dans le sens anti-horaire
-            # time.sleep(1)
-            hasRun = True
-            print("Stop motor")
-            for pin in self.StepPins:
-                GPIO.output(pin, False)
-
     def calculate_step_pos(self, pos):
-        val = int(pos / 4) + pos * 6
-        if pos % 4 >= 2:
-            val += 1
+        val = -int(pos / 4) + pos * 19
+        if pos % 4 > 3:
+            val -= 1
         return val
 
     def find_dir(self, pos):
