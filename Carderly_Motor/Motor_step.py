@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
-WAIT_TIME = 0.02 #0.002
+WAIT_TIME = 0.016 #0.002
 
 class StepMotor:
 

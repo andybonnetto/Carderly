@@ -129,33 +129,33 @@ def GameFunc():
             count = (i + 1) * 100 + (j + 7)
             cards = np.append(cards, count)
 
-    np.delete(cards, [1,16,26]) #remove Ace of clubs, 2 of spade and 10 of hearts
+    np.delete(cards, [30]) #remove Ace of clubs, 2 of spade and 10 of hearts
 
     print("cards = " + str(cards))
     # ----------------------
-    # for i in range(31):
-    #     # Get the card detected on the DB
-    #     card_detected_DB = database.child("rooms").child(ROOM_NAME).child("Vision").get()
-    #     if card_detected_DB.val() != 0:
-    #         # Check if card detected the same as before and wait for new card
-    #         if card_detected_DB.val() in cards:
-    #             print("card already inserted")
-    #             discard_all(step_motor)
-    #         else:
-    #             # Add it to the array
-    #             cards = np.append(cards, card_detected_DB.val())
-    #     else:
-    #         # Wait for the deck to be reposition if card not seen
-    #         print("reposition the deck")
-    #         wait_deck()
-    #         card_detected_DB = database.child("rooms").child(ROOM_NAME).child("Vision").get()
-    #         # Add card to array
-    #         cards = np.append(cards, card_detected_DB.val())
-    #     # Put it into the wheel
-    #     call_motor.call_servo_360("input")
-    #     time.sleep(2)
-    #     call_motor.shuffle(step_motor)
-    #     time.sleep(2) # Time to put the card into the wheel + time for the vision to detect new cards (ADD CONDITION CHGMT CARTE?)
+    for i in range(1):
+        # Get the card detected on the DB
+        card_detected_DB = database.child("rooms").child(ROOM_NAME).child("Vision").get()
+        if card_detected_DB.val() != 0:
+            # Check if card detected the same as before and wait for new card
+            if card_detected_DB.val() in cards:
+                print("card already inserted")
+                discard_all(step_motor)
+            else:
+                # Add it to the array
+                cards = np.append(cards, card_detected_DB.val())
+        else:
+            # Wait for the deck to be reposition if card not seen
+        print("reposition the deck")
+            wait_deck()
+            card_detected_DB = database.child("rooms").child(ROOM_NAME).child("Vision").get()
+            # Add card to array
+            cards = np.append(cards, card_detected_DB.val())
+        # Put it into the wheel
+        call_motor.call_servo_360("input")
+        time.sleep(1)
+        call_motor.shuffle(step_motor)
+        time.sleep(1) # Time to put the card into the wheel + time for the vision to detect new cards (ADD CONDITION CHGMT CARTE?)
     # ----------------------
 
     # Deck is inserted, shift display to waiting room
@@ -184,11 +184,11 @@ def GameFunc():
         # Take the card out
         if res[0]:
             call_motor.discard(step_motor, position)
-            # time.sleep(2)
+            time.sleep(2)
             call_motor.call_dc()
-            # time.sleep(2)
-            call_motor.call_servo_angle()
-            # time.sleep(2)
+            #time.sleep(1)
+            #call_motor.call_servo_angle()
+            #time.sleep(2)
             call_motor.call_servo_360("output")
             # time.sleep(2)  # TO BE ADJUSTED
         else:
