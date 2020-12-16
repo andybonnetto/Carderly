@@ -70,7 +70,7 @@ class StepMotor:
             time.sleep(WAIT_TIME)
 
     def calculate_step_pos(self, pos):
-        val = -int(pos / 4) + pos * 19
+        val = -int(pos/4) + pos * 19
         if pos % 4 > 3:
             val -= 1
         return val

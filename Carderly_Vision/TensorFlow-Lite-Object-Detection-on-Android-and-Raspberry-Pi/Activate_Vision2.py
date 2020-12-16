@@ -32,7 +32,7 @@ config = {
 }
 firebase = pyrebase.initialize_app(config)
 database = firebase.database()
-ROOM_NAME = "Dani"
+
 
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
@@ -140,12 +140,17 @@ parser.add_argument('--resolution',
                     default='1280x720')
 parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
                     action='store_true')
+parser.add_argument('room_name', help='give the name of the room')
 
 args = parser.parse_args()
 
 MODEL_NAME = args.modeldir
 GRAPH_NAME = args.graph
 LABELMAP_NAME = args.labels
+if args.room_name:
+    ROOM_NAME = args.room_name
+else:
+    ROOM_NAME = "Dani"
 min_conf_threshold = float(args.threshold)
 resW, resH = args.resolution.split('x')
 imW, imH = int(resW), int(resH)
