@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
-WAIT_TIME = 0.005 #0.002
+WAIT_TIME = 0.014 #0.002
 
 class StepMotor:
 
@@ -50,7 +50,7 @@ class StepMotor:
             sign = -1
         else:
             sign = 1
-        nb = sign * nb * 2 *3  # times 2 because half-step
+        nb = sign * nb  *3  # times 2 because half-step
         print("nbsteps {} and sign {}".format(nb, sign))
         for i in range(nb):
             for pin in range(len(self.StepPins)):

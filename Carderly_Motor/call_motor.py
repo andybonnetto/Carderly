@@ -38,7 +38,7 @@ def call_dc():
 def define_step_motor():
     StepPins = [17, 4, 23, 24]
     step_motor = StepMotor(StepPins)
-    step_motor.define_sequence('half')
+    step_motor.define_sequence('full')
     return step_motor
 
 if __name__ == "__main__":
@@ -50,3 +50,4 @@ if __name__ == "__main__":
     #time.sleep(1)
     #discard(step_motor,16)
     discard(step_motor,2)
+    print("current_pos ",step_motor.current_pos)
