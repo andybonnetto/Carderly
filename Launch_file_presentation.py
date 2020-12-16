@@ -146,7 +146,7 @@ def GameFunc():
                 cards = np.append(cards, card_detected_DB.val())
         else:
             # Wait for the deck to be reposition if card not seen
-        print("reposition the deck")
+            print("reposition the deck")
             wait_deck()
             card_detected_DB = database.child("rooms").child(ROOM_NAME).child("Vision").get()
             # Add card to array
