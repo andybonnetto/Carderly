@@ -140,17 +140,14 @@ parser.add_argument('--resolution',
                     default='1280x720')
 parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
                     action='store_true')
-parser.add_argument('room_name', help='give the name of the room')
+parser.add_argument('room_name', help='give the name of the room', default="Dani")
 
 args = parser.parse_args()
 
 MODEL_NAME = args.modeldir
 GRAPH_NAME = args.graph
 LABELMAP_NAME = args.labels
-if args.room_name:
-    ROOM_NAME = args.room_name
-else:
-    ROOM_NAME = "Dani"
+ROOM_NAME = args.room_name
 min_conf_threshold = float(args.threshold)
 resW, resH = args.resolution.split('x')
 imW, imH = int(resW), int(resH)
