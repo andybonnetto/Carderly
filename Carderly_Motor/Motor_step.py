@@ -91,7 +91,7 @@ class StepMotor:
             return self.current_pos
         if pos_diff > 0:
             if pos_diff > 15:
-                self.steps(200 - current_steps)
+                self.steps(600 - current_steps)
                 steps = target_steps
                 self.steps(steps)
             else:
@@ -101,7 +101,7 @@ class StepMotor:
         elif pos_diff < 0:
             if pos_diff < -15:
                 self.steps(-current_steps)
-                steps = 200 - target_steps
+                steps = 600 - target_steps
                 self.steps(-steps)
             else:
                 steps = target_steps - current_steps
