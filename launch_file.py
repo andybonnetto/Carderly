@@ -181,13 +181,13 @@ def GameFunc():
         # Take the card out
         if res[0]:
             call_motor.discard(step_motor,position)
-            time.sleep(2)
+            # time.sleep(2)
             call_motor.call_dc()
-            time.sleep(2)
+            # time.sleep(2)
             call_motor.call_servo_angle()
-            time.sleep(2)
+            # time.sleep(2)
             call_motor.call_servo_360("output")
-            time.sleep(2) #TO BE ADJUSTED
+            # time.sleep(2) #TO BE ADJUSTED
         else:
             print("Fail to recognize card in hand")
 
