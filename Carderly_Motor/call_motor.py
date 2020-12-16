@@ -49,5 +49,5 @@ if __name__ == "__main__":
     #shuffle(step_motor)
     #time.sleep(1)
     #discard(step_motor,16)
-    discard(step_motor,2)
+    discard(step_motor,0)
     print("current_pos ",step_motor.current_pos)
