@@ -1,3 +1,9 @@
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--room_name', help='give the name of the room', default="Dani")
+args = parser.parse_args()
+ROOM_NAME = args.room_name
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -9,7 +15,7 @@ from database import Database
 from kivy.clock import Clock
 from kivy.graphics import *
 import RPi.GPIO as GPIO
-import argparse
+
 
 #Set PIN for buttons
 PIN_BLUE = 40
@@ -36,10 +42,6 @@ config = {
 firebase = pyrebase.initialize_app(config)
 database = firebase.database()
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--room_name', help='give the name of the room', default="Dani")
-args = parser.parse_args()
-ROOM_NAME = args.room_name
 
 # Initialize button state
 blue_button_state = False
