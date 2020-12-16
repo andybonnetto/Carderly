@@ -1,5 +1,3 @@
-
-KIVY_NO_ARGS=1
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--room_name', help='give the name of the room', default="Dani")
