@@ -239,9 +239,9 @@ def GameFunc():
     print("reste")
 
 thDisplay=threading.Thread(target=main)
-# thVision=threading.Thread(target=vision)
+thVision=threading.Thread(target=vision)
 thGame=threading.Thread(target=GameFunc)
 
 thDisplay.start()
-# thVision.start()
+thVision.start()
 thGame.start()   
