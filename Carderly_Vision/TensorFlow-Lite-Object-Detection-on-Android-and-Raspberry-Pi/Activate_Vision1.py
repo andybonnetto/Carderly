@@ -111,7 +111,7 @@ database = firebase.database()
 IM_WIDTH = 720
 IM_HEIGHT = 480
 FRAME_RATE = 25
-BOX_HEIGHT = 339
+BOX_HEIGHT = 354
 BOX_WIDTH = 235
 ## Initialize calculated frame rate because it's calculated AFTER the first time it's displayed
 frame_rate_calc = 1
@@ -149,13 +149,13 @@ while not some_condition:
     # Start timer (for calculating frame rate)
     t1 = cv2.getTickCount()
     cardseen = 0
-    for j in range(2):
+    for j in range(6):
         # Pre-process camera image (gray, blur, and threshold it)
         pre_proc = Cards.preprocess_image(image)
         mask = np.empty_like(pre_proc)*0
         box = np.array([255] * BOX_HEIGHT * BOX_WIDTH).reshape(BOX_HEIGHT, BOX_WIDTH)
-        x = 140
-        y = 280 + (j-1)*20
+        x = 125
+        y = 295 + (j-3)*30
         mask[x:x + BOX_HEIGHT, y:y + BOX_WIDTH] = box
         # Find and sort the contours of all cards in the image (query cards)
         cnts_sort, cnt_is_card = Cards.find_cards(mask)
@@ -203,7 +203,7 @@ while not some_condition:
                 if num:
                     cardseen = num
 
-        database.child("rooms").child(ROOM_NAME).child("Vision").set(cardseen)
+    database.child("rooms").child(ROOM_NAME).child("Vision").set(cardseen)
         
         
     # Draw framerate in the corner of the image. Framerate is calculated at the end of the main loop,
