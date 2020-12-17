@@ -42,9 +42,12 @@ public class WaitingRoom extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference roomRef;
+    DatabaseReference playGameRef;
     private ValueEventListener Listener;
+    private ValueEventListener playGameListener;
     int counter_nb_players = 0;
     boolean cards_shuffled = false;
+    int play_game = 0;
 
 
     @Override
@@ -66,6 +69,7 @@ public class WaitingRoom extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         textView.setText("Room name :" + roomName);
 
+        readStartGameDB();
         newPlayersEventListener();
     }
 
@@ -73,6 +77,7 @@ public class WaitingRoom extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         roomRef.removeEventListener(Listener);
+        playGameRef.removeEventListener(playGameListener);
     }
 
     private void newPlayersEventListener() {
@@ -139,7 +144,7 @@ public class WaitingRoom extends AppCompatActivity {
                     writeIntDB(cards.get(6),"rooms/" + roomName + "/Player 1/Card 7");
                     writeIntDB(cards.get(7),"rooms/" + roomName + "/Player 1/Card 8");
                 }
-                if (counter_nb_players == 4){
+                if ((counter_nb_players == 4) && (play_game == 1)){
                     Intent intent = new Intent(WaitingRoom.this, MainActivity.class);
                     intent.putExtra("listofPlayers",playersList);
                     intent.putExtra("playerID",player_ID);
@@ -178,6 +183,21 @@ public class WaitingRoom extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) { // Error msg in Logcat in case the writing procedure fails
                 Log.d(TAG, e.getLocalizedMessage());
+            }
+        });
+    }
+
+    private void readStartGameDB() {
+        playGameRef = database.getReference("rooms/" + roomName + "/PlayGame");
+        playGameListener = playGameRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                play_game = dataSnapshot.getValue(int.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
             }
         });
     }

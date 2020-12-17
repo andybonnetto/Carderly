@@ -11,7 +11,9 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.util.TimeUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     int trump = 0;
     int suit = 0;
     int current_to_play = 0;
+    int card_out = 0;
     int[] first_digit = {0,0,0,0};
     int[] last_two_digits = {0,0,0,0};
     int[] player_cards_id = {0,0,0,0,0,0,0,0}; // ID of the cards in hand of the player 1
@@ -100,7 +104,10 @@ public class MainActivity extends AppCompatActivity {
         current_to_play = 1;
         writeIntDB(0,"rooms/" + room_name + "/Turn end");
         writeIntDB(0,"rooms/" + room_name + "/Trump");
+        writeIntDB(1,"rooms/" + room_name + "/OldPersonTrump");
+        writeIntDB(1,"rooms/" + room_name + "/CardOut");
         // Played cards are set to 0 at the start
+        writeIntDB(0,"rooms/" + room_name + "/PlayedCard");
         writeIntDB(0,"rooms/" + room_name + "/Player 1/Card played");
         writeIntDB(0,"rooms/" + room_name + "/Player 2/Card played");
         writeIntDB(0,"rooms/" + room_name + "/Player 3/Card played");
@@ -305,11 +312,20 @@ public class MainActivity extends AppCompatActivity {
                 //played_card.setImageResource(0);
                 game_button.setVisibility(View.GONE);
 
+                getCardValueDB(new CardValueCallback() {
+                    @Override
+                    public void onCallback(int card_out_DB) {
+                        card_out = card_out_DB;
+                        System.out.println("Card Out: " + card_out);
+                    }
+                },"rooms/" + room_name + "/CardOut");
+
                 // Display cards played when they are updated in the database
                 getCardValueDB(new CardValueCallback() {
                     @Override
                     public void onCallback(int card_value) {
                         assignCard(card_value,played_card);
+
                         if(card_value != 0) { // card_value = 0 means the played card has been taken off the board, so no particular action to do in that case
                             if (player_id == 1) {
                                 getDigits(card_value, 1);
@@ -589,24 +605,7 @@ public class MainActivity extends AppCompatActivity {
         card1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*getCardValueDB(new CardValueCallback() {
-                    @Override
-                    public void onCallback(int current_to_play) {
-                        // A player knows it is his turn when he either begins the turn, or the player to his right has played, otherwise he can't interact with his cards
-                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
-                        if(current_to_play == player_id){
-                            System.out.println("Card1");
-                            writeIntDB(player_cards_id[0],strings_DB.get(8));
-                            writeIntDB(player_cards_id[0],"rooms/" + room_name + "/PlayedCard");
-                            writeIntDB(0,strings_DB.get(0));
-                            card1.setImageResource(0);
-                            player_cards_id[0] = 0;
-                            card1.setClickable(false);
-                        }
-                    }
-                },"rooms/" + room_name + "/Current to play");*/
-                if(current_to_play == player_id){
-                    System.out.println("Card1");
+                if((current_to_play == player_id) && (card_out == 1)){
                     writeIntDB(player_cards_id[0],strings_DB.get(8));
                     writeIntDB(player_cards_id[0],"rooms/" + room_name + "/PlayedCard");
                     writeIntDB(0,strings_DB.get(0));
@@ -619,23 +618,7 @@ public class MainActivity extends AppCompatActivity {
         card2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*getCardValueDB(new CardValueCallback() {
-                    @Override
-                    public void onCallback(int current_to_play) {
-                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
-                        if(current_to_play == player_id){
-                            System.out.println("Card2");
-                            writeIntDB(player_cards_id[1],strings_DB.get(8));
-                            writeIntDB(player_cards_id[1],"rooms/" + room_name + "/PlayedCard");
-                            writeIntDB(0,strings_DB.get(1));
-                            card2.setImageResource(0);
-                            player_cards_id[1] = 0;
-                            card2.setClickable(false);
-                        }
-                    }
-                },"rooms/" + room_name + "/Current to play");*/
-                if(current_to_play == player_id){
-                    System.out.println("Card2");
+                if((current_to_play == player_id) && (card_out == 1)){
                     writeIntDB(player_cards_id[1],strings_DB.get(8));
                     writeIntDB(player_cards_id[1],"rooms/" + room_name + "/PlayedCard");
                     writeIntDB(0,strings_DB.get(1));
@@ -648,23 +631,7 @@ public class MainActivity extends AppCompatActivity {
         card3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*getCardValueDB(new CardValueCallback() {
-                    @Override
-                    public void onCallback(int current_to_play) {
-                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
-                        if(current_to_play == player_id){
-                            System.out.println("Card3");
-                            writeIntDB(player_cards_id[2],strings_DB.get(8));
-                            writeIntDB(player_cards_id[2],"rooms/" + room_name + "/PlayedCard");
-                            writeIntDB(0,strings_DB.get(2));
-                            card3.setImageResource(0);
-                            player_cards_id[2] = 0;
-                            card3.setClickable(false);
-                        }
-                    }
-                },"rooms/" + room_name + "/Current to play");*/
-                if(current_to_play == player_id){
-                    System.out.println("Card3");
+                if((current_to_play == player_id) && (card_out == 1)){
                     writeIntDB(player_cards_id[2],strings_DB.get(8));
                     writeIntDB(player_cards_id[2],"rooms/" + room_name + "/PlayedCard");
                     writeIntDB(0,strings_DB.get(2));
@@ -677,23 +644,7 @@ public class MainActivity extends AppCompatActivity {
         card4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*getCardValueDB(new CardValueCallback() {
-                    @Override
-                    public void onCallback(int current_to_play) {
-                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
-                        if(current_to_play == player_id){
-                            System.out.println("Card4");
-                            writeIntDB(player_cards_id[3],strings_DB.get(8));
-                            writeIntDB(player_cards_id[3],"rooms/" + room_name + "/PlayedCard");
-                            writeIntDB(0,strings_DB.get(3));
-                            card4.setImageResource(0);
-                            player_cards_id[3] = 0;
-                            card4.setClickable(false);
-                        }
-                    }
-                },"rooms/" + room_name + "/Current to play");*/
-                if(current_to_play == player_id){
-                    System.out.println("Card4");
+                if((current_to_play == player_id) && (card_out == 1)){
                     writeIntDB(player_cards_id[3],strings_DB.get(8));
                     writeIntDB(player_cards_id[3],"rooms/" + room_name + "/PlayedCard");
                     writeIntDB(0,strings_DB.get(3));
@@ -706,23 +657,7 @@ public class MainActivity extends AppCompatActivity {
         card5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*getCardValueDB(new CardValueCallback() {
-                    @Override
-                    public void onCallback(int current_to_play) {
-                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
-                        if(current_to_play == player_id){
-                            System.out.println("Card5");
-                            writeIntDB(player_cards_id[4],strings_DB.get(8));
-                            writeIntDB(player_cards_id[4],"rooms/" + room_name + "/PlayedCard");
-                            writeIntDB(0,strings_DB.get(4));
-                            card5.setImageResource(0);
-                            player_cards_id[4] = 0;
-                            card5.setClickable(false);
-                        }
-                    }
-                },"rooms/" + room_name + "/Current to play");*/
-                if(current_to_play == player_id){
-                    System.out.println("Card5");
+                if((current_to_play == player_id) && (card_out == 1)){
                     writeIntDB(player_cards_id[4],strings_DB.get(8));
                     writeIntDB(player_cards_id[4],"rooms/" + room_name + "/PlayedCard");
                     writeIntDB(0,strings_DB.get(4));
@@ -735,23 +670,7 @@ public class MainActivity extends AppCompatActivity {
         card6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*getCardValueDB(new CardValueCallback() {
-                    @Override
-                    public void onCallback(int current_to_play) {
-                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
-                        if(current_to_play == player_id){
-                            System.out.println("Card6");
-                            writeIntDB(player_cards_id[5],strings_DB.get(8));
-                            writeIntDB(player_cards_id[5],"rooms/" + room_name + "/PlayedCard");
-                            writeIntDB(0,strings_DB.get(5));
-                            card6.setImageResource(0);
-                            player_cards_id[5] = 0;
-                            card6.setClickable(false);
-                        }
-                    }
-                },"rooms/" + room_name + "/Current to play");*/
-                if(current_to_play == player_id){
-                    System.out.println("Card6");
+                if((current_to_play == player_id) && (card_out == 1)){
                     writeIntDB(player_cards_id[5],strings_DB.get(8));
                     writeIntDB(player_cards_id[5],"rooms/" + room_name + "/PlayedCard");
                     writeIntDB(0,strings_DB.get(5));
@@ -764,23 +683,7 @@ public class MainActivity extends AppCompatActivity {
         card7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*getCardValueDB(new CardValueCallback() {
-                    @Override
-                    public void onCallback(int current_to_play) {
-                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
-                        if(current_to_play == player_id){
-                            System.out.println("Card7");
-                            writeIntDB(player_cards_id[6],strings_DB.get(8));
-                            writeIntDB(player_cards_id[6],"rooms/" + room_name + "/PlayedCard");
-                            writeIntDB(0,strings_DB.get(6));
-                            card7.setImageResource(0);
-                            player_cards_id[6] = 0;
-                            card7.setClickable(false);
-                        }
-                    }
-                },"rooms/" + room_name + "/Current to play");*/
-                if(current_to_play == player_id){
-                    System.out.println("Card7");
+                if((current_to_play == player_id) && (card_out == 1)){
                     writeIntDB(player_cards_id[6],strings_DB.get(8));
                     writeIntDB(player_cards_id[6],"rooms/" + room_name + "/PlayedCard");
                     writeIntDB(0,strings_DB.get(6));
@@ -793,23 +696,7 @@ public class MainActivity extends AppCompatActivity {
         card8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*getCardValueDB(new CardValueCallback() {
-                    @Override
-                    public void onCallback(int current_to_play) {
-                        //if((first_turn == player_id) || (opponent_right_played_card.getDrawable() != null)){
-                        if(current_to_play == player_id){
-                            System.out.println("Card8");
-                            writeIntDB(player_cards_id[7],strings_DB.get(8));
-                            writeIntDB(player_cards_id[7],"rooms/" + room_name + "/PlayedCard");
-                            writeIntDB(0,strings_DB.get(7));
-                            card8.setImageResource(0);
-                            player_cards_id[7] = 0;
-                            card8.setClickable(false);
-                        }
-                    }
-                },"rooms/" + room_name + "/Current to play");*/
-                if(current_to_play == player_id){
-                    System.out.println("Card8");
+                if((current_to_play == player_id) && (card_out == 1)){
                     writeIntDB(player_cards_id[7],strings_DB.get(8));
                     writeIntDB(player_cards_id[7],"rooms/" + room_name + "/PlayedCard");
                     writeIntDB(0,strings_DB.get(7));
@@ -848,24 +735,6 @@ public class MainActivity extends AppCompatActivity {
                 throw databaseError.toException();
             }
         });
-        /*FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference mDbRef = mDatabase.getReference(location);
-        ArrayList<Integer> card_list = new ArrayList<>();
-        mDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    int card_value = snapshot.getValue(int.class);
-                    card_list.add(card_value);
-                }
-                myCallback.onCallback(card_list);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                throw databaseError.toException();
-            }
-        });*/
     }
 
     // Get card value from the database
@@ -938,8 +807,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 trump = 1;
                 writeIntDB(trump,"rooms/" + room_name + "/Trump");
-                //trump_view.setImageResource(R.drawable.clubs); // Display the trump on the top right corner of the screen
-                //trump_view.setBackgroundResource(R.drawable.trump_button_border);
                 dialog.dismiss();
             }
         });
@@ -948,8 +815,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 trump = 2;
                 writeIntDB(trump,"rooms/" + room_name + "/Trump");
-                //trump_view.setImageResource(R.drawable.spades);
-                //trump_view.setBackgroundResource(R.drawable.trump_button_border);
                 dialog.dismiss();
             }
         });
@@ -958,8 +823,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 trump = 3;
                 writeIntDB(trump,"rooms/" + room_name + "/Trump");
-                //trump_view.setImageResource(R.drawable.diamonds);
-                //trump_view.setBackgroundResource(R.drawable.trump_button_border);
                 dialog.dismiss();
             }
         });
@@ -968,8 +831,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 trump = 4;
                 writeIntDB(trump,"rooms/" + room_name + "/Trump");
-                //trump_view.setImageResource(R.drawable.hearts);
-                //trump_view.setBackgroundResource(R.drawable.trump_button_border);
                 dialog.dismiss();
             }
         });
@@ -1043,18 +904,22 @@ public class MainActivity extends AppCompatActivity {
                 if(round_winner == 1) {
                     opponent_left_played_card.setColorFilter(color_intensity);
                     name_opponent_left.setTextColor(Color.RED);
+                    System.out.println("OPP LEFT COLOR");
                 }
                 else if(round_winner == 2) {
                     opponent_right_played_card.setColorFilter(color_intensity);
                     name_opponent_right.setTextColor(Color.RED);
+                    System.out.println("OPP RIGHT COLOR");
                 }
                 else if(round_winner == 3) {
                     ally_played_card.setColorFilter(color_intensity);
                     name_ally.setTextColor(Color.RED);
+                    System.out.println("ALLY COLOR");
                 }
                 else if(round_winner == 4) {
                     played_card.setColorFilter(color_intensity);
                     name_player.setTextColor(Color.RED);
+                    System.out.println("PLAYER COLOR");
                 }
                 break;
         }
@@ -1138,6 +1003,7 @@ public class MainActivity extends AppCompatActivity {
                     writeIntDB(0, strings_DB.get(9));
                     writeIntDB(0, strings_DB.get(10));
                     writeIntDB(0, strings_DB.get(11));
+                    System.out.println("Final round winner: " + finalRound_winner);
                     setColorWinningCard(finalRound_winner, 0);
                     writeIntDB(finalRound_winner, "rooms/" + room_name + "/First turn");
                     writeIntDB(finalRound_winner, "rooms/" + room_name + "/Current to play");

@@ -35,8 +35,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Prepares the room "Andy"
-        databaseSetup("/Andy");
+        // Prepares a room
+        databaseSetup("/Dani");
 
         //REGISTER CALLBACK (to editProfileActivity)
         Button rButton = findViewById(R.id.RegisterButton);
@@ -147,6 +147,8 @@ public class Login extends AppCompatActivity {
         childRef19.setValue(0);
         DatabaseReference childRef20 = mDatabase.getReference("rooms/" + room_name + "/Player 1" + "/Card played");
         childRef20.setValue(0);
+        DatabaseReference childRef21 = mDatabase.getReference("rooms/" + room_name + "/PlayGame");
+        childRef21.setValue(1);
 
         childRef1.removeValue();
         childRef2.removeValue();
@@ -159,15 +161,6 @@ public class Login extends AppCompatActivity {
         childRef9.removeValue();
         childRef10.removeValue();
         childRef11.removeValue();
-        childRef12.removeValue();
-        childRef13.removeValue();
-        childRef14.removeValue();
-        childRef15.removeValue();
-        childRef16.removeValue();
-        childRef17.removeValue();
-        childRef18.removeValue();
-        childRef19.removeValue();
-        childRef20.removeValue();
     }
 
 }
