@@ -79,8 +79,8 @@ class DCMotor:
         # self.current_pos = 1
 
     def run_arm(self):
-        self.clockwise(period = 0.4)
-        self.counter_clockwise(period = 0.33)
+        self.clockwise(period = 0.5)
+        self.counter_clockwise(period = 0.43)
 
     def cleanup(self):
         GPIO.cleanup()

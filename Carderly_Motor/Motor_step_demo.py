@@ -17,7 +17,7 @@ for pin in StepPins:
     GPIO.setup(pin,GPIO.OUT)
     GPIO.output(pin, False)
 # Define some settings
-WaitTime = 0.002
+WaitTime = 0.01
 
 # Define simple sequence
 StepCount1 = 4
@@ -68,7 +68,7 @@ def steps(nb):
             time.sleep(WaitTime)
 
 # Start main loop
-nbStepsPerRev=30
+nbStepsPerRev=200
 if __name__ == '__main__' :
     hasRun=False
     while not hasRun:

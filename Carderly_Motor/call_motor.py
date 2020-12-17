@@ -15,7 +15,7 @@ def call_servo_360(status = 'input'):
     if status == 'input':
         servo_motor360_in.activate(10,dc=1) #period and dc
     elif status == 'output':
-        servo_motor360_out.activate(10,dc=55)
+        servo_motor360_out.activate(10,dc=52)
 
 
 def shuffle(step_motor):
@@ -42,9 +42,9 @@ def define_step_motor():
     return step_motor
 
 if __name__ == "__main__":
-    #call_dc()
+    call_dc()
     #call_servo_angle()
-    #call_servo_360()
+    call_servo_360()
     #call_servo_360("output")
     step_motor = define_step_motor()
     #shuffle(step_motor)

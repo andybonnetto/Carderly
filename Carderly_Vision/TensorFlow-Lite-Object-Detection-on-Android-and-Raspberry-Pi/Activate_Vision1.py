@@ -155,7 +155,7 @@ while not some_condition:
         mask = np.empty_like(pre_proc)*0
         box = np.array([255] * BOX_HEIGHT * BOX_WIDTH).reshape(BOX_HEIGHT, BOX_WIDTH)
         x = 140
-        y = 270 + (j-1)*20
+        y = 280 + (j-1)*20
         mask[x:x + BOX_HEIGHT, y:y + BOX_WIDTH] = box
         # Find and sort the contours of all cards in the image (query cards)
         cnts_sort, cnt_is_card = Cards.find_cards(mask)
