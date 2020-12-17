@@ -318,6 +318,7 @@ class GameWindow(Screen):
         if not green_button_state:
             green_button_state = False
             if GPIO.input(PIN_GREEN) == GPIO.HIGH:
+                print("press")
                 if sm.current == "game":
                     if self.old_person_trump:
                         self.choose_diamonds()
