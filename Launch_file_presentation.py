@@ -154,10 +154,10 @@ def GameFunc():
     database.child("rooms").child(ROOM_NAME).child("StartGame").set(1)
     # Put it into the wheel
     call_motor.call_servo_360("input")
-    time.sleep(1)
+    time.sleep(4)
     # call_motor.shuffle(step_motor)
     call_motor.discard(step_motor,0)
-    time.sleep(1) # Time to put the card into the wheel + time for the vision to detect new cards (ADD CONDITION CHGMT CARTE?)
+    time.sleep(4) # Time to put the card into the wheel + time for the vision to detect new cards (ADD CONDITION CHGMT CARTE?)
     call_motor.call_dc()
     # ----------------------
 
