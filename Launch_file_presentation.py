@@ -129,33 +129,34 @@ def GameFunc():
             count = (i + 1) * 100 + (j + 7)
             cards = np.append(cards, count)
 
-    np.delete(cards, [30]) #remove Ace of clubs, 2 of spade and 10 of hearts
+    np.delete(cards, [30])
 
     print("cards = " + str(cards))
     # ----------------------
-    for i in range(1):
-        # Get the card detected on the DB
+
+    # Get the card detected on the DB
+    card_detected_DB = database.child("rooms").child(ROOM_NAME).child("Vision").get()
+    if card_detected_DB.val() != 0:
+        # Check if card detected the same as before and wait for new card
+        # if card_detected_DB.val() in cards:
+        #     print("card already inserted")
+        #     discard_all(step_motor)
+        # else:
+            # Add it to the array
+        cards = np.append(cards, card_detected_DB.val())
+    else:
+        # Wait for the deck to be reposition if card not seen
+        print("reposition the deck")
+        wait_deck()
         card_detected_DB = database.child("rooms").child(ROOM_NAME).child("Vision").get()
-        if card_detected_DB.val() != 0:
-            # Check if card detected the same as before and wait for new card
-            if card_detected_DB.val() in cards:
-                print("card already inserted")
-                discard_all(step_motor)
-            else:
-                # Add it to the array
-                cards = np.append(cards, card_detected_DB.val())
-        else:
-            # Wait for the deck to be reposition if card not seen
-            print("reposition the deck")
-            wait_deck()
-            card_detected_DB = database.child("rooms").child(ROOM_NAME).child("Vision").get()
-            # Add card to array
-            cards = np.append(cards, card_detected_DB.val())
-        # Put it into the wheel
-        call_motor.call_servo_360("input")
-        time.sleep(1)
-        call_motor.shuffle(step_motor)
-        time.sleep(1) # Time to put the card into the wheel + time for the vision to detect new cards (ADD CONDITION CHGMT CARTE?)
+        # Add card to array
+        cards = np.append(cards, card_detected_DB.val())
+    # Put it into the wheel
+    call_motor.call_servo_360("input")
+    time.sleep(1)
+    # call_motor.shuffle(step_motor)
+    call_motor.discard(step_motor,0)
+    time.sleep(1) # Time to put the card into the wheel + time for the vision to detect new cards (ADD CONDITION CHGMT CARTE?)
     # ----------------------
 
     # Deck is inserted, shift display to waiting room
@@ -173,26 +174,19 @@ def GameFunc():
         temp_DB = database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card " + str(j + 1)).get()
         old_cards = np.append(old_cards, temp_DB.val())
 
-    # print("old=" +str(old_cards))
 
     # Distribute the cards of the old player's
-    for k in range(2):
-        # Search position of the old player's card in the DB
-        res = np.where(cards == old_cards[k])
-        position = int(res[0])
-        print("position =", position)
-        # Take the card out
-        if res[0]:
-            call_motor.discard(step_motor, position)
-            time.sleep(2)
-            call_motor.call_dc()
-            #time.sleep(1)
-            #call_motor.call_servo_angle()
-            #time.sleep(2)
-            call_motor.call_servo_360("output")
-            # time.sleep(2)  # TO BE ADJUSTED
-        else:
-            print("Fail to recognize card in hand")
+    # Search position of the old player's card in the DB
+    res = np.where(cards == old_cards[0])
+    position = int(res[0])
+    print("position =", position)
+    # Take the card out
+    # if res[0]:
+    #     # call_motor.discard(step_motor, position)
+    #     call_motor.call_dc()
+    #     call_motor.call_servo_360("output")
+    # else:
+    #     print("Fail to recognize card in hand")
 
     # Start the game when card distributed, change variable in the DB for the APP
     database.child("rooms").child(ROOM_NAME).child("PlayGame").set(1)
@@ -200,46 +194,47 @@ def GameFunc():
     # Get the end of game variable from the DB
     EndOfGame = database.child("rooms").child(ROOM_NAME).child("EndGame").get()
 
-    # Game part
-    while not EndOfGame.val():
-
-        # Get whose turn it is
-        turn_DB = database.child("rooms").child(ROOM_NAME).child("Current to play").get()
-        database.child("rooms").child(ROOM_NAME).child("CardOut").set(0)
-
-        # old player's turn
-        if turn_DB.val() == 1:
-            time.sleep(3)  # OU ATTENDRE QUE CARTE CHANGE ??
-
-        # other's turn
-        else:
-            # Check when new card played (JSP SI CONDITION OKKKK, sinon ajouter nparray des cartes jouées)
-            temp = database.child("rooms").child(ROOM_NAME).child("PlayedCard").get()
-            time.sleep(1)
-            card_played_DB = database.child("rooms").child(ROOM_NAME).child("PlayedCard").get()
-            while (temp.val() == card_played_DB.val()):
-                temp = database.child("rooms").child(ROOM_NAME).child("PlayedCard").get()
-                time.sleep(1)
-                card_played_DB = database.child("rooms").child(ROOM_NAME).child("PlayedCard").get()
-
-            # Get the position of the card
-            res = np.where(cards == card_played_DB.val())
-            position = int(res[0])
-            # Take the card out
-            call_motor.discard(step_motor, position)
-            # time.sleep(2)
-            call_motor.call_dc()
-            # time.sleep(2)
-            call_motor.call_servo_angle()
-            # time.sleep(2)
-            call_motor.call_servo_360("output")
-            # time.sleep(2) # A AJUSTEEEEER
-            database.child("rooms").child(ROOM_NAME).child("CardOut").set(1)
-
-        # End of game (CONDITION TO BE DETERMINED)
-        EndOfGame = database.child("rooms").child(ROOM_NAME).child("EndGame").get()
-
-    print("reste")
+    #
+    # # Game part
+    # while not EndOfGame.val():
+    #
+    #     # Get whose turn it is
+    #     turn_DB = database.child("rooms").child(ROOM_NAME).child("Current to play").get()
+    #     database.child("rooms").child(ROOM_NAME).child("CardOut").set(0)
+    #
+    #     # old player's turn
+    #     if turn_DB.val() == 1:
+    #         time.sleep(3)  # OU ATTENDRE QUE CARTE CHANGE ??
+    #
+    #     # other's turn
+    #     else:
+    #         # Check when new card played (JSP SI CONDITION OKKKK, sinon ajouter nparray des cartes jouées)
+    #         temp = database.child("rooms").child(ROOM_NAME).child("PlayedCard").get()
+    #         time.sleep(1)
+    #         card_played_DB = database.child("rooms").child(ROOM_NAME).child("PlayedCard").get()
+    #         while (temp.val() == card_played_DB.val()):
+    #             temp = database.child("rooms").child(ROOM_NAME).child("PlayedCard").get()
+    #             time.sleep(1)
+    #             card_played_DB = database.child("rooms").child(ROOM_NAME).child("PlayedCard").get()
+    #
+    #         # Get the position of the card
+    #         res = np.where(cards == card_played_DB.val())
+    #         position = int(res[0])
+    #         # Take the card out
+    #         call_motor.discard(step_motor, position)
+    #         # time.sleep(2)
+    #         call_motor.call_dc()
+    #         # time.sleep(2)
+    #         call_motor.call_servo_angle()
+    #         # time.sleep(2)
+    #         call_motor.call_servo_360("output")
+    #         # time.sleep(2) # A AJUSTEEEEER
+    #         database.child("rooms").child(ROOM_NAME).child("CardOut").set(1)
+    #
+    #     # End of game (CONDITION TO BE DETERMINED)
+    #     EndOfGame = database.child("rooms").child(ROOM_NAME).child("EndGame").get()
+    #
+    # print("reste")
 
 
 thDisplay = threading.Thread(target=main)

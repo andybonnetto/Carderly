@@ -318,7 +318,6 @@ class GameWindow(Screen):
         if not green_button_state:
             green_button_state = False
             if GPIO.input(PIN_GREEN) == GPIO.HIGH:
-                print("press")
                 if sm.current == "game":
                     if self.old_person_trump:
                         self.choose_diamonds()
@@ -356,9 +355,9 @@ class GameWindow(Screen):
         if card:
             database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card played").set(card)
             for j in range(7):
-                temp_DB = database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card " + str(j + 1))
-                if temp_DB.get().val() == card:
-                    temp_DB.set(0)
+                temp_DB = database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card " + str(j + 1)).get()
+                if temp_DB.val() == card:
+                    database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card " + str(j + 1)).set(0)
                     break
 
     def shift_to_waiting(self):
