@@ -220,7 +220,7 @@ while not some_condition:
     # Poll the keyboard. If 'q' is pressed, exit the main loop.
     key = cv2.waitKey(1) & 0xFF
 
-    some_condition = database.child("StartGame").get().val()
+    some_condition = database.child("rooms").child(ROOM_NAME).child("StartGame").get().val()
     if key == ord("q"):
         some_condition = 1
 # Close all windows and close the PiCamera video stream.

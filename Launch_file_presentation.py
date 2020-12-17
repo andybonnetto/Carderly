@@ -151,12 +151,14 @@ def GameFunc():
         card_detected_DB = database.child("rooms").child(ROOM_NAME).child("Vision").get()
         # Add card to array
         cards = np.append(cards, card_detected_DB.val())
+    database.child("rooms").child(ROOM_NAME).child("StartGame").set(1)
     # Put it into the wheel
     call_motor.call_servo_360("input")
     time.sleep(1)
     # call_motor.shuffle(step_motor)
     call_motor.discard(step_motor,0)
     time.sleep(1) # Time to put the card into the wheel + time for the vision to detect new cards (ADD CONDITION CHGMT CARTE?)
+    call_motor.call_dc()
     # ----------------------
 
     # Deck is inserted, shift display to waiting room
@@ -166,7 +168,6 @@ def GameFunc():
     wait_player()
 
     # Start the distribution when 4 players connected, switch variable on DB for the APP and display
-    database.child("rooms").child(ROOM_NAME).child("StartGame").set(1)
 
     # Get the old player's cards from the DB (A CHANGER SELON DB ORGANISATION)
     old_cards = np.array([])
