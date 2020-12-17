@@ -356,8 +356,8 @@ class GameWindow(Screen):
         if card:
             database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card played").set(card)
             for j in range(7):
-                temp_DB = database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card " + str(j + 1)).get()
-                if temp_DB.val() == card:
+                temp_DB = database.child("rooms").child(ROOM_NAME).child("Player 1").child("Card " + str(j + 1))
+                if temp_DB.get().val() == card:
                     temp_DB.set(0)
                     break
 
