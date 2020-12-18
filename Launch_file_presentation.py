@@ -135,7 +135,7 @@ def GameFunc():
     call_motor.discard(step_motor,0)
     time.sleep(4)
     call_motor.call_dc()
-
+    database.child("rooms").child(ROOM_NAME).child("PlayGame").set(1)
     # Deck is inserted, shift display to waiting room
     database.child("rooms").child(ROOM_NAME).child("DeckInserted").set(1)
 
