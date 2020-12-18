@@ -1,0 +1,50 @@
+import time
+from Motor_servo_angle import ServoAngle
+from Motor_servo_360 import Servo360
+from Motor_step import StepMotor
+from Motor_DC import DCMotor
+
+
+def call_servo_angle():
+    servo_motor = ServoAngle(5,2.5)
+    servo_motor.activate(2.5)
+
+def call_servo_360(status = 'input'):
+    servo_motor360_in = Servo360(18)
+    servo_motor360_out = Servo360(27)
+    if status == 'input':
+        servo_motor360_in.activate(5,dc=1) #period and dc
+    elif status == 'output':
+        servo_motor360_out.activate(5,dc=52)
+
+
+def shuffle(step_motor):
+    #call the DC motor to go to next step separated by an interval of ? sec
+    step_motor.go_to_pos(step_motor.current_pos+1)
+    time.sleep(0.5) #naps between each steps
+
+def discard(step_motor, pos):
+    #call the DC motor to go to card in the database position (np.where in saved list)
+    if pos >= 16:
+        opp_pos = pos - 16
+    else:
+        opp_pos = pos + 16
+    step_motor.go_to_pos(opp_pos)
+
+def call_dc():
+    DC_motor = DCMotor(13, 19, 26)
+    DC_motor.run_arm()
+
+def define_step_motor():
+    StepPins = [17, 4, 23, 24]
+    step_motor = StepMotor(StepPins)
+    step_motor.define_sequence('full')
+    return step_motor
+
+if __name__ == "__main__":
+    call_servo_360()
+    time.sleep(0.5)
+    step_motor = define_step_motor()
+    discard(step_motor,0)
+    time.sleep(0.5)
+    call_dc()
