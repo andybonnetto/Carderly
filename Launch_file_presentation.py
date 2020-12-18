@@ -53,7 +53,7 @@ def main():
     # Run the display continuously in background
     while Game:
         # exec(open(PathMain).read())
-        os.system("KIVY_NO_ARGS=1 KIVY_BCM_DISPMANX_ID=1 python3 " + PathMain + " --room_name=" + ROOM_NAME)
+        os.system("KIVY_NO_ARGS=1 KIVY_BCM_DISPMANX_ID=0 python3 " + PathMain + " --room_name=" + ROOM_NAME)
         time.sleep(2)
 
 
