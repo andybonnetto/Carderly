@@ -45,6 +45,6 @@ if __name__ == "__main__":
     call_servo_360()
     time.sleep(0.5)
     step_motor = define_step_motor()
-    discard(step_motor,0)
+    discard(step_motor,28)
     time.sleep(0.5)
     call_dc()

@@ -55,6 +55,6 @@ class DCMotor:
 
 if __name__ == "__main__":
     Motor = DCMotor(13,19,26)
-    DCMotor.run_arm()
+    Motor.run_arm()
 
 
