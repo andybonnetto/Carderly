@@ -309,6 +309,8 @@ class GameWindow(Screen):
                         self.choose_hearts()
                         red_button_state = True
                         self.old_person_trump = 0
+                    else:
+                        sm.current = "waiting"
         else:
             if GPIO.input(PIN_RED) == GPIO.LOW:
                 red_button_state = False
