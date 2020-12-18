@@ -208,9 +208,9 @@ while not some_condition:
         
     # Draw framerate in the corner of the image. Framerate is calculated at the end of the main loop,
     # so the first time this runs, framerate will be shown as 0.
-    # cv2.putText(image,"FPS: "+str(int(frame_rate_calc)),(10,26),font,0.7,(255,0,255),2,cv2.LINE_AA)
+    cv2.putText(image,"FPS: "+str(int(frame_rate_calc)),(10,26),font,0.7,(255,0,255),2,cv2.LINE_AA)
     # Finally, display the image with the identified cards!
-    # cv2.imshow("Card Detector",image)
+    cv2.imshow("Card Detector",image)
 
     # Calculate framerate
     # t2 = cv2.getTickCount()
@@ -218,12 +218,12 @@ while not some_condition:
     # frame_rate_calc = 1/time1
     
     # Poll the keyboard. If 'q' is pressed, exit the main loop.
-    # key = cv2.waitKey(1) & 0xFF
+    key = cv2.waitKey(1) & 0xFF
 
     some_condition = database.child("rooms").child(ROOM_NAME).child("StartGame").get().val()
-    # if key == ord("q"):
-    #     some_condition = 1
+    if key == ord("q"):
+        some_condition = 1
 # Close all windows and close the PiCamera video stream.
-# cv2.destroyAllWindows()
+cv2.destroyAllWindows()
 videostream.stop()
 
