@@ -35,6 +35,8 @@ database.child("rooms").child(ROOM_NAME).child("Vision").set(0)
 database.child("rooms").child(ROOM_NAME).child("DeckInserted").set(0)
 database.child("rooms").child(ROOM_NAME).child("DeckPresent").set(0)
 database.child("rooms").child(ROOM_NAME).child("CardOut").set(0)
+database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").set(1)
+
 
 # Path to files
 PathActivateVision1 = "Carderly_Vision/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/Activate_Vision1.py"
