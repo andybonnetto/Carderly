@@ -34,7 +34,7 @@ database.child("rooms").child(ROOM_NAME).child("PlayedCard").set(1)
 database.child("rooms").child(ROOM_NAME).child("Vision").set(0)
 database.child("rooms").child(ROOM_NAME).child("DeckInserted").set(0)
 database.child("rooms").child(ROOM_NAME).child("DeckPresent").set(0)
-database.child("rooms").child(ROOM_NAME).child("CardOut").set(0)
+# database.child("rooms").child(ROOM_NAME).child("CardOut").set(0)
 database.child("rooms").child(ROOM_NAME).child("OldPersonTrump").set(1)
 
 
