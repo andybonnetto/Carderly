@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     int trump = 0;
     int suit = 0;
     int current_to_play = 0;
-    int card_out = 0;
+    int card_out = 1;
     int[] first_digit = {0,0,0,0};
     int[] last_two_digits = {0,0,0,0};
     int[] player_cards_id = {0,0,0,0,0,0,0,0}; // ID of the cards in hand of the player 1
