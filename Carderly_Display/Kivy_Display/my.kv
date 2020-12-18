@@ -59,13 +59,13 @@
             Color:
                 rgba : 0.,0.,0.,0.7
             Rectangle:
-                pos : 80,170
+                pos : 224,250
                 size : 190,290
             Rectangle:
-                pos : 305,170
+                pos : 854,250
                 size : 190,290
             Rectangle:
-                pos : 525,170
+                pos : 1470,250
                 size : 190,290
 
         Label:
@@ -118,7 +118,7 @@
             background_color: 0,0,1,0.8
             pos_hint:{"x":0.65,"y":0.1}
             size_hint: 0.3, 0.1
-            font_size: (root.width**2 + root.height**2) / 12**4
+            font_size: (root.width**2 + root.height**2) / 12**4.5
             text: "Game"
             on_release:
                 root.manager.transition.direction = "left"
@@ -127,7 +127,7 @@
             background_color: 1,0,0,0.8
             pos_hint:{"x":0.05,"y":0.1}
             size_hint: 0.3, 0.1
-            font_size: (root.width**2 + root.height**2) / 12**4
+            font_size: (root.width**2 + root.height**2) / 12**4.5
             text: "Return"
             on_release:
                 root.manager.transition.direction = "right"
@@ -136,7 +136,7 @@
             background_color: 1,1,1,0.8
             pos_hint:{"x":0.3,"y":0.0}
             size_hint: 0.4, 0.1
-            font_size: (root.width**2 + root.height**2) / 12**4
+            font_size: (root.width**2 + root.height**2) / 12**4.5
             text: "Join another"
             on_release:
 
@@ -252,7 +252,7 @@
             background_color: 1,0,0,0.81
             pos_hint:{"x":0.05,"y":0.1}
             size_hint: 0.3, 0.1
-            font_size: (root.width**2 + root.height**2) / 12**4
+            font_size: (root.width**2 + root.height**2) / 12**4.5
             text: "Return"
             on_release:
                 root.manager.transition.direction = "right"
@@ -294,7 +294,7 @@
             background_color: 1,0,0,0.81
             pos_hint:{"x":0.05,"y":0.1}
             size_hint: 0.3, 0.1
-            font_size: (root.width**2 + root.height**2) / 12**4
+            font_size: (root.width**2 + root.height**2) / 12**4.5
             text: "Return"
             on_release:
                 root.manager.transition.direction = "down"
@@ -303,7 +303,7 @@
             background_color: 1,1,0,0.81
             pos_hint:{"x":0.55,"y":0.1}
             size_hint: 0.5, 0.1
-            font_size: (root.width**2 + root.height**2) / 15**4
+            font_size: (root.width**2 + root.height**2) / 15**4.5
             text: "Change account"
             on_release:
                 root.manager.transition.direction = "down"
@@ -330,7 +330,7 @@
             background_color: 0,0,1,0.81
             pos_hint:{"x":0.65,"y":0.1}
             size_hint: 0.3, 0.1
-            font_size: (root.width**2 + root.height**2) / 12**4
+            font_size: (root.width**2 + root.height**2) / 12**4.5
             text: "Return"
             on_release:
                 root.manager.transition.direction = "left"
@@ -362,7 +362,7 @@
             background_color: 0,0,1,0.8
             pos_hint:{"x":0.65,"y":0.1}
             size_hint: 0.3, 0.1
-            font_size: (root.width**2 + root.height**2) / 12**4
+            font_size: (root.width**2 + root.height**2) / 12**4.5
             text: "Waiting"
             on_release:
                 root.manager.transition.direction = "left"
