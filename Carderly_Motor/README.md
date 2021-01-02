@@ -1,9 +1,6 @@
 # Carderly Motor
 Carderly uses 5 motors to work which are 2x 360servo motors for the casters, 1x angle servo motor for the flipping system, 1x stepper motor for the push push arm and 1x DC motor for the main wheel. 
 
-## TODO Motors
-* <b>Discard all cards function</b> </br>
-When the system breaks just discard all cards
 ## Motor launch
 All motors can be launch by using the functions python file "call_motor.py" (workin on it), it calls subfunctions with classes for each type of motors, parameters and pins must be entered according to the scheme in the bottom.
 At the end the whole code, a *cleanup* function set for every class is necessary to disconnect motors from pins. PINS refer to GPIO pins shown on scheme ([pin/GPIO relation](https://github.com/andybonnetto/Carderly/blob/main/Carderly_Motor/pins.PNG))
